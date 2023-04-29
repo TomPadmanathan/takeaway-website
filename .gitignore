@@ -1,0 +1,27 @@
+# next.js
+.next/
+/out/
+
+# debug
+npm-debug.log*
+
+# Node.js files
+node_modules/
+npm-debug.log*
+
+# Next.js files
+/.next/
+/out/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Environment variables
+.env*.local
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
