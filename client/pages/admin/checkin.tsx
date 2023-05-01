@@ -1,14 +1,10 @@
 import { useState } from "react";
+import { Employee } from '../../interfaces/checkin'
 
 export async function getServerSideProps() {
     const res = await fetch('http://localhost:3000/api/checkin')
     const data = await res.json()
     return { props: { data } }
-}
-
-interface Employee {
-    checkedIn: boolean;
-    name: string
 }
 
 export default function Home(props: any) {
