@@ -1,10 +1,10 @@
-import { CartProps } from '../interfaces/checkin';
+import { CartProps } from '@/interfaces/checkin';
 
 export default function ProductTab(props: CartProps) {
     return (
         <>
             <div
-                className={`absolute transition-all duration-500 right-5 top-5 w-72 border border-black z-1 bg-slate-600 ${
+                className={`absolute transition-all duration-500 right-5 top-5 w-72 border-black z-1 bg-white border-2 rounded ${
                     props.isVisible ? 'translate-x-0' : 'translate-x-96'
                 }`}
             >

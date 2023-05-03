@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import Black from '../assets/img/black.png';
+import Black from '@/assets/img/black.png';
 import formatPrice from '@/utils/formatPrice';
-import Cart from '../components/Cart';
+import Cart from '@/components/Cart';
 
 export default function Navbar() {
     const [itemsCount, setItemsCount] = useState(3);
     const [totalPrice, setTotalPrice] = useState(0);
 
-    const [buttonStatus, setButtonStatus] = useState(true);
+    const [buttonStatus, setButtonStatus] = useState(false);
     const handleCartClick = () => {
         setButtonStatus(!buttonStatus);
     };
