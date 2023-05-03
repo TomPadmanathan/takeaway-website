@@ -18,7 +18,7 @@ export default function Home(props: any) {
                     <li
                         key={index}
                     >
-                        {e.checkedIn ? 'test' : 'test2'}
+                        {e.name}
                     </li>
                 ))}
             </ul>
