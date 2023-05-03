@@ -11,7 +11,12 @@ export default function ProductTab(props: any) {
                     alt={'Food Image'}
                 />
                 <h2 className="text-xl">{props.name}</h2>
-                <span className="">£{formatPrice(props.price)}</span>
+                <span>£{formatPrice(props.price)}</span>
+                <center>
+                    <button className="border-black border w-24 h-10 overflow-hidden block">
+                        Add to Cart
+                    </button>
+                </center>
             </div>
         </>
     );
