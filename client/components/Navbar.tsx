@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Black from '@/assets/img/black.png';
 import formatPrice from '@/utils/formatPrice';
 import Cart from '@/components/Cart';
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 export default function Navbar() {
-    const [itemsCount, setItemsCount] = useState(3);
-    const [totalPrice, setTotalPrice] = useState(0);
-
+    const { cart, setCart } = useContext(AppContext);
     const [buttonStatus, setButtonStatus] = useState(false);
     const handleCartClick = () => {
         setButtonStatus(!buttonStatus);
@@ -44,8 +44,13 @@ export default function Navbar() {
                         Cart
                     </button>
                     <span>
-                        {itemsCount} {itemsCount == 1 ? 'item' : 'items'} - £
-                        {formatPrice(totalPrice)}
+                        {cart.length} {cart.length == 1 ? 'item' : 'items'} - £
+                        {formatPrice(
+                            cart.reduce(
+                                (acc: any, item: any) => acc + item.price,
+                                0
+                            )
+                        )}
                     </span>
                 </div>
             </div>

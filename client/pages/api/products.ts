@@ -32,19 +32,43 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             product: 'Nasi Goreng',
             price: 6,
             image: Black,
-            category: ['popular', 'chinese'],
+            category: ['indonesian'],
         },
         {
             product: 'Mi Goreng',
             price: 6,
             image: Black,
-            category: ['popular', 'chinese'],
+            category: ['indonesian'],
         },
         {
             product: 'Pad Thai',
             price: 6,
             image: Black,
-            category: ['popular', 'chinese'],
+            category: ['popular', 'thai'],
+        },
+        {
+            product: 'Katsu Curry',
+            price: 6,
+            image: Black,
+            category: ['popular', 'japanese'],
+        },
+        {
+            product: 'Kimchi',
+            price: 2,
+            image: Black,
+            category: ['korean'],
+        },
+        {
+            product: 'YakiSoba',
+            price: 2,
+            image: Black,
+            category: ['japanese'],
+        },
+        {
+            product: 'YakiUdon',
+            price: 2,
+            image: Black,
+            category: ['japanese'],
         },
     ]);
 }

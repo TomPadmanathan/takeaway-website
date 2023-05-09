@@ -1,5 +1,6 @@
 import ProductTab from '@/components/ProductTab';
 import React, { useState } from 'react';
+import ProductNav from '@/components/ProductNav';
 
 export async function getServerSideProps() {
     const res = await fetch('http://localhost:3000/api/products');
@@ -12,20 +13,20 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ data }: any) {
-    // const [category, setCategory] = useState('popular');
+    const [activeProductNav, setActiveProductNav] = useState('popular');
 
     return (
         <>
+            <ProductNav
+                activeProductNav={activeProductNav}
+                setActiveProductNav={setActiveProductNav}
+            />
+
             <div className="flex justify-center">
                 <div className="grid grid-cols-5 gap-5">
-                    {data.map((e: any, i: number) =>
-                        e.category.includes('popular') ? (
-                            <ProductTab
-                                product={e.product}
-                                image={e.image}
-                                price={e.price}
-                                key={i}
-                            />
+                    {data.map((e: any) =>
+                        e.category.includes(activeProductNav) ? (
+                            <ProductTab data={e} key={e.product} />
                         ) : null
                     )}
                 </div>
