@@ -6,7 +6,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     res.send([
         {
             product: 'Chow Mein',
-            price: 10.5,
+            price: 100.255,
             image: Black,
             category: ['popular', 'chinese'],
         },

@@ -2,13 +2,10 @@ import Image from 'next/image';
 import formatPrice from '@/utils/formatPrice';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import addItemCart from '@/utils/addItemCart';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
-
-    function addItem() {
-        setCart((prevCart: any) => [...prevCart, props.data]);
-    }
 
     return (
         <>
@@ -22,7 +19,7 @@ export default function ProductTab(props: any) {
                 <span>£{formatPrice(props.data.price)}</span>
                 <center>
                     <button
-                        onClick={() => addItem()}
+                        onClick={() => addItemCart(props.data, cart, setCart)}
                         className="border-black border w-24 h-10 overflow-hidden block"
                     >
                         Add to Cart
