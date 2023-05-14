@@ -1,10 +1,17 @@
 import addItemCart from '@/utils/addItemCart';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
+    const [selectedOption, setSelectedOption] = useState('Rice');
+
+    const handleAddItemCart = () => {
+        const newItem = { ...props.data, options: selectedOption };
+        addItemCart(newItem, setCart);
+        setOpen(false);
+    };
 
     return (
         <>
@@ -21,14 +28,19 @@ export default function ProductTab(props: any) {
                         Close
                     </button>
                     <h1>{props.data.product}</h1>
-                    <div className="mt-2">
-                        <button
-                            onClick={() => addItemCart(props.data, setCart)}
-                            className="border-black border w-24 h-10"
-                        >
-                            Add to Cart
-                        </button>
-                    </div>
+                    <select
+                        value={selectedOption}
+                        onChange={e => setSelectedOption(e.target.value)}
+                    >
+                        <option value="Rice">Rice</option>
+                        <option value="Noodle">Noodle</option>
+                    </select>
+                    <button
+                        onClick={handleAddItemCart}
+                        className="border-black border w-24 h-10"
+                    >
+                        Add to Cart
+                    </button>
                 </div>
             </div>
         </>
