@@ -1,12 +1,9 @@
 import Image from 'next/image';
 import formatPrice from '@/utils/formatPrice';
-import { useContext, useState } from 'react';
-import { AppContext } from '../context/AppContext';
-import addItemCart from '@/utils/addItemCart';
+import { useState } from 'react';
 import AddCartModel from './AddCartModel';
 
 export default function ProductTab(props: any) {
-    const { cart, setCart } = useContext(AppContext);
     const [open, setOpen] = useState(false);
 
     return (
@@ -22,14 +19,14 @@ export default function ProductTab(props: any) {
                 <center>
                     <button
                         onClick={() => setOpen(true)}
-                        className="border-black border w-24 h-10 overflow-hidden block"
+                        className="border-black border w-24 h-10"
                     >
                         Add to Cart
                     </button>
                 </center>
             </div>
 
-            <AddCartModel open={open} />
+            <AddCartModel data={props.data} open={[open, setOpen]} />
         </>
     );
 }
