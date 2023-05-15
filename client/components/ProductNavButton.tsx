@@ -1,11 +1,13 @@
 export default function ProductNavButton(props: any) {
+    const [activeProductNav, setActiveProductNav] = props.activeProductNav;
+
     return (
         <button
             onClick={() => {
-                props.setActiveProductNav(props.title);
+                setActiveProductNav(props.title);
             }}
             className={`border-2 border-black p-3 mx-3 ${
-                props.activeProductNav == props.title ? 'bg-slate-500' : null
+                activeProductNav == props.title ? 'bg-slate-500' : null
             }`}
         >
             {props.title.charAt(0).toUpperCase() + props.title.slice(1)}

@@ -1,6 +1,8 @@
 import ProductNavButton from './ProductNavButton';
 
 export default function ProductNav(props: any) {
+    const [activeProductNav, setActiveProductNav] = props.activeProductNav;
+
     const productNavButtons = [
         { title: 'popular' },
         { title: 'chinese' },
@@ -17,8 +19,10 @@ export default function ProductNav(props: any) {
                     <ProductNavButton
                         key={button.title}
                         title={button.title}
-                        setActiveProductNav={props.setActiveProductNav}
-                        activeProductNav={props.activeProductNav}
+                        activeProductNav={[
+                            activeProductNav,
+                            setActiveProductNav,
+                        ]}
                     />
                 ))}
             </div>

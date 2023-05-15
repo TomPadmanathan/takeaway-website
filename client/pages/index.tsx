@@ -18,8 +18,7 @@ export default function Home({ data }: any) {
     return (
         <>
             <ProductNav
-                activeProductNav={activeProductNav}
-                setActiveProductNav={setActiveProductNav}
+                activeProductNav={[activeProductNav, setActiveProductNav]}
             />
 
             <div className="flex justify-center">
