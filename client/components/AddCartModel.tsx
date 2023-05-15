@@ -33,28 +33,30 @@ export default function ProductTab(props: any) {
                     >
                         Close
                     </button>
+                    <div className="flex flex-col items-center">
+                        <h2 className="mb-20 text-2xl">{props.data.product}</h2>
+                        {props.data.options ? (
+                            <select
+                                onChange={e => {
+                                    selectedOption = e.target.value;
+                                }}
+                                className="mb-20"
+                            >
+                                {props.data.options.map((e: any) => (
+                                    <option key={e}>
+                                        {capitaliseFirstChar(e)}
+                                    </option>
+                                ))}
+                            </select>
+                        ) : null}
 
-                    <h1>{props.data.product}</h1>
-                    {props.data.options ? (
-                        <select
-                            onChange={e => {
-                                selectedOption = e.target.value;
-                            }}
+                        <button
+                            onClick={handleAddItemCart}
+                            className="border-black border w-24 h-10"
                         >
-                            {props.data.options.map((e: any) => (
-                                <option key={e}>
-                                    {capitaliseFirstChar(e)}
-                                </option>
-                            ))}
-                        </select>
-                    ) : null}
-
-                    <button
-                        onClick={handleAddItemCart}
-                        className="border-black border w-24 h-10"
-                    >
-                        Add to Cart
-                    </button>
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
