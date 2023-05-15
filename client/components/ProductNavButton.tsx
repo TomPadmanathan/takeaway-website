@@ -1,3 +1,5 @@
+import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
+
 export default function ProductNavButton(props: any) {
     const [activeProductNav, setActiveProductNav] = props.activeProductNav;
 
@@ -10,7 +12,7 @@ export default function ProductNavButton(props: any) {
                 activeProductNav == props.title ? 'bg-slate-500' : null
             }`}
         >
-            {props.title.charAt(0).toUpperCase() + props.title.slice(1)}
+            {capitaliseFirstChar(props.title)}
         </button>
     );
 }
