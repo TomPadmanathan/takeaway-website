@@ -15,12 +15,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             price: 10.5,
             image: Black,
             category: ['popular', 'chinese'],
+            options: ['rice', 'noodles'],
         },
         {
             product: 'Sweet and Chili Chicken',
             price: 10.5,
             image: Black,
             category: ['popular', 'chinese'],
+            options: ['rice', 'noodles'],
         },
         {
             product: 'Fried Rice',
@@ -51,6 +53,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             price: 6,
             image: Black,
             category: ['popular', 'japanese'],
+            options: ['rice', 'noodles'],
+            // ['seperate curry sauce', 'curry sauce on katsu'],
         },
         {
             product: 'Kimchi',

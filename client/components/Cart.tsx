@@ -23,7 +23,7 @@ export default function ProductTab(props: any) {
                 <ul className="py-5">
                     {cart.map((e: any, i: number) => (
                         <li key={i} className="flex justify-between">
-                            <span>{e.options}</span>
+                            {e.options ? <span>{e.options}</span> : null}
                             <button
                                 onClick={() => deleteItemCart(i, cart, setCart)}
                                 className="border border-black p-2"
