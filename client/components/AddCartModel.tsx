@@ -1,22 +1,32 @@
 import addItemCart from '@/utils/addItemCart';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
+    const [selectedOption, setSelectedOption] = useState<any>(null);
 
-    let selectedOption: any;
-
-    if (props.data.options)
-        selectedOption = capitaliseFirstChar(props.data.options[0]);
-    else selectedOption = null;
+    useEffect(() => {
+        if (props.data.options) {
+            const initialSelectedOption = props.data.options.map(
+                (subArray: any) => subArray[0]
+            );
+            setSelectedOption(initialSelectedOption);
+        }
+    }, [props.data.options]);
 
     const handleAddItemCart = () => {
         const newItem = { ...props.data, options: selectedOption };
         addItemCart(newItem, setCart);
         setOpen(false);
+        if (props.data.options) {
+            const resetSelectedOption = props.data.options.map(
+                (subArray: any) => subArray[0]
+            );
+            setSelectedOption(resetSelectedOption);
+        }
     };
 
     return (
@@ -35,20 +45,35 @@ export default function ProductTab(props: any) {
                     </button>
                     <div className="flex flex-col items-center">
                         <h2 className="mb-20 text-2xl">{props.data.product}</h2>
-                        {props.data.options ? (
-                            <select
-                                onChange={e => {
-                                    selectedOption = e.target.value;
-                                }}
-                                className="mb-20"
-                            >
-                                {props.data.options.map((e: any) => (
-                                    <option key={e}>
-                                        {capitaliseFirstChar(e)}
-                                    </option>
-                                ))}
-                            </select>
-                        ) : null}
+
+                        {props.data.options &&
+                            props.data.options.map(
+                                (subArray: any, i: number) => (
+                                    <select
+                                        key={subArray}
+                                        onChange={(e: any) => {
+                                            const updatedOptions =
+                                                selectedOption
+                                                    ? [...selectedOption]
+                                                    : [];
+                                            updatedOptions[i] = e.target.value;
+                                            setSelectedOption(updatedOptions);
+                                        }}
+                                        value={
+                                            selectedOption
+                                                ? selectedOption[i]
+                                                : ''
+                                        }
+                                        className="mb-20"
+                                    >
+                                        {subArray.map((e: any) => (
+                                            <option key={e}>
+                                                {capitaliseFirstChar(e)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )
+                            )}
 
                         <button
                             onClick={handleAddItemCart}

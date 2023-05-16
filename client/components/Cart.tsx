@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import formatPrice from '@/utils/formatPrice';
 import deleteItemCart from '@/utils/deleteItemCart';
+import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
@@ -23,14 +24,25 @@ export default function ProductTab(props: any) {
                 <ul className="py-5">
                     {cart.map((e: any, i: number) => (
                         <li key={i} className="flex justify-between">
-                            {e.options ? <span>{e.options}</span> : null}
                             <button
                                 onClick={() => deleteItemCart(i, cart, setCart)}
                                 className="border border-black p-2"
                             >
                                 Delete
                             </button>
-                            <span>{e.product}</span>
+                            <div className="flex flex-col items-center">
+                                <span>{e.product}</span>
+                                <ul className="list-disc ml-10">
+                                    {e.options
+                                        ? e.options.map((e: any) => (
+                                              <li key={e}>
+                                                  {capitaliseFirstChar(e)}
+                                              </li>
+                                          ))
+                                        : null}
+                                </ul>
+                            </div>
+
                             <span>£{formatPrice(e.price)}</span>
                         </li>
                     ))}
