@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import formatPrice from '@/utils/formatPrice';
 import deleteItemCart from '@/utils/deleteItemCart';
@@ -7,12 +7,27 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
+    const [discountResponse, setDiscountResponse] = useState<any>(null);
+    const [discountInput, setDiscountInput] = useState('');
 
     const subTotal = cart.reduce((acc: any, item: any) => acc + item.price, 0);
     const lowOrderFee =
         subTotal < 15 ? (15 - subTotal > 5 ? 5 : 15 - subTotal) : 0;
     const deliverFee = 3;
     const total = subTotal + lowOrderFee + deliverFee;
+
+    async function applyDiscount() {
+        const response = await fetch('/api/discount', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(discountInput),
+        });
+        const responseBody = await response.json();
+
+        setDiscountResponse(responseBody);
+    }
 
     return (
         <>
@@ -50,6 +65,23 @@ export default function ProductTab(props: any) {
                         </li>
                     ))}
                 </ul>
+                <input
+                    type="text"
+                    className="border"
+                    placeholder="Discount Code"
+                    value={discountInput}
+                    onChange={(e: any) => setDiscountInput(e.target.value)}
+                ></input>
+                <button onClick={applyDiscount}>Apply</button>
+                {discountResponse ? (
+                    <>
+                        <span className="text-green-500">
+                            {discountResponse.valid
+                                ? 'Your discount has been applied'
+                                : 'Your discount code is invalid'}
+                        </span>
+                    </>
+                ) : null}
                 <span className="block text-end">
                     Sub-Total: £{formatPrice(subTotal)}
                 </span>
