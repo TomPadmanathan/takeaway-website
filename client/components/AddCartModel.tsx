@@ -45,35 +45,39 @@ export default function ProductTab(props: any) {
                     </button>
                     <div className="flex flex-col items-center">
                         <h2 className="mb-20 text-2xl">{props.data.product}</h2>
-
-                        {props.data.options &&
-                            props.data.options.map(
-                                (subArray: any, i: number) => (
-                                    <select
-                                        key={subArray}
-                                        onChange={(e: any) => {
-                                            const updatedOptions =
+                        <div className="flex-row">
+                            {props.data.options &&
+                                props.data.options.map(
+                                    (subArray: any, i: number) => (
+                                        <select
+                                            key={subArray}
+                                            onChange={(e: any) => {
+                                                const updatedOptions =
+                                                    selectedOption
+                                                        ? [...selectedOption]
+                                                        : [];
+                                                updatedOptions[i] =
+                                                    e.target.value;
+                                                setSelectedOption(
+                                                    updatedOptions
+                                                );
+                                            }}
+                                            value={
                                                 selectedOption
-                                                    ? [...selectedOption]
-                                                    : [];
-                                            updatedOptions[i] = e.target.value;
-                                            setSelectedOption(updatedOptions);
-                                        }}
-                                        value={
-                                            selectedOption
-                                                ? selectedOption[i]
-                                                : ''
-                                        }
-                                        className="mb-20"
-                                    >
-                                        {subArray.map((e: any) => (
-                                            <option key={e}>
-                                                {capitaliseFirstChar(e)}
-                                            </option>
-                                        ))}
-                                    </select>
-                                )
-                            )}
+                                                    ? selectedOption[i]
+                                                    : ''
+                                            }
+                                            className="mb-20 mx-2"
+                                        >
+                                            {subArray.map((e: any) => (
+                                                <option key={e}>
+                                                    {capitaliseFirstChar(e)}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )
+                                )}
+                        </div>
 
                         <button
                             onClick={handleAddItemCart}

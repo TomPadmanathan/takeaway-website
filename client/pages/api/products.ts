@@ -55,7 +55,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             category: ['popular', 'japanese'],
             options: [
                 ['rice', 'noodles'],
-                ['seperate curry sauce', 'curry sauce on katsu'],
+                ['curry sauce on katsu', 'seperate curry sauce'],
             ],
         },
         {
