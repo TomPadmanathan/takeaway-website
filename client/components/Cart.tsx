@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext';
 import formatPrice from '@/utils/formatPrice';
 import deleteItemCart from '@/utils/deleteItemCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
+import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
@@ -31,7 +32,9 @@ export default function ProductTab(props: any) {
                                 Delete
                             </button>
                             <div className="flex flex-col items-center">
-                                <span>{e.product}</span>
+                                <span>
+                                    {capitaliseFirstCharWords(e.product)}
+                                </span>
                                 <ul className="list-disc ml-10">
                                     {e.options
                                         ? e.options.map((e: any) => (

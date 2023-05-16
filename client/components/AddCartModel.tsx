@@ -2,6 +2,7 @@ import addItemCart from '@/utils/addItemCart';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
+import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
@@ -45,7 +46,9 @@ export default function ProductTab(props: any) {
                         Close
                     </button>
                     <div className="flex flex-col items-center">
-                        <h2 className="mb-20 text-2xl">{props.data.product}</h2>
+                        <h2 className="mb-20 text-2xl">
+                            {capitaliseFirstCharWords(props.data.product)}
+                        </h2>
                         <div className="flex-row">
                             {props.data.options &&
                                 props.data.options.map(
