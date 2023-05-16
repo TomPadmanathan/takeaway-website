@@ -6,12 +6,17 @@ import Cart from '@/components/Cart';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
-export default function Navbar() {
+export default function Navbar(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const [buttonStatus, setButtonStatus] = useState(false);
+    const [search, setSearch] = props.search;
     const handleCartClick = () => {
         setButtonStatus(!buttonStatus);
     };
+
+    function searchChange(e: any) {
+        setSearch(e.target.value);
+    }
 
     return (
         <>
@@ -27,6 +32,8 @@ export default function Navbar() {
                         placeholder="Search"
                         type="text"
                         className="border-black border w-96 h-10"
+                        value={search}
+                        onChange={e => searchChange(e)}
                     ></input>
                     <button className="border-black border w-10 h-10 overflow-hidden">
                         Submit

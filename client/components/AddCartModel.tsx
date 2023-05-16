@@ -9,12 +9,13 @@ export default function ProductTab(props: any) {
     const [selectedOption, setSelectedOption] = useState<any>(null);
 
     useEffect(() => {
-        if (props.data.options) {
-            const initialSelectedOption = props.data.options.map(
-                (subArray: any) => subArray[0]
-            );
-            setSelectedOption(initialSelectedOption);
+        if (!props.data.options) {
+            return;
         }
+        const initialSelectedOption = props.data.options.map(
+            (subArray: any) => subArray[0]
+        );
+        setSelectedOption(initialSelectedOption);
     }, [props.data.options]);
 
     const handleAddItemCart = () => {
