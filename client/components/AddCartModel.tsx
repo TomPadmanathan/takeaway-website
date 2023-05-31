@@ -3,11 +3,13 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
+import QuantityCounter from './QuantityCounter';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<any>(null);
+    const [quantity, setQuantity] = useState<any>(1);
 
     useEffect(() => {
         if (!props.data.options) {
@@ -20,7 +22,11 @@ export default function ProductTab(props: any) {
     }, [props.data.options]);
 
     const handleAddItemCart = () => {
-        const newItem = { ...props.data, options: selectedOption };
+        const newItem = {
+            ...props.data,
+            options: selectedOption,
+            quantity: quantity,
+        };
         addItemCart(newItem, setCart);
         setOpen(false);
         if (props.data.options) {
@@ -28,6 +34,9 @@ export default function ProductTab(props: any) {
                 (subArray: any) => subArray[0]
             );
             setSelectedOption(resetSelectedOption);
+        }
+        if (quantity != 1) {
+            setQuantity(1);
         }
     };
 
@@ -49,7 +58,10 @@ export default function ProductTab(props: any) {
                         <h2 className="mb-20 text-2xl">
                             {capitaliseFirstCharWords(props.data.product)}
                         </h2>
-                        <div className="flex-row">
+                        <div className="flex-row mb-20">
+                            <QuantityCounter
+                                quantity={[quantity, setQuantity]}
+                            />
                             {props.data.options &&
                                 props.data.options.map(
                                     (subArray: any, i: number) => (
@@ -71,7 +83,7 @@ export default function ProductTab(props: any) {
                                                     ? selectedOption[i]
                                                     : ''
                                             }
-                                            className="mb-20 mx-2"
+                                            className="mx-2"
                                         >
                                             {subArray.map((e: any) => (
                                                 <option key={e}>
