@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import formatPrice from '@/utils/formatPrice';
 import deleteItemCart from '@/utils/deleteItemCart';
@@ -7,12 +7,26 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
-    useEffect(() => {
-        console.log(cart);
-    }, [cart]);
 
-    const subTotal = cart.reduce(
-        (acc: any, item: any) => acc + item.price * item.quantity,
+    // Combine all products that are the same
+    const modifiedCart = cart.reduce((acc: any[], item: any) => {
+        const existingItem = acc.find(
+            cartItem =>
+                cartItem.id === item.id &&
+                JSON.stringify(cartItem.options) ===
+                    JSON.stringify(item.options)
+        );
+        if (existingItem) {
+            existingItem.quantity += 1;
+            existingItem.totalPrice += existingItem.price;
+        } else {
+            acc.push({ ...item, quantity: 1, totalPrice: item.price });
+        }
+        return acc;
+    }, []);
+
+    const subTotal = modifiedCart.reduce(
+        (acc: any, item: any) => acc + item.totalPrice,
         0
     );
     const lowOrderFee =
@@ -29,17 +43,15 @@ export default function ProductTab(props: any) {
             >
                 <h2 className="text-3xl text-center">Cart</h2>
                 <ul className="py-5">
-                    {cart.map((e: any, i: number) => (
-                        <li key={i} className="flex justify-between">
+                    {modifiedCart.map((e: any, i: number) => (
+                        <li key={i} className="flex justify-between mb-10">
                             <button
                                 onClick={() => deleteItemCart(i, cart, setCart)}
-                                className="border border-black p-2"
+                                className="border border-black p-2 h-10"
                             >
                                 Delete
                             </button>
-                            {/* Quantity */}
-
-                            <span className="mx-4">{e.quantity}</span>
+                            <span className="mx-4">{e.quantity + ' x'}</span>
 
                             <div className="flex flex-col items-center">
                                 <span>
@@ -47,8 +59,8 @@ export default function ProductTab(props: any) {
                                 </span>
                                 <ul className="list-disc ml-10">
                                     {e.options
-                                        ? e.options.map((e: any) => (
-                                              <li key={e}>
+                                        ? e.options.map((e: any, i: number) => (
+                                              <li key={i}>
                                                   {capitaliseFirstChar(e)}
                                               </li>
                                           ))
@@ -56,7 +68,7 @@ export default function ProductTab(props: any) {
                                 </ul>
                             </div>
 
-                            <span>£{formatPrice(e.price * e.quantity)}</span>
+                            <span>£{formatPrice(e.totalPrice)}</span>
                         </li>
                     ))}
                 </ul>

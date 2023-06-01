@@ -1,5 +1,8 @@
-export default function deleteItemCart(i: number, cart: any, setCart: any) {
-    const copy = [...cart];
-    copy.splice(i, 1);
-    setCart(copy);
+export default function deleteItemCart(
+    index: number,
+    cart: any,
+    setCart: Function
+) {
+    const updatedCart = cart.filter((item: any, i: any) => i !== index);
+    setCart(updatedCart);
 }

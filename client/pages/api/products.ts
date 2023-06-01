@@ -9,6 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             price: 100.255,
             image: Black,
             category: ['popular', 'chinese'],
+            id: 1,
         },
         {
             product: 'sweet and sour chicken',
@@ -16,6 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             image: Black,
             category: ['popular', 'chinese'],
             options: [['rice', 'noodles']],
+            id: 2,
         },
         {
             product: 'sweet and chili chicken',
@@ -23,30 +25,35 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             image: Black,
             category: ['popular', 'chinese'],
             options: [['rice', 'noodles']],
+            id: 3,
         },
         {
             product: 'fried rice',
             price: 6,
             image: Black,
             category: ['chinese'],
+            id: 4,
         },
         {
             product: 'nasi goreng',
             price: 6,
             image: Black,
             category: ['indonesian'],
+            id: 5,
         },
         {
             product: 'mi goreng',
             price: 6,
             image: Black,
             category: ['indonesian'],
+            id: 6,
         },
         {
             product: 'pad thai',
             price: 6,
             image: Black,
             category: ['popular', 'thai'],
+            id: 7,
         },
         {
             product: 'chicken katsu curry',
@@ -57,24 +64,28 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
                 ['rice', 'noodles'],
                 ['curry sauce on katsu', 'seperate curry sauce'],
             ],
+            id: 8,
         },
         {
             product: 'kimchi',
             price: 2,
             image: Black,
             category: ['korean'],
+            id: 9,
         },
         {
             product: 'yakisoba',
             price: 2,
             image: Black,
             category: ['japanese'],
+            id: 10,
         },
         {
             product: 'yakiudon',
             price: 2,
             image: Black,
             category: ['japanese'],
+            id: 11,
         },
     ]);
 }

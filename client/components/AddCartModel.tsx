@@ -22,11 +22,14 @@ export default function ProductTab(props: any) {
     }, [props.data.options]);
 
     const handleAddItemCart = () => {
-        const newItem = {
-            ...props.data,
-            options: selectedOption,
-            quantity: quantity,
-        };
+        const newItem = [];
+
+        for (let i = quantity; i != 0; i--) {
+            newItem.push({
+                ...props.data,
+                options: selectedOption,
+            });
+        }
         addItemCart(newItem, setCart);
         setOpen(false);
         if (props.data.options) {

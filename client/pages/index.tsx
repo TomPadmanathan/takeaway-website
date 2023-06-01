@@ -1,6 +1,4 @@
-import ProductTab from '@/components/ProductTab';
 import React, { useState } from 'react';
-import ProductNav from '@/components/ProductNav';
 import Navbar from '@/components/Navbar';
 import Products from '@/components/Products';
 
@@ -15,7 +13,6 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ data }: any) {
-    const [activeProductNav, setActiveProductNav] = useState('popular');
     const [search, setSearch] = useState('');
 
     return (
