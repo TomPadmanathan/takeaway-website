@@ -30,7 +30,7 @@ export default function ProductTab(props: any) {
     return (
         <>
             <div
-                className={`z-1 absolute right-5 top-5 w-72 rounded border-2 border-black bg-white p-5 transition-all duration-500 ${
+                className={`z-1 absolute right-5 top-5 w-[30rem] rounded border-2 border-black bg-white p-5 transition-all duration-500 ${
                     props.isVisible ? null : 'pointer-events-none opacity-0'
                 }`}
             >
