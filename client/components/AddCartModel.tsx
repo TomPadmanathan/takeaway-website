@@ -1,9 +1,9 @@
 import addItemCart from '@/utils/addItemCart';
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../context/AppContext';
+import { AppContext } from '@/context/AppContext';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
-import QuantityCounter from './QuantityCounter';
+import QuantityCounter from '@/components/QuantityCounter';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);

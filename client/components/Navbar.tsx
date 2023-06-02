@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import Image from 'next/image';
 import Black from '@/assets/img/black.png';
 import formatPrice from '@/utils/formatPrice';
 import Cart from '@/components/Cart';
-import { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
+import { useContext, useState } from 'react';
+import { AppContext } from '@/context/AppContext';
 
 export default function Navbar(props: any) {
     const { cart, setCart } = useContext(AppContext);

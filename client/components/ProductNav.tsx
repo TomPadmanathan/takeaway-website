@@ -1,4 +1,4 @@
-import ProductNavButton from './ProductNavButton';
+import ProductNavButton from '@/components/ProductNavButton';
 
 export default function ProductNav(props: any) {
     const [activeProductNav, setActiveProductNav] = props.activeProductNav;

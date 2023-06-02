@@ -1,6 +1,6 @@
-import ProductTab from './ProductTab';
+import ProductTab from '@/components/ProductTab';
 import { useState } from 'react';
-import ProductNav from './ProductNav';
+import ProductNav from '@/components/ProductNav';
 
 export default function Products(props: any) {
     const [activeProductNav, setActiveProductNav] = useState('popular');

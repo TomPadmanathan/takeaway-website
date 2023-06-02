@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import formatPrice from '@/utils/formatPrice';
 import { useState } from 'react';
-import AddCartModel from './AddCartModel';
+import AddCartModel from '@/components/AddCartModel';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 
 export default function ProductTab(props: any) {
