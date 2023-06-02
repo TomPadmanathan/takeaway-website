@@ -1,4 +1,4 @@
-export default function addItemCart(data: any, setCart: any) {
+export default function addItemCart(data: any, setCart: Function) {
     data.forEach((e: any) => {
         setCart((prevCart: any) => [...prevCart, e]);
     });

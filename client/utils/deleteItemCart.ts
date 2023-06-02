@@ -3,6 +3,6 @@ export default function deleteItemCart(
     cart: any,
     setCart: Function
 ) {
-    const updatedCart = cart.filter((item: any, i: any) => i !== index);
+    const updatedCart = cart.filter((item: any, i: number) => i !== index);
     setCart(updatedCart);
 }
