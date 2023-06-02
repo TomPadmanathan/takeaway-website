@@ -3,22 +3,26 @@ import Navbar from '@/components/Navbar';
 import Products from '@/components/Products';
 
 export async function getServerSideProps() {
-    const res = await fetch('http://localhost:3000/api/products');
-    const data = await res.json();
+    const productsRes = await fetch('http://localhost:3000/api/products');
+    const productsData = await productsRes.json();
+
+    const configRes = await fetch('http://localhost:3000/api/config');
+    const configData = await configRes.json();
     return {
         props: {
-            data,
+            productsData,
+            configData,
         },
     };
 }
 
-export default function Home({ data }: any) {
+export default function Home({ productsData, configData }: any) {
     const [search, setSearch] = useState('');
 
     return (
         <>
-            <Navbar search={[search, setSearch]} />
-            <Products search={[search, setSearch]} data={data} />
+            <Navbar search={[search, setSearch]} configData={configData} />
+            <Products search={[search, setSearch]} data={productsData} />
         </>
     );
 }

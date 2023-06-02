@@ -62,7 +62,7 @@ export default function Navbar(props: any) {
                 </div>
             </div>
 
-            <Cart isVisible={buttonStatus} />
+            <Cart isVisible={buttonStatus} configData={props.configData} />
         </>
     );
 }

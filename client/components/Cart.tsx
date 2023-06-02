@@ -30,8 +30,13 @@ export default function ProductTab(props: any) {
         0
     );
     const lowOrderFee =
-        subTotal < 15 ? (15 - subTotal > 5 ? 5 : 15 - subTotal) : 0;
-    const deliverFee = 3;
+        subTotal < props.configData.lowOrder.feeLimit
+            ? props.configData.lowOrder.feeLimit - subTotal >
+              props.configData.lowOrder.maxFee
+                ? props.configData.lowOrder.maxFee
+                : props.configData.lowOrder.feeLimit - subTotal
+            : 0;
+    const deliverFee = props.configData.delivery.fee;
     const total = subTotal + lowOrderFee + deliverFee;
 
     return (
