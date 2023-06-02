@@ -14,7 +14,7 @@ export default function ProductNav(props: any) {
 
     return (
         <>
-            <div className="flex justify-center mb-10">
+            <div className="mb-10 flex justify-center">
                 {productNavButtons.map(button => (
                     <ProductNavButton
                         key={button.title}

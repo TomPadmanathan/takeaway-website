@@ -29,7 +29,7 @@ export default function Products(props: any) {
             )}
 
             <div className="flex justify-center">
-                <div className="grid grid-cols-5 gap-5">
+                <div className="grid grid grid-cols-5 gap-5">
                     {filteredData.map((e: any) => (
                         <ProductTab data={e} key={e.product} />
                     ))}

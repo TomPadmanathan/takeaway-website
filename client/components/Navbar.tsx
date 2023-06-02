@@ -20,10 +20,10 @@ export default function Navbar(props: any) {
 
     return (
         <>
-            <div className="flex mx-80 my-16 justify-between">
+            <div className="mx-80 my-16 flex justify-between">
                 <Image
                     src={Black}
-                    className="border-black border w-96 h-20"
+                    className="h-20 w-96 border border-black"
                     alt={'site-icon'}
                 />
 
@@ -31,22 +31,22 @@ export default function Navbar(props: any) {
                     <input
                         placeholder="Search"
                         type="text"
-                        className="border-black border w-96 h-10"
+                        className="h-10 w-96 border border-black"
                         value={search}
                         onChange={e => searchChange(e)}
                     ></input>
-                    <button className="border-black border w-10 h-10 overflow-hidden">
+                    <button className="h-10 w-10 overflow-hidden border border-black">
                         Submit
                     </button>
                 </div>
 
                 <div className="flex">
-                    <button className="border-black border w-10 h-10 overflow-hidden">
+                    <button className="h-10 w-10 overflow-hidden border border-black">
                         Profile
                     </button>
                     <button
                         onClick={handleCartClick}
-                        className="border-black border w-10 h-10 overflow-hidden"
+                        className="h-10 w-10 overflow-hidden border border-black"
                     >
                         Cart
                     </button>

@@ -8,7 +8,7 @@ export default function ProductNavButton(props: any) {
             onClick={() => {
                 setActiveProductNav(props.title);
             }}
-            className={`border-2 border-black p-3 mx-3 ${
+            className={`mx-3 border-2 border-black p-3 ${
                 activeProductNav == props.title ? 'bg-slate-500' : null
             }`}
         >

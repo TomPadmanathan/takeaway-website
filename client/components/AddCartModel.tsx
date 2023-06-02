@@ -47,10 +47,10 @@ export default function ProductTab(props: any) {
         <>
             <div
                 className={`absolute inset-0 flex items-center justify-center ${
-                    open ? 'opacity-1' : 'opacity-0 pointer-events-none'
+                    open ? 'opacity-1' : 'pointer-events-none opacity-0'
                 }`}
             >
-                <div className="border-2 border-black flex justify-center items-center w-[40rem] h-96 bg-slate-200 relative">
+                <div className="relative flex h-96 w-[40rem] items-center justify-center border-2 border-black bg-slate-200">
                     <button
                         onClick={() => setOpen(false)}
                         className="absolute right-0 top-0"
@@ -61,7 +61,7 @@ export default function ProductTab(props: any) {
                         <h2 className="mb-20 text-2xl">
                             {capitaliseFirstCharWords(props.data.product)}
                         </h2>
-                        <div className="flex-row mb-20">
+                        <div className="mb-20 flex-row">
                             <QuantityCounter
                                 quantity={[quantity, setQuantity]}
                             />
@@ -100,7 +100,7 @@ export default function ProductTab(props: any) {
 
                         <button
                             onClick={handleAddItemCart}
-                            className="border-black border w-24 h-10"
+                            className="h-10 w-24 border border-black"
                         >
                             Add to Cart
                         </button>

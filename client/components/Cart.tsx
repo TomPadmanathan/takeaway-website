@@ -42,17 +42,17 @@ export default function ProductTab(props: any) {
     return (
         <>
             <div
-                className={`absolute transition-all duration-500 right-5 top-5 w-72 border-black z-1 bg-white border-2 rounded p-5 ${
-                    props.isVisible ? null : 'opacity-0 pointer-events-none'
+                className={`z-1 absolute right-5 top-5 w-72 rounded border-2 border-black bg-white p-5 transition-all duration-500 ${
+                    props.isVisible ? null : 'pointer-events-none opacity-0'
                 }`}
             >
-                <h2 className="text-3xl text-center">Cart</h2>
+                <h2 className="text-center text-3xl">Cart</h2>
                 <ul className="py-5">
                     {modifiedCart.map((e: any, i: number) => (
-                        <li key={i} className="flex justify-between mb-10">
+                        <li key={i} className="mb-10 flex justify-between ">
                             <button
                                 onClick={() => deleteItemCart(i, cart, setCart)}
-                                className="border border-black p-2 h-10"
+                                className="h-10 border border-black p-2"
                             >
                                 Delete
                             </button>
@@ -62,7 +62,7 @@ export default function ProductTab(props: any) {
                                 <span>
                                     {capitaliseFirstCharWords(e.product)}
                                 </span>
-                                <ul className="list-disc ml-10">
+                                <ul className="ml-10 list-disc">
                                     {e.options
                                         ? e.options.map((e: any, i: number) => (
                                               <li key={i}>
@@ -91,6 +91,10 @@ export default function ProductTab(props: any) {
                 <span className="block text-end">
                     Total: £{formatPrice(total)}
                 </span>
+
+                <button className="h-10 border border-black p-2">
+                    CheckOut
+                </button>
             </div>
         </>
     );

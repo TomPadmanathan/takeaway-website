@@ -9,10 +9,10 @@ export default function ProductTab(props: any) {
 
     return (
         <>
-            <div className="w-72 outline text-center pb-2">
+            <div className="w-72 pb-2 text-center outline">
                 <Image
                     src={props.data.image}
-                    className="border-black border w-72 aspect-[4/3]"
+                    className="aspect-[4/3] w-72 border border-black"
                     alt={props.data.product + ' image'}
                 />
                 <h2 className="text-xl">
@@ -22,7 +22,7 @@ export default function ProductTab(props: any) {
                 <center>
                     <button
                         onClick={() => setOpen(true)}
-                        className="border-black border w-24 h-10"
+                        className="h-10 w-24 border border-black"
                     >
                         Add to Cart
                     </button>
