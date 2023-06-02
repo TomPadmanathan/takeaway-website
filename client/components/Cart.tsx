@@ -4,26 +4,14 @@ import formatPrice from '@/utils/formatPrice';
 import deleteItemCart from '@/utils/deleteItemCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
+import { useRouter } from 'next/router';
+import formatCart from '@/utils/formatCart';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
+    const router = useRouter();
 
-    // Combine all products that are the same
-    const modifiedCart = cart.reduce((acc: any[], item: any) => {
-        const existingItem = acc.find(
-            cartItem =>
-                cartItem.id === item.id &&
-                JSON.stringify(cartItem.options) ===
-                    JSON.stringify(item.options)
-        );
-        if (existingItem) {
-            existingItem.quantity += 1;
-            existingItem.totalPrice += existingItem.price;
-        } else {
-            acc.push({ ...item, quantity: 1, totalPrice: item.price });
-        }
-        return acc;
-    }, []);
+    const modifiedCart = formatCart(cart);
 
     const subTotal = modifiedCart.reduce(
         (acc: any, item: any) => acc + item.totalPrice,
@@ -56,7 +44,7 @@ export default function ProductTab(props: any) {
                             >
                                 Delete
                             </button>
-                            <span className="mx-4">{e.quantity + ' x'}</span>
+                            <span className="mr-4">{e.quantity + ' x'}</span>
 
                             <div className="flex flex-col items-center">
                                 <span>
@@ -92,7 +80,12 @@ export default function ProductTab(props: any) {
                     Total: £{formatPrice(total)}
                 </span>
 
-                <button className="h-10 border border-black p-2">
+                <button
+                    className="h-10 border border-black p-2"
+                    onClick={() => {
+                        router.push('/checkout');
+                    }}
+                >
                     CheckOut
                 </button>
             </div>

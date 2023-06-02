@@ -19,7 +19,7 @@ export default function Navbar(props: any) {
 
     return (
         <>
-            <div className="mx-80 my-16 flex justify-between">
+            <nav className="mx-80 my-16 flex justify-between">
                 <Image
                     src={Black}
                     className="h-20 w-96 border border-black"
@@ -59,7 +59,7 @@ export default function Navbar(props: any) {
                         )}
                     </span>
                 </div>
-            </div>
+            </nav>
 
             <Cart isVisible={buttonStatus} configData={props.configData} />
         </>

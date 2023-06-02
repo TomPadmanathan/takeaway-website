@@ -22,7 +22,9 @@ export default function Home({ productsData, configData }: any) {
     return (
         <>
             <Navbar search={[search, setSearch]} configData={configData} />
-            <Products search={[search, setSearch]} data={productsData} />
+            <main>
+                <Products search={[search, setSearch]} data={productsData} />
+            </main>
         </>
     );
 }
