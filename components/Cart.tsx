@@ -82,9 +82,7 @@ export default function ProductTab(props: any) {
 
                 <button
                     className="h-10 border border-black p-2"
-                    onClick={() => {
-                        router.push('/checkout');
-                    }}
+                    onClick={() => router.push('/checkout')}
                 >
                     CheckOut
                 </button>
