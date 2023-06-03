@@ -6,26 +6,14 @@ import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import { useRouter } from 'next/router';
 import formatCart from '@/utils/formatCart';
+import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
-    const router = useRouter();
-
     const modifiedCart = formatCart(cart);
 
-    const subTotal = modifiedCart.reduce(
-        (acc: any, item: any) => acc + item.totalPrice,
-        0
-    );
-    const lowOrderFee =
-        subTotal < props.configData.lowOrder.feeLimit
-            ? props.configData.lowOrder.feeLimit - subTotal >
-              props.configData.lowOrder.maxFee
-                ? props.configData.lowOrder.maxFee
-                : props.configData.lowOrder.feeLimit - subTotal
-            : 0;
-    const deliverFee = props.configData.delivery.fee;
-    const total = subTotal + lowOrderFee + deliverFee;
+    const router = useRouter();
+    const prices = new CalculateCheckoutPrices(cart, props.configData);
 
     return (
         <>
@@ -66,23 +54,25 @@ export default function ProductTab(props: any) {
                     ))}
                 </ul>
                 <span className="block text-end">
-                    Sub-Total: £{formatPrice(subTotal)}
+                    Sub-Total: £{formatPrice(prices.subTotal)}
                 </span>
-                {lowOrderFee ? (
+                {prices.lowOrderFee ? (
                     <span className="block text-end">
-                        Low Order Fee: £{formatPrice(lowOrderFee)}
+                        Low Order Fee: £{formatPrice(prices.lowOrderFee)}
                     </span>
                 ) : null}
                 <span className="block text-end">
-                    Delivery Fee: £{formatPrice(deliverFee)}
+                    Delivery Fee: £{formatPrice(prices.deliveryFee)}
                 </span>
                 <span className="block text-end">
-                    Total: £{formatPrice(total)}
+                    Total: £{formatPrice(prices.total)}
                 </span>
 
                 <button
                     className="h-10 border border-black p-2"
-                    onClick={() => router.push('/checkout')}
+                    onClick={() => {
+                        prices.subTotal ? router.push('/checkout') : null;
+                    }}
                 >
                     CheckOut
                 </button>

@@ -5,11 +5,23 @@ import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import formatPrice from '@/utils/formatPrice';
 import { useRouter } from 'next/router';
+import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 
-export default function Home() {
+export async function getServerSideProps() {
+    const configRes = await fetch('http://localhost:3000/api/config');
+    const configData = await configRes.json();
+    return {
+        props: {
+            configData,
+        },
+    };
+}
+
+export default function Home({ configData }: any) {
     const router = useRouter();
     const { cart, setCart } = useContext(AppContext);
     const modifiedCart = formatCart(cart);
+    const prices = new CalculateCheckoutPrices(cart, configData);
 
     return (
         <>
@@ -44,6 +56,21 @@ export default function Home() {
                                 <span>£{formatPrice(e.totalPrice)}</span>
                             </li>
                         ))}
+                        <span className="block text-end">
+                            Sub-Total: £{formatPrice(prices.subTotal)}
+                        </span>
+                        {prices.lowOrderFee ? (
+                            <span className="block text-end">
+                                Low Order Fee: £
+                                {formatPrice(prices.lowOrderFee)}
+                            </span>
+                        ) : null}
+                        <span className="block text-end">
+                            Delivery Fee: £{formatPrice(prices.deliveryFee)}
+                        </span>
+                        <span className="block text-end">
+                            Total: £{formatPrice(prices.total)}
+                        </span>
                     </ul>
                 </div>
                 <div className="h-[45rem] w-[30rem] border-2 border-black p-10"></div>
