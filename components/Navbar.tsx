@@ -9,13 +9,6 @@ export default function Navbar(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const [buttonStatus, setButtonStatus] = useState(false);
     const [search, setSearch] = props.search;
-    const handleCartClick = () => {
-        setButtonStatus(!buttonStatus);
-    };
-
-    // function searchChange(e: any) {
-    //     setSearch(e.target.value);
-    // }
 
     return (
         <>
@@ -44,7 +37,7 @@ export default function Navbar(props: any) {
                         Profile
                     </button>
                     <button
-                        onClick={handleCartClick}
+                        onClick={() => setButtonStatus(!buttonStatus)}
                         className="h-10 w-10 overflow-hidden border border-black"
                     >
                         Cart
