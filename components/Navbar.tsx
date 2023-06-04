@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 export default function Navbar(props: any) {
     const { cart, setCart } = useContext(AppContext);
-    const [buttonStatus, setButtonStatus] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = props.search;
     const router = useRouter();
 
@@ -19,7 +19,11 @@ export default function Navbar(props: any) {
                     src={Black}
                     className="h-20 w-96 border border-black hover:cursor-pointer"
                     alt={'site-icon'}
-                    onClick={() => router.push('/')}
+                    onClick={() => {
+                        router.push('/');
+                        setSearch('');
+                        setCartOpen(false);
+                    }}
                 />
 
                 <div className="flex">
@@ -40,7 +44,7 @@ export default function Navbar(props: any) {
                         Profile
                     </button>
                     <button
-                        onClick={() => setButtonStatus(!buttonStatus)}
+                        onClick={() => setCartOpen(!cartOpen)}
                         className="h-10 w-10 overflow-hidden border border-black"
                     >
                         Cart
@@ -57,7 +61,7 @@ export default function Navbar(props: any) {
                 </div>
             </nav>
 
-            <Cart isVisible={buttonStatus} configData={props.configData} />
+            <Cart isVisible={cartOpen} configData={props.configData} />
         </>
     );
 }

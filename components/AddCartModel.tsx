@@ -22,7 +22,7 @@ export default function ProductTab(props: any) {
         setSelectedOption(initialSelectedOption);
     }, [props.data.options]);
 
-    const handleAddItemCart = () => {
+    function handleAddItemCart() {
         const newItem = [];
 
         for (let i = quantity; i != 0; i--) {
@@ -42,7 +42,7 @@ export default function ProductTab(props: any) {
         if (quantity != 1) {
             setQuantity(1);
         }
-    };
+    }
 
     return (
         <>
