@@ -7,6 +7,7 @@ import formatPrice from '@/utils/formatPrice';
 import { useRouter } from 'next/router';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
+import SecondaryButton from '@/components/SecondaryButton';
 
 export async function getServerSideProps() {
     const configRes = await fetch('http://localhost:3000/api/config');
@@ -91,13 +92,11 @@ export default function Home({ configData }: any) {
                 </div>
             </div>
 
-            {/* BackButton */}
-            <button
-                className="absolute right-10 top-10 h-10 border border-black p-2"
+            <SecondaryButton
                 onClick={() => router.push('/')}
-            >
-                Back
-            </button>
+                content="Back"
+                addClass="absolute right-10 top-10"
+            />
         </>
     );
 }

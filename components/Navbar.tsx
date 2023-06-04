@@ -4,19 +4,22 @@ import formatPrice from '@/utils/formatPrice';
 import Cart from '@/components/Cart';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
+import { useRouter } from 'next/router';
 
 export default function Navbar(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const [buttonStatus, setButtonStatus] = useState(false);
     const [search, setSearch] = props.search;
+    const router = useRouter();
 
     return (
         <>
             <nav className="mx-80 my-16 flex justify-between">
                 <Image
                     src={Black}
-                    className="h-20 w-96 border border-black"
+                    className="h-20 w-96 border border-black hover:cursor-pointer"
                     alt={'site-icon'}
+                    onClick={() => router.push('/')}
                 />
 
                 <div className="flex">

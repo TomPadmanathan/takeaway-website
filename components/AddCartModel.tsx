@@ -4,6 +4,7 @@ import { AppContext } from '@/context/AppContext';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import QuantityCounter from '@/components/QuantityCounter';
+import SecondaryButton from './SecondaryButton';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
@@ -98,12 +99,10 @@ export default function ProductTab(props: any) {
                                 )}
                         </div>
 
-                        <button
+                        <SecondaryButton
                             onClick={handleAddItemCart}
-                            className="h-10 w-24 border border-black"
-                        >
-                            Add to Cart
-                        </button>
+                            content="Add to Cart"
+                        />
                     </div>
                 </div>
             </div>

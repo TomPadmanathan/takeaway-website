@@ -7,6 +7,7 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import { useRouter } from 'next/router';
 import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
+import SecondaryButton from '@/components/SecondaryButton';
 
 export default function ProductTab(props: any) {
     const { cart, setCart } = useContext(AppContext);
@@ -26,12 +27,11 @@ export default function ProductTab(props: any) {
                 <ul className="py-5">
                     {modifiedCart.map((e: any, i: number) => (
                         <li key={i} className="mb-10 flex justify-between ">
-                            <button
+                            <SecondaryButton
                                 onClick={() => deleteItemCart(i, cart, setCart)}
-                                className="h-10 border border-black p-2"
-                            >
-                                Delete
-                            </button>
+                                content="Delete"
+                            />
+
                             <span className="mr-4">{e.quantity + ' x'}</span>
 
                             <div className="flex flex-col items-center">
