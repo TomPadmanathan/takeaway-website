@@ -13,9 +13,9 @@ export default function Navbar(props: any) {
         setButtonStatus(!buttonStatus);
     };
 
-    function searchChange(e: any) {
-        setSearch(e.target.value);
-    }
+    // function searchChange(e: any) {
+    //     setSearch(e.target.value);
+    // }
 
     return (
         <>
@@ -32,7 +32,7 @@ export default function Navbar(props: any) {
                         type="text"
                         className="h-10 w-96 border border-black"
                         value={search}
-                        onChange={e => searchChange(e)}
+                        onChange={e => setSearch(e.target.value)}
                     ></input>
                     <button className="h-10 w-10 overflow-hidden border border-black">
                         Submit

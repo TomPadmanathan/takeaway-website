@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import formatCart from '@/utils/formatCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -6,6 +6,7 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import formatPrice from '@/utils/formatPrice';
 import { useRouter } from 'next/router';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
+import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
 
 export async function getServerSideProps() {
     const configRes = await fetch('http://localhost:3000/api/config');
@@ -25,8 +26,8 @@ export default function Home({ configData }: any) {
 
     return (
         <>
-            <div className="mx-96 flex h-screen items-center justify-between">
-                <div className="h-[45rem] w-[30rem] border-2 border-black p-10">
+            <div className="mx-96 my-10 flex h-screen items-center justify-between">
+                <div className="w-[30rem] border-2 border-black p-10">
                     <ul>
                         {modifiedCart.map((e: any, i: number) => (
                             <li key={i} className="mb-10 flex justify-between ">
@@ -73,7 +74,21 @@ export default function Home({ configData }: any) {
                         </span>
                     </ul>
                 </div>
-                <div className="h-[45rem] w-[30rem] border-2 border-black p-10"></div>
+                <div className="h-[45rem] w-[30rem] border-2 border-black p-10">
+                    <input
+                        type="number"
+                        inputMode="numeric"
+                        placeholder="Phone Number"
+                        onKeyPress={e => {
+                            if (!/[0-9+]/.test(e.key)) {
+                                e.preventDefault();
+                            }
+                        }}
+                        className={
+                            'h-10 border border-black' + removeArrowsFromInput
+                        }
+                    />
+                </div>
             </div>
 
             {/* BackButton */}
