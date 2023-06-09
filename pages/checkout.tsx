@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
 import SecondaryButton from '@/components/SecondaryButton';
+import PrimaryInput from '@/components/PrimaryInput';
 
 export async function getServerSideProps() {
     const configRes = await fetch('http://localhost:3000/api/config');
@@ -77,55 +78,37 @@ export default function Home({ configData }: any) {
                 </section>
                 <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
                     <label htmlFor="phone-number">Your Info</label>
-                    <div className="flex justify-between">
-                        <input
+                    <div className="mb-10 flex justify-between">
+                        <PrimaryInput
                             type="number"
-                            inputMode="numeric"
                             placeholder="Phone Number"
-                            onKeyPress={e => {
+                            id="phone-number"
+                            required={true}
+                            inputMode="numeric"
+                            onKeyPress={(e: any) => {
                                 if (!/[0-9+]/.test(e.key)) {
                                     e.preventDefault();
                                 }
                             }}
-                            className={
-                                'h-10 border border-black' +
-                                removeArrowsFromInput
-                            }
-                            id="phone-number"
-                            required
+                            addClass={removeArrowsFromInput}
                         />
-                        <input
+                        <PrimaryInput
                             type="email"
                             placeholder="Email (optional)"
-                            className="h-10 border border-black"
                         />
                     </div>
                     <label htmlFor="address-line-1">Address</label>
-                    <div className="flex justify-between">
-                        <input
-                            type="text"
+                    <div className="mb-2 flex justify-between">
+                        <PrimaryInput
                             placeholder="Address line 1"
-                            className="block h-10 border border-black"
                             id="address-line-1"
-                            required
+                            required={true}
                         />
-                        <input
-                            type="text"
-                            placeholder="Address line 2 (optional)"
-                            className="block h-10 border border-black"
-                        />
+                        <PrimaryInput placeholder="Address line 2 (optional)" />
                     </div>
-                    <div className="flex justify-between">
-                        <input
-                            type="text"
-                            placeholder="City"
-                            className="block h-10 border border-black"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Postcode"
-                            className="block h-10 border border-black"
-                        />
+                    <div className="mb-10 flex justify-between">
+                        <PrimaryInput placeholder="City" />
+                        <PrimaryInput placeholder="Postcode" />
                     </div>
                     <label htmlFor="">Order Info</label>
                     <div className="flex justify-between">
@@ -134,8 +117,9 @@ export default function Home({ configData }: any) {
                             className="block h-10 resize-none border border-black"
                         />
                         <label htmlFor="include-cutlery">Include Cutlery</label>
-                        <input type="checkbox" id="include-cutlery" />
+                        <PrimaryInput type="checkbox" id="include-cutlery" />
                     </div>
+                    <SecondaryButton content="Place my Order" />
                 </section>
             </div>
 
