@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 interface IAppContext {
     cart: { [key: string]: any };
@@ -22,6 +22,19 @@ interface IAppProviderProps {
 
 export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
     const [cart, setCart] = useState<{ [key: string]: any }>([]);
+
+    // Get cart from storage
+    useEffect(() => {
+        if (cart.length === 0) {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                const parsedCart = JSON.parse(storedCart);
+                setCart(parsedCart);
+            }
+        } else {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    }, [cart]);
 
     return (
         <AppContext.Provider value={{ cart, setCart }}>

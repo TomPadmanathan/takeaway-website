@@ -14,10 +14,10 @@ export default function Navbar(props: any) {
 
     return (
         <>
-            <nav className="mx-80 my-16 flex justify-between">
+            <nav className="mx-96 my-16 flex justify-between">
                 <Image
                     src={Black}
-                    className="h-20 w-96 border border-black hover:cursor-pointer"
+                    className="h-20 w-40 border border-black hover:cursor-pointer"
                     alt={'site-icon'}
                     onClick={() => {
                         router.push('/');
