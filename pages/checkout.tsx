@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { AppContext } from '@/context/AppContext';
 import formatCart from '@/utils/formatCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -28,7 +28,7 @@ export default function Home({ configData }: any) {
     return (
         <>
             <div className="mx-96 my-10 flex h-screen items-center justify-between">
-                <div className="w-[30rem] border-2 border-black p-10">
+                <section className="w-[30rem] border-2 border-black p-10">
                     <ul>
                         {modifiedCart.map((e: any, i: number) => (
                             <li key={i} className="mb-10 flex justify-between ">
@@ -74,22 +74,69 @@ export default function Home({ configData }: any) {
                             Total: £{formatPrice(prices.total)}
                         </span>
                     </ul>
-                </div>
-                <div className="h-[45rem] w-[30rem] border-2 border-black p-10">
-                    <input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="Phone Number"
-                        onKeyPress={e => {
-                            if (!/[0-9+]/.test(e.key)) {
-                                e.preventDefault();
+                </section>
+                <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
+                    <label htmlFor="phone-number">Your Info</label>
+                    <div className="flex justify-between">
+                        <input
+                            type="number"
+                            inputMode="numeric"
+                            placeholder="Phone Number"
+                            onKeyPress={e => {
+                                if (!/[0-9+]/.test(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            className={
+                                'h-10 border border-black' +
+                                removeArrowsFromInput
                             }
-                        }}
-                        className={
-                            'h-10 border border-black' + removeArrowsFromInput
-                        }
-                    />
-                </div>
+                            id="phone-number"
+                            required
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email (optional)"
+                            className="h-10 border border-black"
+                        />
+                    </div>
+                    <label htmlFor="address-line-1">Address</label>
+                    <div className="flex justify-between">
+                        <input
+                            type="text"
+                            placeholder="Address line 1"
+                            className="block h-10 border border-black"
+                            id="address-line-1"
+                            required
+                        />
+                        <input
+                            type="text"
+                            placeholder="Address line 2 (optional)"
+                            className="block h-10 border border-black"
+                        />
+                    </div>
+                    <div className="flex justify-between">
+                        <input
+                            type="text"
+                            placeholder="City"
+                            className="block h-10 border border-black"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Postcode"
+                            className="block h-10 border border-black"
+                        />
+                    </div>
+                    <label htmlFor="">Order Info</label>
+                    <div className="flex justify-between">
+                        <textarea
+                            placeholder="Leave us a note"
+                            className="block h-10 resize-none border border-black"
+                        />
+                        <label htmlFor="include-cutlery">Include Cutlery</label>
+                        <input type="checkbox" id="include-cutlery" />
+                    </div>
+                </section>
             </div>
 
             <SecondaryButton
