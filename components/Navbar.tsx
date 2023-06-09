@@ -34,9 +34,6 @@ export default function Navbar(props: any) {
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     ></input>
-                    <button className="h-10 w-10 overflow-hidden border border-black">
-                        Submit
-                    </button>
                 </div>
 
                 <div className="flex">
