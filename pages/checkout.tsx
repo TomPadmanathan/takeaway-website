@@ -119,7 +119,12 @@ export default function Home({ configData }: any) {
                         <label htmlFor="include-cutlery">Include Cutlery</label>
                         <PrimaryInput type="checkbox" id="include-cutlery" />
                     </div>
-                    <SecondaryButton content="Place my Order" />
+                    <SecondaryButton
+                        content="Place my Order"
+                        onClick={() => {
+                            router.push('/checkout/new-checkout-session');
+                        }}
+                    />
                 </section>
             </div>
 
