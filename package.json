@@ -16,7 +16,7 @@
     "@types/react-dom": "18.2.1",
     "dotenv": "^16.1.4",
     "eslint": "8.39.0",
-    "eslint-config-next": "13.3.2",
+    "eslint-config-next": "^12.0.4",
     "next": "^13.3.2",
     "path": "^0.12.7",
     "react": "18.2.0",
