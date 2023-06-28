@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { cart } from '@/interfaces/cart';
 
 interface IAppContext {
-    cart: { [key: string]: any };
-    setCart: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>;
+    cart: cart;
+    setCart: React.Dispatch<React.SetStateAction<cart>>;
 }
 
 export const AppContext = createContext<IAppContext>({
@@ -12,7 +13,6 @@ export const AppContext = createContext<IAppContext>({
 
 export function useCart() {
     const { cart, setCart } = useContext(AppContext);
-
     return { cart, setCart };
 }
 
@@ -21,16 +21,13 @@ interface IAppProviderProps {
 }
 
 export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
-    const [cart, setCart] = useState<{ [key: string]: any }>([]);
+    const [cart, setCart] = useState<cart>([]);
 
     // Get cart from storage
     useEffect(() => {
-        if (cart.length === 0) {
+        if (!cart.length) {
             const storedCart = localStorage.getItem('cart');
-            if (storedCart) {
-                const parsedCart = JSON.parse(storedCart);
-                setCart(parsedCart);
-            }
+            if (storedCart) setCart(JSON.parse(storedCart));
         } else {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
