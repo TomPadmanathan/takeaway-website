@@ -23,9 +23,7 @@ export default function App() {
     }
 
     useEffect(() => {
-        if (cart.length > 0 && !clientSecret) {
-            fetchData();
-        }
+        if (cart.length > 0 && !clientSecret) fetchData();
     }, [cart, clientSecret]);
 
     const appearance = {
