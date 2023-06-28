@@ -1,7 +1,8 @@
+import { cart, setCart } from '@/interfaces/cart';
 export default function deleteItemCart(
     index: number,
-    cart: any,
-    setCart: Function
+    cart: cart,
+    setCart: setCart
 ) {
     const updatedCart = cart.filter((item: any, i: number) => i !== index);
     setCart(updatedCart);

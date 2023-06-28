@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { cart } from '@/interfaces/cart';
+import { cart, setCart } from '@/interfaces/cart';
 
 interface IAppContext {
     cart: cart;
-    setCart: React.Dispatch<React.SetStateAction<cart>>;
+    setCart: setCart;
 }
 
 export const AppContext = createContext<IAppContext>({

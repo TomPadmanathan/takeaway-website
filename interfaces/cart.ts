@@ -7,3 +7,5 @@ export interface cartItem {
     id: number;
 }
 export type cart = cartItem[];
+
+export type setCart = React.Dispatch<React.SetStateAction<cart>>;

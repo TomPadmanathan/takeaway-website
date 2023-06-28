@@ -1,9 +1,10 @@
+import { cart } from '@/interfaces/cart';
 export default class CalculateCheckoutPrices {
     subTotal: number;
     lowOrderFee: number;
     deliveryFee: number;
     total: number;
-    constructor(cart: any, config: any) {
+    constructor(cart: cart, config: any) {
         this.subTotal = cart.reduce(
             (acc: any, item: any) => acc + item.price,
             0

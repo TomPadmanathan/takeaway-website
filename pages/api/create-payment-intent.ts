@@ -6,10 +6,11 @@ dotenv.config({
 });
 import calculateCheckoutPricesFromServerSide from '@/utils/calculateCheckoutPricesFromServerSide';
 import getIdsOfProductsInCart from '@/utils/getIdsOfProductsInCart';
+import { cart } from '@/interfaces/cart';
 
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
-async function calculateOrderAmount(cart: any) {
+async function calculateOrderAmount(cart: cart) {
     return (
         (await calculateCheckoutPricesFromServerSide(
             getIdsOfProductsInCart(cart)
@@ -21,7 +22,7 @@ export default async function handler(
     request: NextApiRequest,
     response: NextApiResponse
 ) {
-    const { cart } = request.body;
+    const cart: cart = request.body.cart;
 
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
