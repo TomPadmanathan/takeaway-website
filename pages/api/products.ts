@@ -1,9 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Black from '@/assets/img/black.png';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    res.status(200);
-    res.send([
+export default function handler(
+    request: NextApiRequest,
+    response: NextApiResponse
+) {
+    response.status(200);
+    response.send([
         {
             product: 'chow mein',
             price: 100.25,

@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    res.status(200);
+export default function handler(
+    request: NextApiRequest,
+    response: NextApiResponse
+) {
+    response.status(200);
 
     const siteConfig = {
         lowOrder: {
@@ -13,5 +16,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         },
     };
 
-    res.send(siteConfig);
+    response.send(siteConfig);
 }
