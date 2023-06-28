@@ -12,16 +12,21 @@ export default function App() {
     const [clientSecret, setClientSecret] = useState('');
     const { cart, setCart } = useContext(AppContext);
 
-    useEffect(() => {
-        // Create PaymentIntent as soon as the page loads
-        fetch('/api/create-payment-intent', {
+    async function fetchData() {
+        const response = await fetch('/api/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cart: cart }),
-        })
-            .then(res => res.json())
-            .then(data => setClientSecret(data.clientSecret));
-    }, []);
+        });
+        const data = await response.json();
+        setClientSecret(data.clientSecret);
+    }
+
+    useEffect(() => {
+        if (cart.length > 0 && !clientSecret) {
+            fetchData();
+        }
+    }, [cart, clientSecret]);
 
     const appearance = {
         theme: 'stripe',

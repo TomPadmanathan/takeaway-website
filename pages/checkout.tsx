@@ -121,9 +121,9 @@ export default function Home({ configData }: any) {
                     </div>
                     <SecondaryButton
                         content="Place my Order"
-                        onClick={() => {
-                            router.push('/checkout/new-checkout-session');
-                        }}
+                        onClick={() =>
+                            router.push('/checkout/new-checkout-session')
+                        }
                     />
                 </section>
             </div>
