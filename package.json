@@ -17,12 +17,13 @@
     "dotenv": "^16.1.4",
     "eslint": "8.39.0",
     "eslint-config-next": "^12.0.4",
+    "micro": "^10.0.1",
     "next": "^13.3.2",
     "path": "^0.12.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "^0.32.1",
-    "stripe": "^12.9.0",
+    "stripe": "^12.10.0",
     "typescript": "5.0.4"
   },
   "devDependencies": {
