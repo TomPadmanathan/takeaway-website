@@ -45,7 +45,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             // Run your server-side code here
             // Access session information and perform necessary actions
 
-            console.log('Checkout completed:', session.id);
+            console.log('Checkout completed:', session);
         }
 
         response.status(200).json({ received: true });
