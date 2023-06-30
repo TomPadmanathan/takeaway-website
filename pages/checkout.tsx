@@ -28,7 +28,7 @@ export default function Home({ configData }: any) {
 
     return (
         <>
-            <div className="mx-96 my-10 flex h-screen items-center justify-between">
+            <div className="flex h-screen items-center justify-center">
                 <section className="w-[30rem] border-2 border-black p-10">
                     <ul>
                         {modifiedCart.map((e: any, i: number) => (
@@ -55,76 +55,33 @@ export default function Home({ configData }: any) {
                                             : null}
                                     </ul>
                                 </div>
-
                                 <span>£{formatPrice(e.totalPrice)}</span>
                             </li>
                         ))}
-                        <span className="block text-end">
-                            Sub-Total: £{formatPrice(prices.subTotal)}
-                        </span>
-                        {prices.lowOrderFee ? (
-                            <span className="block text-end">
-                                Low Order Fee: £
-                                {formatPrice(prices.lowOrderFee)}
-                            </span>
-                        ) : null}
-                        <span className="block text-end">
-                            Delivery Fee: £{formatPrice(prices.deliveryFee)}
-                        </span>
-                        <span className="block text-end">
-                            Total: £{formatPrice(prices.total)}
-                        </span>
                     </ul>
-                </section>
-                <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
-                    <label htmlFor="phone-number">Your Info</label>
-                    <div className="mb-10 flex justify-between">
-                        <PrimaryInput
-                            type="number"
-                            placeholder="Phone Number"
-                            id="phone-number"
-                            required={true}
-                            inputMode="numeric"
-                            onKeyPress={(e: any) => {
-                                if (!/[0-9+]/.test(e.key)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                            addClass={removeArrowsFromInput}
-                        />
-                        <PrimaryInput
-                            type="email"
-                            placeholder="Email (optional)"
+                    <span className="block text-end">
+                        Sub-Total: £{formatPrice(prices.subTotal)}
+                    </span>
+                    {prices.lowOrderFee ? (
+                        <span className="block text-end">
+                            Low Order Fee: £{formatPrice(prices.lowOrderFee)}
+                        </span>
+                    ) : null}
+                    <span className="block text-end">
+                        Delivery Fee: £{formatPrice(prices.deliveryFee)}
+                    </span>
+                    <span className="block text-end">
+                        Total: £{formatPrice(prices.total)}
+                    </span>
+                    <div className="mt-5 flex items-center justify-center">
+                        <SecondaryButton
+                            content="Place my Order"
+                            onClick={() =>
+                                router.push('/checkout/new-checkout-session')
+                            }
+                            addClass="justify-center"
                         />
                     </div>
-                    <label htmlFor="address-line-1">Address</label>
-                    <div className="mb-2 flex justify-between">
-                        <PrimaryInput
-                            placeholder="Address line 1"
-                            id="address-line-1"
-                            required={true}
-                        />
-                        <PrimaryInput placeholder="Address line 2 (optional)" />
-                    </div>
-                    <div className="mb-10 flex justify-between">
-                        <PrimaryInput placeholder="City" />
-                        <PrimaryInput placeholder="Postcode" />
-                    </div>
-                    <label htmlFor="">Order Info</label>
-                    <div className="flex justify-between">
-                        <textarea
-                            placeholder="Leave us a note"
-                            className="block h-10 resize-none border border-black"
-                        />
-                        <label htmlFor="include-cutlery">Include Cutlery</label>
-                        <PrimaryInput type="checkbox" id="include-cutlery" />
-                    </div>
-                    <SecondaryButton
-                        content="Place my Order"
-                        onClick={() =>
-                            router.push('/checkout/new-checkout-session')
-                        }
-                    />
                 </section>
             </div>
 

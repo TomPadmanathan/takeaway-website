@@ -29,6 +29,9 @@ export default async function handler(
         amount: await calculateOrderAmount(cart),
         currency: 'gbp',
         payment_method_types: ['card'],
+        metadata: {
+            testing: 'This is the string for testing',
+        },
     });
 
     response.send({
