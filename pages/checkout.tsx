@@ -80,9 +80,6 @@ export default function Home({ configData }: any) {
                         onSubmit={() =>
                             router.push({
                                 pathname: '/checkout/new-checkout-session',
-                                // query: JSON.stringify({
-                                //     testing: 'woop2',
-                                // }),
                                 query: userData,
                             })
                         }

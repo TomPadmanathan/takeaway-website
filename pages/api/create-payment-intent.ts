@@ -24,7 +24,6 @@ export default async function handler(
 ) {
     const cart: cart = request.body.cart;
     const userData = request.body.userData;
-    console.log('api:', userData);
 
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({

@@ -7,7 +7,7 @@ import QuantityCounter from '@/components/QuantityCounter';
 import SecondaryButton from './SecondaryButton';
 
 export default function ProductTab(props: any) {
-    const { cart, setCart } = useContext(AppContext);
+    const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<any>(null);
     const [quantity, setQuantity] = useState<any>(1);

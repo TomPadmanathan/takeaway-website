@@ -10,22 +10,18 @@ export default function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
 
-    const [email, setEmail] = useState<any>('');
+    const [email, setEmail] = useState<string>('');
     const [message, setMessage] = useState<any>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!stripe) {
-            return;
-        }
+        if (!stripe) return;
 
         const clientSecret = new URLSearchParams(window.location.search).get(
             'payment_intent_client_secret'
         );
 
-        if (!clientSecret) {
-            return;
-        }
+        if (!clientSecret) return;
 
         stripe
             .retrievePaymentIntent(clientSecret)
@@ -52,11 +48,7 @@ export default function CheckoutForm() {
     async function handleSubmit(e: any) {
         e.preventDefault();
 
-        if (!stripe || !elements) {
-            // Stripe.js hasn't yet loaded.
-            // Make sure to disable form submission until Stripe.js has loaded.
-            return;
-        }
+        if (!stripe || !elements) return;
 
         setIsLoading(true);
 
@@ -73,11 +65,9 @@ export default function CheckoutForm() {
         // your `return_url`. For some payment methods like iDEAL, your customer will
         // be redirected to an intermediate site first to authorize the payment, then
         // redirected to the `return_url`.
-        if (error.type === 'card_error' || error.type === 'validation_error') {
+        if (error.type === 'card_error' || error.type === 'validation_error')
             setMessage(error.message);
-        } else {
-            setMessage('An unexpected error occurred.');
-        }
+        else setMessage('An unexpected error occurred.');
 
         setIsLoading(false);
     }

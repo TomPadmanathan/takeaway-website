@@ -6,7 +6,5 @@ export default function deleteItemCart(
 ) {
     const updatedCart = cart.filter((item: any, i: number) => i !== index);
     setCart(updatedCart);
-    if (updatedCart.length === 0) {
-        localStorage.removeItem('cart');
-    }
+    if (updatedCart.length === 0) localStorage.removeItem('cart');
 }

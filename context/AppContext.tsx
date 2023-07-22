@@ -28,9 +28,7 @@ export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
         if (!cart.length) {
             const storedCart = localStorage.getItem('cart');
             if (storedCart) setCart(JSON.parse(storedCart));
-        } else {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
+        } else localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
     return (

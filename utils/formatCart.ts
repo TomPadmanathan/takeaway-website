@@ -10,9 +10,7 @@ export default function formatCart(cart: cart) {
         if (existingItem) {
             existingItem.quantity += 1;
             existingItem.totalPrice += existingItem.price;
-        } else {
-            acc.push({ ...item, quantity: 1, totalPrice: item.price });
-        }
+        } else acc.push({ ...item, quantity: 1, totalPrice: item.price });
         return acc;
     }, []);
     return modifiedCart;

@@ -7,7 +7,7 @@ import { AppContext } from '@/context/AppContext';
 import { useRouter } from 'next/router';
 
 export default function Navbar(props: any) {
-    const { cart, setCart } = useContext(AppContext);
+    const { cart } = useContext(AppContext);
     const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = props.search;
     const router = useRouter();

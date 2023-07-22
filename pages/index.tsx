@@ -17,7 +17,7 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ productsData, configData }: any) {
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<string>('');
 
     return (
         <>

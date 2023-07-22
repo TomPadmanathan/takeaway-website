@@ -6,7 +6,7 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import SecondaryButton from './SecondaryButton';
 
 export default function ProductTab(props: any) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
     return (
         <>
