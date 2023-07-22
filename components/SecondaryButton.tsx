@@ -7,6 +7,7 @@ export default function SecondaryButton(props: any) {
                     : 'block h-10 border border-black'
             }
             onClick={props.onClick}
+            type={props.type}
         >
             {props.content}
         </button>

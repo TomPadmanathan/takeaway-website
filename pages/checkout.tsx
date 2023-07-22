@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import formatCart from '@/utils/formatCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -22,13 +22,14 @@ export async function getServerSideProps() {
 
 export default function Home({ configData }: any) {
     const router = useRouter();
-    const { cart, setCart } = useContext(AppContext);
+    const { cart } = useContext(AppContext);
     const modifiedCart = formatCart(cart);
     const prices = new CalculateCheckoutPrices(cart, configData);
+    const [userData, setUserData] = useState<any>({ includeCutlery: false });
 
     return (
         <>
-            <div className="flex h-screen items-center justify-center">
+            <div className="mx-96 my-10 flex h-screen items-center justify-between">
                 <section className="w-[30rem] border-2 border-black p-10">
                     <ul>
                         {modifiedCart.map((e: any, i: number) => (
@@ -73,15 +74,125 @@ export default function Home({ configData }: any) {
                     <span className="block text-end">
                         Total: £{formatPrice(prices.total)}
                     </span>
-                    <div className="mt-5 flex items-center justify-center">
-                        <SecondaryButton
-                            content="Place my Order"
-                            onClick={() =>
-                                router.push('/checkout/new-checkout-session')
-                            }
-                            addClass="justify-center"
-                        />
-                    </div>
+                </section>
+                <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
+                    <form
+                        onSubmit={() =>
+                            router.push({
+                                pathname: '/checkout/new-checkout-session',
+                                // query: JSON.stringify({
+                                //     testing: 'woop2',
+                                // }),
+                                query: userData,
+                            })
+                        }
+                    >
+                        <label htmlFor="phone-number">Your Info</label>
+                        <div className="mb-10 flex justify-between">
+                            <PrimaryInput
+                                type="number"
+                                placeholder="Phone Number"
+                                id="phone-number"
+                                required={true}
+                                inputMode="numeric"
+                                onKeyPress={(e: any) => {
+                                    if (!/[0-9]/.test(e.key))
+                                        e.preventDefault();
+                                }}
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.phoneNumber = parseInt(
+                                        e.target.value
+                                    );
+                                    setUserData(newUserData);
+                                }}
+                                addClass={removeArrowsFromInput}
+                            />
+                            <PrimaryInput
+                                type="email"
+                                placeholder="Email"
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.email = e.target.value;
+                                    setUserData(newUserData);
+                                }}
+                                required={true}
+                            />
+                        </div>
+                        <label htmlFor="address-line-1">Address</label>
+                        <div className="mb-2 flex justify-between">
+                            <PrimaryInput
+                                placeholder="Address line 1"
+                                id="address-line-1"
+                                required={true}
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.addressLine1 = e.target.value;
+                                    setUserData(newUserData);
+                                }}
+                            />
+                            <PrimaryInput
+                                placeholder="Address line 2 (optional)"
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.addressLine2 = e.target.value;
+                                    setUserData(newUserData);
+                                }}
+                            />
+                        </div>
+                        <div className="mb-10 flex justify-between">
+                            <PrimaryInput
+                                placeholder="City/Town"
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.cityTown = e.target.value;
+                                    setUserData(newUserData);
+                                }}
+                            />
+                            <PrimaryInput
+                                placeholder="Postcode"
+                                value={userData.postcode}
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.postcode =
+                                        e.target.value.toUpperCase();
+                                    setUserData(newUserData);
+                                }}
+                            />
+                        </div>
+                        <label htmlFor="">Order Info</label>
+                        <div className="flex justify-between">
+                            <textarea
+                                placeholder="Leave us a note (optional)"
+                                className="block h-10 resize-none border border-black"
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.orderNote = e.target.value;
+                                    setUserData(newUserData);
+                                }}
+                            />
+                            <label htmlFor="include-cutlery">
+                                Include Cutlery
+                            </label>
+                            <PrimaryInput
+                                type="checkbox"
+                                id="include-cutlery"
+                                onChange={(e: any) => {
+                                    const newUserData = { ...userData };
+                                    newUserData.includeCutlery =
+                                        e.target.checked;
+                                    setUserData(newUserData);
+                                }}
+                            />
+                        </div>
+                        <div className="mt-5 flex items-center justify-center">
+                            <SecondaryButton
+                                type="submit"
+                                content="Place my Order"
+                                addClass="justify-center"
+                            />
+                        </div>
+                    </form>
                 </section>
             </div>
 

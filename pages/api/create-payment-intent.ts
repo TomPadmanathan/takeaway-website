@@ -23,6 +23,8 @@ export default async function handler(
     response: NextApiResponse
 ) {
     const cart: cart = request.body.cart;
+    const userData = request.body.userData;
+    console.log('api:', userData);
 
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
@@ -30,7 +32,7 @@ export default async function handler(
         currency: 'gbp',
         payment_method_types: ['card'],
         metadata: {
-            testing: 'This is the string for testing',
+            userData,
         },
     });
 
