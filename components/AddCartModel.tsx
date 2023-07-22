@@ -13,9 +13,7 @@ export default function ProductTab(props: any) {
     const [quantity, setQuantity] = useState<any>(1);
 
     useEffect(() => {
-        if (!props.data.options) {
-            return;
-        }
+        if (!props.data.options) return;
         const initialSelectedOption = props.data.options.map(
             (subArray: any) => subArray[0]
         );
@@ -39,9 +37,7 @@ export default function ProductTab(props: any) {
             );
             setSelectedOption(resetSelectedOption);
         }
-        if (quantity != 1) {
-            setQuantity(1);
-        }
+        if (quantity != 1) setQuantity(1);
     }
 
     return (
