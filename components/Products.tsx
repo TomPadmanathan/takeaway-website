@@ -7,10 +7,10 @@ export default function Products(props: any) {
     const [search, setSearch] = props.search;
 
     let filteredData = search
-        ? props.data.filter((e: any) => {
-              const productName = e.product.toLowerCase();
-              const category = e.category
-                  .map((c: string) => c.toLowerCase())
+        ? props.data.filter((element: any) => {
+              const productName = element.product.toLowerCase();
+              const category = element.category
+                  .map((currentValue: string) => currentValue.toLowerCase())
                   .join(' ');
 
               return (
@@ -18,7 +18,9 @@ export default function Products(props: any) {
                   category.includes(search.toLowerCase())
               );
           })
-        : props.data.filter((e: any) => e.category.includes(activeProductNav));
+        : props.data.filter((element: any) =>
+              element.category.includes(activeProductNav)
+          );
 
     return (
         <>
@@ -30,8 +32,8 @@ export default function Products(props: any) {
 
             <div className="flex justify-center">
                 <div className="grid grid-cols-5 gap-5">
-                    {filteredData.map((e: any) => (
-                        <ProductTab data={e} key={e.product} />
+                    {filteredData.map((element: any) => (
+                        <ProductTab data={element} key={element.product} />
                     ))}
                 </div>
             </div>

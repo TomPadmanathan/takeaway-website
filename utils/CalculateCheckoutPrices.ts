@@ -1,22 +1,26 @@
 import { cart } from '@/interfaces/cart';
+import { cartItem } from '@/interfaces/cart';
+
 export default class CalculateCheckoutPrices {
     subTotal: number;
     lowOrderFee: number;
     deliveryFee: number;
     total: number;
-    constructor(cart: cart, config: any) {
+    constructor(cart: cart, siteConfig: any) {
         this.subTotal = cart.reduce(
-            (acc: any, item: any) => acc + item.price,
+            (accumulator: number, cartItem: cartItem) =>
+                accumulator + cartItem.price,
             0
         );
+
         this.lowOrderFee =
-            this.subTotal < config.lowOrder.feeLimit
-                ? config.lowOrder.feeLimit - this.subTotal >
-                  config.lowOrder.maxFee
-                    ? config.lowOrder.maxFee
-                    : config.lowOrder.feeLimit - this.subTotal
+            this.subTotal < siteConfig.lowOrder.feeLimit
+                ? siteConfig.lowOrder.feeLimit - this.subTotal >
+                  siteConfig.lowOrder.maxFee
+                    ? siteConfig.lowOrder.maxFee
+                    : siteConfig.lowOrder.feeLimit - this.subTotal
                 : 0;
-        this.deliveryFee = config.delivery.fee;
+        this.deliveryFee = siteConfig.delivery.fee;
         this.total = this.subTotal + this.lowOrderFee + this.deliveryFee;
     }
 }

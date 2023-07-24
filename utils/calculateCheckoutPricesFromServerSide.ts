@@ -7,8 +7,8 @@ export default async function calculateCheckoutPricesFromServerSide(
     let subTotal = 0;
 
     idOfElementsInCart.forEach((element: any) => {
-        productsData.forEach((element2: any) => {
-            if (element === element2.id) subTotal += element2.price;
+        productsData.forEach((secondElement: any) => {
+            if (element === secondElement.id) subTotal += secondElement.price;
         });
     });
 

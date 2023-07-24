@@ -5,12 +5,14 @@ import Cart from '@/components/Cart';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import { useRouter } from 'next/router';
+import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 
 export default function Navbar(props: any) {
     const { cart } = useContext(AppContext);
     const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = props.search;
     const router = useRouter();
+    const checkoutPrices = new CalculateCheckoutPrices(cart, props.configData);
 
     return (
         <>
@@ -48,12 +50,7 @@ export default function Navbar(props: any) {
                     </button>
                     <span>
                         {cart.length} {cart.length == 1 ? 'item' : 'items'} - £
-                        {formatPrice(
-                            cart.reduce(
-                                (acc: any, item: any) => acc + item.price,
-                                0
-                            )
-                        )}
+                        {formatPrice(checkoutPrices.subTotal)}
                     </span>
                 </div>
             </nav>

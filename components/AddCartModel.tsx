@@ -6,11 +6,11 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import QuantityCounter from '@/components/QuantityCounter';
 import SecondaryButton from './SecondaryButton';
 
-export default function ProductTab(props: any) {
+export default function AddCartModel(props: any) {
     const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<any>(null);
-    const [quantity, setQuantity] = useState<any>(1);
+    const [quantity, setQuantity] = useState<number>(1);
 
     useEffect(() => {
         if (!props.data.options) return;
@@ -23,7 +23,7 @@ export default function ProductTab(props: any) {
     function handleAddItemCart() {
         const newItem = [];
 
-        for (let i = quantity; i != 0; i--) {
+        for (let index = quantity; index != 0; index--) {
             newItem.push({
                 ...props.data,
                 options: selectedOption,
@@ -64,30 +64,30 @@ export default function ProductTab(props: any) {
                             />
                             {props.data.options &&
                                 props.data.options.map(
-                                    (subArray: any, i: number) => (
+                                    (subArray: any, index: number) => (
                                         <select
                                             key={subArray}
-                                            onChange={(e: any) => {
+                                            onChange={(event: any) => {
                                                 const updatedOptions =
                                                     selectedOption
                                                         ? [...selectedOption]
                                                         : [];
-                                                updatedOptions[i] =
-                                                    e.target.value;
+                                                updatedOptions[index] =
+                                                    event.target.value;
                                                 setSelectedOption(
                                                     updatedOptions
                                                 );
                                             }}
                                             value={
                                                 selectedOption
-                                                    ? selectedOption[i]
+                                                    ? selectedOption[index]
                                                     : ''
                                             }
                                             className="mx-2"
                                         >
-                                            {subArray.map((e: any) => (
-                                                <option key={e}>
-                                                    {capitaliseFirstChar(e)}
+                                            {subArray.map((event: any) => (
+                                                <option key={event}>
+                                                    {capitaliseFirstChar(event)}
                                                 </option>
                                             ))}
                                         </select>

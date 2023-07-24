@@ -25,31 +25,39 @@ export default function ProductTab(props: any) {
             >
                 <h2 className="text-center text-3xl">Cart</h2>
                 <ul className="py-5">
-                    {modifiedCart.map((e: any, i: number) => (
-                        <li key={i} className="mb-10 flex justify-between ">
+                    {modifiedCart.map((element: any, index: number) => (
+                        <li key={index} className="mb-10 flex justify-between ">
                             <SecondaryButton
-                                onClick={() => deleteItemCart(i, cart, setCart)}
+                                onClick={() =>
+                                    deleteItemCart(index, cart, setCart)
+                                }
                                 content="Delete"
                             />
 
-                            <span className="mr-4">{e.quantity + ' x'}</span>
+                            <span className="mr-4">
+                                {element.quantity + ' x'}
+                            </span>
 
                             <div className="flex flex-col items-center">
                                 <span>
-                                    {capitaliseFirstCharWords(e.product)}
+                                    {capitaliseFirstCharWords(element.product)}
                                 </span>
                                 <ul className="ml-10 list-disc">
-                                    {e.options
-                                        ? e.options.map((e: any, i: number) => (
-                                              <li key={i}>
-                                                  {capitaliseFirstChar(e)}
-                                              </li>
-                                          ))
+                                    {element.options
+                                        ? element.options.map(
+                                              (event: any, index: number) => (
+                                                  <li key={index}>
+                                                      {capitaliseFirstChar(
+                                                          event
+                                                      )}
+                                                  </li>
+                                              )
+                                          )
                                         : null}
                                 </ul>
                             </div>
 
-                            <span>£{formatPrice(e.totalPrice)}</span>
+                            <span>£{formatPrice(element.totalPrice)}</span>
                         </li>
                     ))}
                 </ul>

@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Products from '@/components/Products';
+import { products } from '@/interfaces/products';
+
+interface props {
+    productsData: products;
+    configData: any;
+}
 
 export async function getServerSideProps() {
     const productsRes = await fetch('http://localhost:3000/api/products');
-    const productsData = await productsRes.json();
+    const productsData: products = await productsRes.json();
 
     const configRes = await fetch('http://localhost:3000/api/config');
     const configData = await configRes.json();
@@ -16,7 +22,7 @@ export async function getServerSideProps() {
     };
 }
 
-export default function Home({ productsData, configData }: any) {
+export default function Home({ productsData, configData }: props) {
     const [search, setSearch] = useState<string>('');
 
     return (
