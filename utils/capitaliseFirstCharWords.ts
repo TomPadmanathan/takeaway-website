@@ -1,4 +1,4 @@
-export default function capitaliseFirstChar(data: string) {
+export default function capitaliseFirstChar(data: string): string {
     const words = data.split(' ');
 
     for (let i = 0; i < words.length; i++) {
@@ -8,5 +8,5 @@ export default function capitaliseFirstChar(data: string) {
         }
         words[i] = words[i][0].toUpperCase() + words[i].substr(1) + ' ';
     }
-    return words;
+    return words.join('');
 }

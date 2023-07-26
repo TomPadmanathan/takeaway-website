@@ -3,7 +3,7 @@ export default function deleteItemCart(
     index: number,
     cart: cart,
     setCart: setCart
-) {
+): void {
     const updatedCart = cart.filter(
         (element: any, secondIndex: number) => secondIndex !== index
     );

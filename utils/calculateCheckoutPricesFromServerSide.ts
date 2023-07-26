@@ -1,6 +1,6 @@
 export default async function calculateCheckoutPricesFromServerSide(
     idOfElementsInCart: number[]
-) {
+): Promise<number> {
     const productsRes = await fetch('http://localhost:3000/api/products');
     const productsData = await productsRes.json();
 

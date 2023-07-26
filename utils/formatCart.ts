@@ -1,5 +1,5 @@
-import { cart } from '@/interfaces/cart';
-export default function formatCart(cart: cart) {
+import { cart, modifiedCart } from '@/interfaces/cart';
+export default function formatCart(cart: cart): modifiedCart {
     const modifiedCart = cart.reduce((accumulator: any[], item: any) => {
         const existingItem = accumulator.find(
             cartItem =>
