@@ -1,9 +1,4 @@
-export interface product {
-    product: string;
-    price: number;
-    image: any;
-    category: string[];
-    options: string[][];
-    id: number;
-}
+import { cartItem } from '@/interfaces/cart';
+export interface product extends cartItem {}
+
 export type products = product[];
