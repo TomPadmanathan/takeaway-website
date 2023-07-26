@@ -9,7 +9,7 @@ import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import SecondaryButton from '@/components/SecondaryButton';
 
-export default function ProductTab(props: any) {
+export default function Cart(props: any) {
     const { cart, setCart } = useContext(AppContext);
     const modifiedCart = formatCart(cart);
 
