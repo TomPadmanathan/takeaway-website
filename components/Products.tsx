@@ -7,7 +7,7 @@ export default function Products(props: any) {
     const [search, setSearch] = props.search;
 
     let filteredData = search
-        ? props.data.filter((element: any) => {
+        ? props.products.filter((element: any) => {
               const productName = element.product.toLowerCase();
               const category = element.category
                   .map((currentValue: string) => currentValue.toLowerCase())
@@ -18,7 +18,7 @@ export default function Products(props: any) {
                   category.includes(search.toLowerCase())
               );
           })
-        : props.data.filter((element: any) =>
+        : props.products.filter((element: any) =>
               element.category.includes(activeProductNav)
           );
 
@@ -33,7 +33,7 @@ export default function Products(props: any) {
             <div className="flex justify-center">
                 <div className="grid grid-cols-5 gap-5">
                     {filteredData.map((element: any) => (
-                        <ProductTab data={element} key={element.product} />
+                        <ProductTab product={element} key={element.product} />
                     ))}
                 </div>
             </div>

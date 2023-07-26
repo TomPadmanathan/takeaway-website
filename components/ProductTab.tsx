@@ -12,14 +12,14 @@ export default function ProductTab(props: any) {
         <>
             <div className="w-72 pb-2 text-center outline">
                 <Image
-                    src={props.data.image}
+                    src={props.product.image}
                     className="aspect-[4/3] w-72 border border-black"
-                    alt={props.data.product + ' image'}
+                    alt={props.product.product + ' image'}
                 />
                 <h2 className="text-xl">
-                    {capitaliseFirstCharWords(props.data.product)}
+                    {capitaliseFirstCharWords(props.product.product)}
                 </h2>
-                <span>£{formatPrice(props.data.price)}</span>
+                <span>£{formatPrice(props.product.price)}</span>
                 <center>
                     <SecondaryButton
                         onClick={() => setOpen(true)}
@@ -28,7 +28,7 @@ export default function ProductTab(props: any) {
                 </center>
             </div>
 
-            <AddCartModel data={props.data} open={[open, setOpen]} />
+            <AddCartModel product={props.product} open={[open, setOpen]} />
         </>
     );
 }

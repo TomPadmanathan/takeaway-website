@@ -29,7 +29,10 @@ export default function Home({ productsData, configData }: props) {
         <>
             <Navbar search={[search, setSearch]} configData={configData} />
             <main>
-                <Products search={[search, setSearch]} data={productsData} />
+                <Products
+                    search={[search, setSearch]}
+                    products={productsData}
+                />
             </main>
         </>
     );

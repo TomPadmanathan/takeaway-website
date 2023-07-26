@@ -9,7 +9,7 @@ import { cartItem } from '@/interfaces/cart';
 
 interface props {
     open: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-    data: cartItem;
+    product: cartItem;
 }
 
 export default function AddCartModel(props: props) {
@@ -19,26 +19,26 @@ export default function AddCartModel(props: props) {
     const [quantity, setQuantity] = useState<number>(1);
 
     useEffect(() => {
-        if (!props.data.options) return;
-        const initialSelectedOption = props.data.options.map(
+        if (!props.product.options) return;
+        const initialSelectedOption = props.product.options.map(
             (subArray: any) => subArray[0]
         );
         setSelectedOption(initialSelectedOption);
-    }, [props.data.options]);
+    }, [props.product.options]);
 
     function handleAddItemCart() {
         const newItem = [];
 
         for (let index = quantity; index != 0; index--) {
             newItem.push({
-                ...props.data,
+                ...props.product,
                 options: selectedOption,
             });
         }
         addItemCart(newItem, setCart);
         setOpen(false);
-        if (props.data.options) {
-            const resetSelectedOption = props.data.options.map(
+        if (props.product.options) {
+            const resetSelectedOption = props.product.options.map(
                 (subArray: any) => subArray[0]
             );
             setSelectedOption(resetSelectedOption);
@@ -62,14 +62,14 @@ export default function AddCartModel(props: props) {
                     </button>
                     <div className="flex flex-col items-center">
                         <h2 className="mb-20 text-2xl">
-                            {capitaliseFirstCharWords(props.data.product)}
+                            {capitaliseFirstCharWords(props.product.product)}
                         </h2>
                         <div className="mb-20 flex-row">
                             <QuantityCounter
                                 quantity={[quantity, setQuantity]}
                             />
-                            {props.data.options &&
-                                props.data.options.map(
+                            {props.product.options &&
+                                props.product.options.map(
                                     (subArray: any, index: number) => (
                                         <select
                                             key={subArray}
