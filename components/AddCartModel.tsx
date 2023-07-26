@@ -5,8 +5,14 @@ import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import QuantityCounter from '@/components/QuantityCounter';
 import SecondaryButton from './SecondaryButton';
+import { cartItem } from '@/interfaces/cart';
 
-export default function AddCartModel(props: any) {
+interface props {
+    open: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    data: cartItem;
+}
+
+export default function AddCartModel(props: props) {
     const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<any>(null);
