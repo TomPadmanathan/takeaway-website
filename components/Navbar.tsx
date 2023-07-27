@@ -6,8 +6,14 @@ import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import { useRouter } from 'next/router';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
+import { config } from '@/interfaces/config';
 
-export default function Navbar(props: any) {
+interface props {
+    search: [string, React.Dispatch<React.SetStateAction<string>>];
+    configData: config;
+}
+
+export default function Navbar(props: props) {
     const { cart } = useContext(AppContext);
     const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = props.search;

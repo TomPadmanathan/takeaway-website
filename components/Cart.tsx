@@ -8,8 +8,14 @@ import { useRouter } from 'next/router';
 import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import SecondaryButton from '@/components/SecondaryButton';
+import { config } from '@/interfaces/config';
 
-export default function Cart(props: any) {
+interface props {
+    isVisible: boolean;
+    configData: config;
+}
+
+export default function Cart(props: props) {
     const { cart, setCart } = useContext(AppContext);
     const modifiedCart = formatCart(cart);
 

@@ -1,9 +1,26 @@
 import ProductNavButton from '@/components/ProductNavButton';
 
-export default function ProductNav(props: any) {
+type productNavButtons =
+    | 'popular'
+    | 'chinese'
+    | 'japanese'
+    | 'korean'
+    | 'indonesian'
+    | 'thai';
+
+interface props {
+    activeProductNav: [
+        activeProductNav: productNavButtons,
+        setActiveProductNav: React.Dispatch<
+            React.SetStateAction<productNavButtons>
+        >
+    ];
+}
+
+export default function ProductNav(props: props) {
     const [activeProductNav, setActiveProductNav] = props.activeProductNav;
 
-    const productNavButtons = [
+    const productNavButtons: string[] = [
         'popular',
         'chinese',
         'japanese',
@@ -15,7 +32,7 @@ export default function ProductNav(props: any) {
     return (
         <>
             <div className="mb-10 flex justify-center">
-                {productNavButtons.map(button => (
+                {productNavButtons.map((button: string) => (
                     <ProductNavButton
                         key={button}
                         title={button}
