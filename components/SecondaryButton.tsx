@@ -1,6 +1,6 @@
 interface props {
     addClass?: string;
-    onClick?: (event: any) => void;
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
     content: string;
     type?: 'button' | 'reset' | 'submit';
 }

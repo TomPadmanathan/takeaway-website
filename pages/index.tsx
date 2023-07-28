@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Products from '@/components/Products';
 import { products } from '@/interfaces/products';
+import { config } from '@/interfaces/config';
 
 interface props {
     productsData: products;
-    configData: any;
+    configData: config;
 }
 
 export async function getServerSideProps() {

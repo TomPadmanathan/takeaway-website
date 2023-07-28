@@ -15,7 +15,7 @@ interface props {
 export default function AddCartModel(props: props) {
     const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
-    const [selectedOption, setSelectedOption] = useState<any>(null);
+    const [selectedOption, setSelectedOption] = useState<string[]>([]);
     const [quantity, setQuantity] = useState<number>(1);
 
     useEffect(() => {
@@ -91,9 +91,11 @@ export default function AddCartModel(props: props) {
                                             }
                                             className="mx-2"
                                         >
-                                            {subArray.map((event: any) => (
-                                                <option key={event}>
-                                                    {capitaliseFirstChar(event)}
+                                            {subArray.map((element: any) => (
+                                                <option key={element}>
+                                                    {capitaliseFirstChar(
+                                                        element
+                                                    )}
                                                 </option>
                                             ))}
                                         </select>

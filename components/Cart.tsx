@@ -9,6 +9,7 @@ import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import SecondaryButton from '@/components/SecondaryButton';
 import { config } from '@/interfaces/config';
+import { modifiedCartItem } from '@/interfaces/cart';
 
 interface props {
     isVisible: boolean;
@@ -31,41 +32,51 @@ export default function Cart(props: props) {
             >
                 <h2 className="text-center text-3xl">Cart</h2>
                 <ul className="py-5">
-                    {modifiedCart.map((element: any, index: number) => (
-                        <li key={index} className="mb-10 flex justify-between ">
-                            <SecondaryButton
-                                onClick={() =>
-                                    deleteItemCart(index, cart, setCart)
-                                }
-                                content="Delete"
-                            />
+                    {modifiedCart.map(
+                        (element: modifiedCartItem, index: number) => (
+                            <li
+                                key={index}
+                                className="mb-10 flex justify-between "
+                            >
+                                <SecondaryButton
+                                    onClick={() =>
+                                        deleteItemCart(index, cart, setCart)
+                                    }
+                                    content="Delete"
+                                />
 
-                            <span className="mr-4">
-                                {element.quantity + ' x'}
-                            </span>
-
-                            <div className="flex flex-col items-center">
-                                <span>
-                                    {capitaliseFirstCharWords(element.product)}
+                                <span className="mr-4">
+                                    {element.quantity + ' x'}
                                 </span>
-                                <ul className="ml-10 list-disc">
-                                    {element.options
-                                        ? element.options.map(
-                                              (event: any, index: number) => (
-                                                  <li key={index}>
-                                                      {capitaliseFirstChar(
-                                                          event
-                                                      )}
-                                                  </li>
-                                              )
-                                          )
-                                        : null}
-                                </ul>
-                            </div>
 
-                            <span>£{formatPrice(element.totalPrice)}</span>
-                        </li>
-                    ))}
+                                <div className="flex flex-col items-center">
+                                    <span>
+                                        {capitaliseFirstCharWords(
+                                            element.product
+                                        )}
+                                    </span>
+                                    <ul className="ml-10 list-disc">
+                                        {element.options
+                                            ? element.options.map(
+                                                  (
+                                                      element: string,
+                                                      index: number
+                                                  ) => (
+                                                      <li key={index}>
+                                                          {capitaliseFirstChar(
+                                                              element
+                                                          )}
+                                                      </li>
+                                                  )
+                                              )
+                                            : null}
+                                    </ul>
+                                </div>
+
+                                <span>£{formatPrice(element.totalPrice)}</span>
+                            </li>
+                        )
+                    )}
                 </ul>
                 <span className="block text-end">
                     Sub-Total: £{formatPrice(prices.subTotal)}

@@ -11,7 +11,7 @@ export default function CheckoutForm() {
     const elements = useElements();
 
     const [email, setEmail] = useState<string>('');
-    const [message, setMessage] = useState<any>(null);
+    const [message, setMessage] = useState<string | undefined>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -45,8 +45,8 @@ export default function CheckoutForm() {
             });
     }, [stripe]);
 
-    async function handleSubmit(e: any) {
-        e.preventDefault();
+    async function handleSubmit(event: any) {
+        event.preventDefault();
 
         if (!stripe || !elements) return;
 
