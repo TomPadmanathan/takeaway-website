@@ -1,3 +1,5 @@
+import { product } from '@/interfaces/products';
+
 export default async function calculateCheckoutPricesFromServerSide(
     idOfElementsInCart: number[]
 ): Promise<number> {
@@ -6,8 +8,8 @@ export default async function calculateCheckoutPricesFromServerSide(
 
     let subTotal = 0;
 
-    idOfElementsInCart.forEach((element: any) => {
-        productsData.forEach((secondElement: any) => {
+    idOfElementsInCart.forEach((element: number) => {
+        productsData.forEach((secondElement: product) => {
             if (element === secondElement.id) subTotal += secondElement.price;
         });
     });

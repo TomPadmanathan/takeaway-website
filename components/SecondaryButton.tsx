@@ -1,4 +1,11 @@
-export default function SecondaryButton(props: any) {
+interface props {
+    addClass?: string;
+    onClick?: (event: any) => void;
+    content: string;
+    type?: 'button' | 'reset' | 'submit';
+}
+
+export default function SecondaryButton(props: props) {
     let defaultClasses = 'block h-10 border border-black';
 
     return (
@@ -9,7 +16,6 @@ export default function SecondaryButton(props: any) {
                     : defaultClasses
             }
             onClick={props.onClick}
-            type={props.type}
         >
             {props.content}
         </button>

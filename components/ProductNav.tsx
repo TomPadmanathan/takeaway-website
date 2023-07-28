@@ -1,20 +1,8 @@
 import ProductNavButton from '@/components/ProductNavButton';
-
-type productNavButtons =
-    | 'popular'
-    | 'chinese'
-    | 'japanese'
-    | 'korean'
-    | 'indonesian'
-    | 'thai';
+import { activeProductNav } from '@/interfaces/productNav';
 
 interface props {
-    activeProductNav: [
-        activeProductNav: productNavButtons,
-        setActiveProductNav: React.Dispatch<
-            React.SetStateAction<productNavButtons>
-        >
-    ];
+    activeProductNav: activeProductNav;
 }
 
 export default function ProductNav(props: props) {

@@ -1,6 +1,12 @@
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
+import { activeProductNav, productNavButtons } from '@/interfaces/productNav';
 
-export default function ProductNavButton(props: any) {
+interface props {
+    activeProductNav: activeProductNav;
+    title: productNavButtons;
+}
+
+export default function ProductNavButton(props: props) {
     const [activeProductNav, setActiveProductNav] = props.activeProductNav;
 
     return (

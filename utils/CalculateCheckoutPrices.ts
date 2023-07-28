@@ -1,12 +1,12 @@
-import { cart } from '@/interfaces/cart';
-import { cartItem } from '@/interfaces/cart';
+import { cart, cartItem } from '@/interfaces/cart';
+import { config } from '@/interfaces/config';
 
 export default class CalculateCheckoutPrices {
     subTotal: number;
     lowOrderFee: number;
     deliveryFee: number;
     total: number;
-    constructor(cart: cart, siteConfig: any) {
+    constructor(cart: cart, siteConfig: config) {
         this.subTotal = cart.reduce(
             (accumulator: number, cartItem: cartItem) =>
                 accumulator + cartItem.price,

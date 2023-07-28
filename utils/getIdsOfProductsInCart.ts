@@ -1,6 +1,6 @@
-import { cart } from '@/interfaces/cart';
+import { cart, cartItem } from '@/interfaces/cart';
 export default function getIdsOfProductsInCart(cart: cart): number[] {
     let idOfElementsInCart: number[] = [];
-    cart.forEach((element: any) => idOfElementsInCart.push(element.id));
+    cart.forEach((element: cartItem) => idOfElementsInCart.push(element.id));
     return idOfElementsInCart;
 }

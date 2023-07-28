@@ -1,5 +1,5 @@
 export default function capitaliseFirstChar(data: string): string {
-    const words = data.split(' ');
+    const words: string[] = data.split(' ');
 
     for (let i = 0; i < words.length; i++) {
         if (words[i] == 'and') {

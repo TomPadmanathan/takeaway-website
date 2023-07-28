@@ -3,9 +3,14 @@ import formatPrice from '@/utils/formatPrice';
 import { useState } from 'react';
 import AddCartModel from '@/components/AddCartModel';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
-import SecondaryButton from './SecondaryButton';
+import SecondaryButton from '@/components/SecondaryButton';
+import { product } from '@/interfaces/products';
 
-export default function ProductTab(props: any) {
+interface props {
+    product: product;
+}
+
+export default function ProductTab(props: props) {
     const [open, setOpen] = useState<boolean>(false);
 
     return (

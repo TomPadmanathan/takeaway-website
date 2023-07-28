@@ -1,4 +1,11 @@
-export default function QuantityCounter(props: any) {
+interface props {
+    quantity: [
+        quantity: number,
+        setQuantity: React.Dispatch<React.SetStateAction<number>>
+    ];
+}
+
+export default function QuantityCounter(props: props) {
     const [quantity, setQuantity] = props.quantity;
     return (
         <>

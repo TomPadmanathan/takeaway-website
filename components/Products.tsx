@@ -1,24 +1,31 @@
 import ProductTab from '@/components/ProductTab';
 import { useState } from 'react';
 import ProductNav from '@/components/ProductNav';
+import { productNavButtons } from '@/interfaces/productNav';
+import { products, product } from '@/interfaces/products';
 
-export default function Products(props: any) {
-    const [activeProductNav, setActiveProductNav] = useState('popular');
-    const [search, setSearch] = props.search;
+interface props {
+    search: string;
+    products: products;
+}
+
+export default function Products(props: props) {
+    const [activeProductNav, setActiveProductNav] =
+        useState<productNavButtons>('popular');
+    const search: string = props.search;
 
     let filteredData = search
-        ? props.products.filter((element: any) => {
+        ? props.products.filter((element: product): boolean => {
               const productName = element.product.toLowerCase();
               const category = element.category
                   .map((currentValue: string) => currentValue.toLowerCase())
                   .join(' ');
-
               return (
                   productName.includes(search.toLowerCase()) ||
                   category.includes(search.toLowerCase())
               );
           })
-        : props.products.filter((element: any) =>
+        : props.products.filter((element: product) =>
               element.category.includes(activeProductNav)
           );
 
@@ -32,7 +39,7 @@ export default function Products(props: any) {
 
             <div className="flex justify-center">
                 <div className="grid grid-cols-5 gap-5">
-                    {filteredData.map((element: any) => (
+                    {filteredData.map((element: product) => (
                         <ProductTab product={element} key={element.product} />
                     ))}
                 </div>
