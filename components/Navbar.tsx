@@ -40,7 +40,7 @@ export default function Navbar(props: props) {
                         type="text"
                         className="h-10 w-96 border border-black"
                         value={search}
-                        onChange={e => setSearch(e.target.value)}
+                        onChange={event => setSearch(event.target.value)}
                     ></input>
                 </div>
 
