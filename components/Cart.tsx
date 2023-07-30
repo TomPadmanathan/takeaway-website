@@ -83,7 +83,6 @@ export default function Cart(props: props) {
                                                                   {capitaliseFirstChar(
                                                                       option
                                                                   )}{' '}
-                                                                  {/* Assuming option is a string */}
                                                               </li>
                                                           );
                                                       }
