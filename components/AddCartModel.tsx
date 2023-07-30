@@ -1,15 +1,15 @@
 import addItemCart from '@/utils/addItemCart';
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import QuantityCounter from '@/components/QuantityCounter';
 import SecondaryButton from './SecondaryButton';
-import { cartItem } from '@/interfaces/cart';
+import { product } from '@/interfaces/products';
 
 interface props {
     open: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-    product: cartItem;
+    product: product;
 }
 
 export default function AddCartModel(props: props) {
@@ -21,7 +21,7 @@ export default function AddCartModel(props: props) {
     useEffect(() => {
         if (!props.product.options) return;
         const initialSelectedOption = props.product.options.map(
-            (subArray: any) => subArray[0]
+            (subArray: string[]) => subArray[0]
         );
         setSelectedOption(initialSelectedOption);
     }, [props.product.options]);
@@ -39,7 +39,7 @@ export default function AddCartModel(props: props) {
         setOpen(false);
         if (props.product.options) {
             const resetSelectedOption = props.product.options.map(
-                (subArray: any) => subArray[0]
+                (subArray: string[]) => subArray[0]
             );
             setSelectedOption(resetSelectedOption);
         }
@@ -73,7 +73,9 @@ export default function AddCartModel(props: props) {
                                     (subArray: any, index: number) => (
                                         <select
                                             key={subArray}
-                                            onChange={(event: any) => {
+                                            onChange={(
+                                                event: ChangeEvent<HTMLSelectElement>
+                                            ) => {
                                                 const updatedOptions =
                                                     selectedOption
                                                         ? [...selectedOption]
@@ -91,7 +93,7 @@ export default function AddCartModel(props: props) {
                                             }
                                             className="mx-2"
                                         >
-                                            {subArray.map((element: any) => (
+                                            {subArray.map((element: string) => (
                                                 <option key={element}>
                                                     {capitaliseFirstChar(
                                                         element

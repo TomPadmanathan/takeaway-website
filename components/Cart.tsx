@@ -80,7 +80,7 @@ export default function Cart(props: props) {
                                                                       )}
                                                               </li>
                                                           );
-                                                      } else
+                                                      } else {
                                                           return (
                                                               <li key={index}>
                                                                   {capitaliseFirstChar(
@@ -88,6 +88,7 @@ export default function Cart(props: props) {
                                                                   )}{' '}
                                                               </li>
                                                           );
+                                                      }
                                                   }
                                               )
                                             : null}
