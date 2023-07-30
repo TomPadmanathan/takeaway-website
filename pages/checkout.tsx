@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useState, KeyboardEvent } from 'react';
 import { AppContext } from '@/context/AppContext';
 import formatCart from '@/utils/formatCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -85,13 +85,20 @@ export default function Home({ configData }: props) {
                                             {element.options
                                                 ? element.options.map(
                                                       (
-                                                          element: string,
+                                                          option: string[],
                                                           index: number
                                                       ) => (
                                                           <li key={index}>
-                                                              {capitaliseFirstChar(
-                                                                  element
-                                                              )}
+                                                              {option
+                                                                  .map(
+                                                                      (
+                                                                          item: string
+                                                                      ) =>
+                                                                          capitaliseFirstChar(
+                                                                              item
+                                                                          )
+                                                                  )
+                                                                  .join(', ')}
                                                           </li>
                                                       )
                                                   )
@@ -139,7 +146,9 @@ export default function Home({ configData }: props) {
                                 id="phone-number"
                                 required={true}
                                 inputMode="numeric"
-                                onKeyPress={(event: KeyboardEvent): void => {
+                                onKeyPress={(
+                                    event: KeyboardEvent<HTMLInputElement>
+                                ): void => {
                                     if (!/[0-9]/.test(event.key))
                                         event.preventDefault();
                                 }}

@@ -1,12 +1,13 @@
-import { product } from '@/interfaces/products';
+import { product, products } from '@/interfaces/products';
+import { config } from '@/interfaces/config';
 
 export default async function calculateCheckoutPricesFromServerSide(
     idOfElementsInCart: number[]
 ): Promise<number> {
     const productsRes = await fetch('http://localhost:3000/api/products');
-    const productsData = await productsRes.json();
+    const productsData: products = await productsRes.json();
 
-    let subTotal = 0;
+    let subTotal: number = 0;
 
     idOfElementsInCart.forEach((element: number) => {
         productsData.forEach((secondElement: product) => {
@@ -15,17 +16,17 @@ export default async function calculateCheckoutPricesFromServerSide(
     });
 
     const configRes = await fetch('http://localhost:3000/api/config');
-    const configData = await configRes.json();
+    const configData: config = await configRes.json();
 
-    const lowOrderFee =
+    const lowOrderFee: number =
         subTotal < configData.lowOrder.feeLimit
             ? configData.lowOrder.feeLimit - subTotal >
               configData.lowOrder.maxFee
                 ? configData.lowOrder.maxFee
                 : configData.lowOrder.feeLimit - subTotal
             : 0;
-    const deliveryFee = configData.delivery.fee;
-    const total = subTotal + lowOrderFee + deliveryFee;
+    const deliveryFee: number = configData.delivery.fee;
+    const total: number = subTotal + lowOrderFee + deliveryFee;
 
     return total;
 }

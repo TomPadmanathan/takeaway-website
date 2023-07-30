@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { products } from '@/interfaces/products';
 import Black from '@/assets/img/black.png';
 
 export default function handler(
     request: NextApiRequest,
     response: NextApiResponse
 ) {
-    response.status(200);
-    response.send([
+    const products: products = [
         {
             product: 'chow mein',
             price: 100.25,
@@ -90,5 +90,8 @@ export default function handler(
             category: ['japanese'],
             id: 11,
         },
-    ]);
+    ];
+
+    response.status(200);
+    response.send(products);
 }

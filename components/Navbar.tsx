@@ -15,7 +15,7 @@ interface props {
 
 export default function Navbar(props: props) {
     const { cart } = useContext(AppContext);
-    const [cartOpen, setCartOpen] = useState(false);
+    const [cartOpen, setCartOpen] = useState<boolean>(false);
     const [search, setSearch] = props.search;
     const router = useRouter();
     const checkoutPrices = new CalculateCheckoutPrices(cart, props.configData);

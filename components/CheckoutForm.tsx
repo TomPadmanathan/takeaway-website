@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import {
     PaymentElement,
     LinkAuthenticationElement,
     useStripe,
     useElements,
 } from '@stripe/react-stripe-js';
+import StripeLinkAuthenticationElementChangeEvent from 'stripe';
 
 export default function CheckoutForm() {
     const stripe = useStripe();
@@ -45,7 +46,7 @@ export default function CheckoutForm() {
             });
     }, [stripe]);
 
-    async function handleSubmit(event: any) {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         if (!stripe || !elements) return;

@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
+import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from '@/components/CheckoutForm';
 import { AppContext } from '@/context/AppContext';
 import { useRouter } from 'next/router';
 
-const stripePromise: any = loadStripe(
+const stripePromise: Promise<Stripe | null> = loadStripe(
     'pk_test_51NHEXnCgtXcc2Q70RVpnW27B2K9q2NSYP5VA9m7AMjaDpWtpXsVyH8ApqUe3dcoU7iln44Xih7zJgVdOMpTNNv6I00Z3xlQnlO'
 );
 
 export default function App() {
-    const [clientSecret, setClientSecret] = useState('');
+    const [clientSecret, setClientSecret] = useState<string>('');
     const { cart } = useContext(AppContext);
     const router = useRouter();
 
@@ -31,10 +31,15 @@ export default function App() {
         if (cart.length > 0 && router.isReady) fetchData();
     }, [cart, router.isReady]);
 
-    const appearance = {
+    interface options {
+        clientSecret: string;
+        appearance: Appearance;
+    }
+
+    const appearance: Appearance = {
         theme: 'stripe',
     };
-    const options: any = {
+    const options: options = {
         clientSecret,
         appearance,
     };

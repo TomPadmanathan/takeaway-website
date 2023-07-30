@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { config } from '@/interfaces/config';
 
 export default function handler(
     request: NextApiRequest,
@@ -6,7 +7,7 @@ export default function handler(
 ) {
     response.status(200);
 
-    const siteConfig = {
+    const siteConfig: config = {
         lowOrder: {
             maxFee: 5,
             feeLimit: 15,

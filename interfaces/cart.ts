@@ -3,8 +3,8 @@ export interface cartItem {
     price: number;
     image: any;
     category: string[];
-    options?: string[];
     id: number;
+    options?: string[][];
 }
 export type cart = cartItem[];
 

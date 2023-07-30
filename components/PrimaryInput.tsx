@@ -1,3 +1,5 @@
+import { ChangeEvent, KeyboardEvent } from 'react';
+
 interface props {
     type?:
         | 'button'
@@ -34,8 +36,8 @@ interface props {
         | 'none'
         | 'numeric'
         | 'decimal';
-    onKeyPress?: (event: any) => void;
-    onChange?: (event: any) => void;
+    onKeyPress?: (event: KeyboardEvent<HTMLInputElement>) => void;
+    onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
     addClass?: string;
     value?: string;
 }

@@ -7,8 +7,10 @@ dotenv.config({
 import calculateCheckoutPricesFromServerSide from '@/utils/calculateCheckoutPricesFromServerSide';
 import getIdsOfProductsInCart from '@/utils/getIdsOfProductsInCart';
 import { cart } from '@/interfaces/cart';
+import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
+import Stripe from 'stripe';
 
-const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+const stripe: Stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
 async function calculateOrderAmount(cart: cart) {
     return (
@@ -23,7 +25,8 @@ export default async function handler(
     response: NextApiResponse
 ) {
     const cart: cart = request.body.cart;
-    const userData = request.body.userData;
+    const userData: checkoutUserInfomation = request.body.userData;
+    const userDataStringified: string = JSON.stringify(userData);
 
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
@@ -31,7 +34,7 @@ export default async function handler(
         currency: 'gbp',
         payment_method_types: ['card'],
         metadata: {
-            userData,
+            userDataStringified,
         },
     });
 

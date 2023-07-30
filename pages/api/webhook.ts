@@ -1,31 +1,33 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import path from 'path';
-import dotenv from 'dotenv';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-dotenv.config({
-    path: path.resolve(process.cwd(), '.env'),
-});
-
 const stripePrivateKey: any = process.env.STRIPE_PRIVATE_KEY;
 const stripeWebhookSecret: any = process.env.STRIPE_WEBHOOK_SECRET;
 const stripe = new Stripe(stripePrivateKey, {
     apiVersion: '2022-11-15',
 });
 
-export const config = {
+interface config {
+    api: {
+        bodyParser: boolean;
+    };
+}
+
+export const config: config = {
     api: {
         bodyParser: false,
     },
 };
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+    request: NextApiRequest,
+    response: NextApiResponse
+): Promise<void> => {
     if (request.method === 'POST') {
         const buf = await buffer(request);
         const signature: any = request.headers['stripe-signature'];
 
-        let event;
+        let event: Stripe.Event;
 
         try {
             event = stripe.webhooks.constructEvent(
@@ -33,9 +35,9 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
                 signature,
                 stripeWebhookSecret
             );
-        } catch (err: any) {
-            console.error(`Webhook error: ${err.message}`);
-            return response.status(400).send(`Webhook Error: ${err.message}`);
+        } catch (error: any) {
+            console.error(`Webhook error: ${error.message}`);
+            return response.status(400).send(`Webhook Error: ${error.message}`);
         }
 
         // Handle specific event types
