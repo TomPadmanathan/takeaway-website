@@ -5,7 +5,6 @@ import {
     useStripe,
     useElements,
 } from '@stripe/react-stripe-js';
-import StripeLinkAuthenticationElementChangeEvent from 'stripe';
 
 export default function CheckoutForm() {
     const stripe = useStripe();
