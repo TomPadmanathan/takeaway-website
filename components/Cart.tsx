@@ -59,7 +59,10 @@ export default function Cart(props: props) {
                                         {element.options &&
                                         Array.isArray(element.options)
                                             ? element.options.map(
-                                                  (option, index) => {
+                                                  (
+                                                      option: string[],
+                                                      index: number
+                                                  ) => {
                                                       if (
                                                           Array.isArray(option)
                                                       ) {
@@ -77,7 +80,7 @@ export default function Cart(props: props) {
                                                                       )}
                                                               </li>
                                                           );
-                                                      } else {
+                                                      } else
                                                           return (
                                                               <li key={index}>
                                                                   {capitaliseFirstChar(
@@ -85,7 +88,6 @@ export default function Cart(props: props) {
                                                                   )}{' '}
                                                               </li>
                                                           );
-                                                      }
                                                   }
                                               )
                                             : null}
