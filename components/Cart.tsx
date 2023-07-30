@@ -56,18 +56,38 @@ export default function Cart(props: props) {
                                         )}
                                     </span>
                                     <ul className="ml-10 list-disc">
-                                        {element.options
+                                        {element.options &&
+                                        Array.isArray(element.options)
                                             ? element.options.map(
-                                                  (
-                                                      element: string,
-                                                      index: number
-                                                  ) => (
-                                                      <li key={index}>
-                                                          {capitaliseFirstChar(
-                                                              element
-                                                          )}
-                                                      </li>
-                                                  )
+                                                  (option, index) => {
+                                                      if (
+                                                          Array.isArray(option)
+                                                      ) {
+                                                          return (
+                                                              <li key={index}>
+                                                                  {option
+                                                                      .map(
+                                                                          item =>
+                                                                              capitaliseFirstChar(
+                                                                                  item
+                                                                              )
+                                                                      )
+                                                                      .join(
+                                                                          ', '
+                                                                      )}
+                                                              </li>
+                                                          );
+                                                      } else {
+                                                          return (
+                                                              <li key={index}>
+                                                                  {capitaliseFirstChar(
+                                                                      option
+                                                                  )}{' '}
+                                                                  {/* Assuming option is a string */}
+                                                              </li>
+                                                          );
+                                                      }
+                                                  }
                                               )
                                             : null}
                                     </ul>
