@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import formatCart from '@/utils/formatCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -11,6 +11,8 @@ import SecondaryButton from '@/components/SecondaryButton';
 import PrimaryInput from '@/components/PrimaryInput';
 import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
 import { ParsedUrlQueryInput } from 'querystring';
+import { modifiedCartItem } from '@/interfaces/cart';
+import { config } from '@/interfaces/config';
 
 export async function getServerSideProps() {
     const configRes = await fetch('http://localhost:3000/api/config');
@@ -37,7 +39,11 @@ function checkoutUserInfomationToQueryParams(
     };
 }
 
-export default function Home({ configData }: any) {
+interface props {
+    configData: config;
+}
+
+export default function Home({ configData }: props) {
     const router = useRouter();
     const { cart } = useContext(AppContext);
     const modifiedCart = formatCart(cart);
@@ -59,41 +65,45 @@ export default function Home({ configData }: any) {
             <div className="mx-96 my-10 flex h-screen items-center justify-between">
                 <section className="w-[30rem] border-2 border-black p-10">
                     <ul>
-                        {modifiedCart.map((element: any, index: number) => (
-                            <li
-                                key={index}
-                                className="mb-10 flex justify-between "
-                            >
-                                <span className="mr-4">
-                                    {element.quantity + ' x'}
-                                </span>
-
-                                <div className="flex flex-col items-center">
-                                    <span>
-                                        {capitaliseFirstCharWords(
-                                            element.product
-                                        )}
+                        {modifiedCart.map(
+                            (element: modifiedCartItem, index: number) => (
+                                <li
+                                    key={index}
+                                    className="mb-10 flex justify-between "
+                                >
+                                    <span className="mr-4">
+                                        {element.quantity + ' x'}
                                     </span>
-                                    <ul className="ml-10 list-disc">
-                                        {element.options
-                                            ? element.options.map(
-                                                  (
-                                                      element: any,
-                                                      index: number
-                                                  ) => (
-                                                      <li key={index}>
-                                                          {capitaliseFirstChar(
-                                                              element
-                                                          )}
-                                                      </li>
+
+                                    <div className="flex flex-col items-center">
+                                        <span>
+                                            {capitaliseFirstCharWords(
+                                                element.product
+                                            )}
+                                        </span>
+                                        <ul className="ml-10 list-disc">
+                                            {element.options
+                                                ? element.options.map(
+                                                      (
+                                                          element: string,
+                                                          index: number
+                                                      ) => (
+                                                          <li key={index}>
+                                                              {capitaliseFirstChar(
+                                                                  element
+                                                              )}
+                                                          </li>
+                                                      )
                                                   )
-                                              )
-                                            : null}
-                                    </ul>
-                                </div>
-                                <span>£{formatPrice(element.totalPrice)}</span>
-                            </li>
-                        ))}
+                                                : null}
+                                        </ul>
+                                    </div>
+                                    <span>
+                                        £{formatPrice(element.totalPrice)}
+                                    </span>
+                                </li>
+                            )
+                        )}
                     </ul>
                     <span className="block text-end">
                         Sub-Total: £{formatPrice(prices.subTotal)}
@@ -112,7 +122,7 @@ export default function Home({ configData }: any) {
                 </section>
                 <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
                     <form
-                        onSubmit={() =>
+                        onSubmit={(): Promise<boolean> =>
                             router.push({
                                 pathname: '/checkout/new-checkout-session',
                                 query: checkoutUserInfomationToQueryParams(
@@ -129,11 +139,13 @@ export default function Home({ configData }: any) {
                                 id="phone-number"
                                 required={true}
                                 inputMode="numeric"
-                                onKeyPress={(event: any) => {
+                                onKeyPress={(event: KeyboardEvent): void => {
                                     if (!/[0-9]/.test(event.key))
                                         event.preventDefault();
                                 }}
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.phoneNumber = parseInt(
                                         event.target.value
@@ -145,7 +157,9 @@ export default function Home({ configData }: any) {
                             <PrimaryInput
                                 type="email"
                                 placeholder="Email"
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.email = event.target.value;
                                     setCheckoutUserInfomation(copy);
@@ -159,7 +173,9 @@ export default function Home({ configData }: any) {
                                 placeholder="Address line 1"
                                 id="address-line-1"
                                 required={true}
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.addressLine1 = event.target.value;
                                     setCheckoutUserInfomation(copy);
@@ -167,7 +183,9 @@ export default function Home({ configData }: any) {
                             />
                             <PrimaryInput
                                 placeholder="Address line 2 (optional)"
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.addressLine2 = event.target.value;
                                     setCheckoutUserInfomation(copy);
@@ -177,7 +195,9 @@ export default function Home({ configData }: any) {
                         <div className="mb-10 flex justify-between">
                             <PrimaryInput
                                 placeholder="City/Town"
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.cityTown = event.target.value;
                                     setCheckoutUserInfomation(copy);
@@ -186,7 +206,9 @@ export default function Home({ configData }: any) {
                             <PrimaryInput
                                 placeholder="Postcode"
                                 value={checkoutUserInfomation.postcode}
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.postcode =
                                         event.target.value.toUpperCase();
@@ -199,7 +221,9 @@ export default function Home({ configData }: any) {
                             <textarea
                                 placeholder="Leave us a note (optional)"
                                 className="block h-10 resize-none border border-black"
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLTextAreaElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.orderNote = event.target.value;
                                     setCheckoutUserInfomation(copy);
@@ -211,7 +235,9 @@ export default function Home({ configData }: any) {
                             <PrimaryInput
                                 type="checkbox"
                                 id="include-cutlery"
-                                onChange={(event: any) => {
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
                                     const copy = { ...checkoutUserInfomation };
                                     copy.includeCutlery = event.target.checked;
                                     setCheckoutUserInfomation(copy);
@@ -230,7 +256,7 @@ export default function Home({ configData }: any) {
             </div>
 
             <SecondaryButton
-                onClick={() => router.push('/')}
+                onClick={(): Promise<boolean> => router.push('/')}
                 content="Back"
                 addClass="absolute right-10 top-10"
             />
