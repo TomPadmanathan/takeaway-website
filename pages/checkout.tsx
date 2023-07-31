@@ -14,9 +14,16 @@ import { ParsedUrlQueryInput } from 'querystring';
 import { modifiedCartItem } from '@/interfaces/cart';
 import { config } from '@/interfaces/config';
 
-export async function getServerSideProps() {
+interface props {
+    configData: config;
+}
+interface getServerSideProps {
+    props: props;
+}
+
+export async function getServerSideProps(): Promise<getServerSideProps> {
     const configRes = await fetch('http://localhost:3000/api/config');
-    const configData = await configRes.json();
+    const configData: config = await configRes.json();
     return {
         props: {
             configData,
@@ -37,10 +44,6 @@ function checkoutUserInfomationToQueryParams(
         postcode: info.postcode,
         orderNote: info.orderNote,
     };
-}
-
-interface props {
-    configData: config;
 }
 
 export default function Home({ configData }: props) {
