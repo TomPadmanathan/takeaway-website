@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState, KeyboardEvent } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import formatCart from '@/utils/formatCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -64,7 +64,7 @@ export default function Home({ configData }: props) {
         <>
             <div className="mx-96 my-10 flex h-screen items-center justify-between">
                 <section className="w-[30rem] border-2 border-black p-10">
-                    <ul>
+                    <ul className="py-5">
                         {modifiedCart.map(
                             (element: modifiedCartItem, index: number) => (
                                 <li
@@ -82,29 +82,55 @@ export default function Home({ configData }: props) {
                                             )}
                                         </span>
                                         <ul className="ml-10 list-disc">
-                                            {element.options
+                                            {element.options &&
+                                            Array.isArray(element.options)
                                                 ? element.options.map(
                                                       (
                                                           option: string[],
                                                           index: number
-                                                      ) => (
-                                                          <li key={index}>
-                                                              {option
-                                                                  .map(
-                                                                      (
-                                                                          item: string
-                                                                      ) =>
-                                                                          capitaliseFirstChar(
-                                                                              item
+                                                      ) => {
+                                                          if (
+                                                              Array.isArray(
+                                                                  option
+                                                              )
+                                                          ) {
+                                                              return (
+                                                                  <li
+                                                                      key={
+                                                                          index
+                                                                      }
+                                                                  >
+                                                                      {option
+                                                                          .map(
+                                                                              item =>
+                                                                                  capitaliseFirstChar(
+                                                                                      item
+                                                                                  )
                                                                           )
-                                                                  )
-                                                                  .join(', ')}
-                                                          </li>
-                                                      )
+                                                                          .join(
+                                                                              ', '
+                                                                          )}
+                                                                  </li>
+                                                              );
+                                                          } else {
+                                                              return (
+                                                                  <li
+                                                                      key={
+                                                                          index
+                                                                      }
+                                                                  >
+                                                                      {capitaliseFirstChar(
+                                                                          option
+                                                                      )}{' '}
+                                                                  </li>
+                                                              );
+                                                          }
+                                                      }
                                                   )
                                                 : null}
                                         </ul>
                                     </div>
+
                                     <span>
                                         £{formatPrice(element.totalPrice)}
                                     </span>
@@ -146,9 +172,7 @@ export default function Home({ configData }: props) {
                                 id="phone-number"
                                 required={true}
                                 inputMode="numeric"
-                                onKeyPress={(
-                                    event: KeyboardEvent<HTMLInputElement>
-                                ): void => {
+                                onKeyPress={(event: any): void => {
                                     if (!/[0-9]/.test(event.key))
                                         event.preventDefault();
                                 }}
