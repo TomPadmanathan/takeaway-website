@@ -43,6 +43,7 @@ function checkoutUserInfomationToQueryParams(
         cityTown: info.cityTown,
         postcode: info.postcode,
         orderNote: info.orderNote,
+        name: info.name,
     };
 }
 
@@ -61,6 +62,7 @@ export default function Home({ configData }: props) {
             cityTown: '',
             postcode: '',
             orderNote: '',
+            name: '',
         });
 
     return (
@@ -168,36 +170,54 @@ export default function Home({ configData }: props) {
                         }
                     >
                         <label htmlFor="phone-number">Your Info</label>
-                        <div className="mb-10 flex justify-between">
+                        <div className="mb-10">
+                            <div className="mb-2 flex justify-between">
+                                <PrimaryInput
+                                    type="number"
+                                    placeholder="Phone Number"
+                                    id="phone-number"
+                                    required={true}
+                                    inputMode="numeric"
+                                    onKeyPress={(event: any): void => {
+                                        if (!/[0-9]/.test(event.key))
+                                            event.preventDefault();
+                                    }}
+                                    onChange={(
+                                        event: ChangeEvent<HTMLInputElement>
+                                    ): void => {
+                                        const copy = {
+                                            ...checkoutUserInfomation,
+                                        };
+                                        copy.phoneNumber = parseInt(
+                                            event.target.value
+                                        );
+                                        setCheckoutUserInfomation(copy);
+                                    }}
+                                    addClass={removeArrowsFromInput}
+                                />
+                                <PrimaryInput
+                                    type="email"
+                                    placeholder="Email"
+                                    onChange={(
+                                        event: ChangeEvent<HTMLInputElement>
+                                    ): void => {
+                                        const copy = {
+                                            ...checkoutUserInfomation,
+                                        };
+                                        copy.email = event.target.value;
+                                        setCheckoutUserInfomation(copy);
+                                    }}
+                                    required={true}
+                                />
+                            </div>
                             <PrimaryInput
-                                type="number"
-                                placeholder="Phone Number"
-                                id="phone-number"
-                                required={true}
-                                inputMode="numeric"
-                                onKeyPress={(event: any): void => {
-                                    if (!/[0-9]/.test(event.key))
-                                        event.preventDefault();
-                                }}
+                                type="text"
+                                placeholder="Full Name"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
                                 ): void => {
                                     const copy = { ...checkoutUserInfomation };
-                                    copy.phoneNumber = parseInt(
-                                        event.target.value
-                                    );
-                                    setCheckoutUserInfomation(copy);
-                                }}
-                                addClass={removeArrowsFromInput}
-                            />
-                            <PrimaryInput
-                                type="email"
-                                placeholder="Email"
-                                onChange={(
-                                    event: ChangeEvent<HTMLInputElement>
-                                ): void => {
-                                    const copy = { ...checkoutUserInfomation };
-                                    copy.email = event.target.value;
+                                    copy.name = event.target.value;
                                     setCheckoutUserInfomation(copy);
                                 }}
                                 required={true}

@@ -5,7 +5,7 @@ import Black from '@/assets/img/black.png';
 export default function handler(
     request: NextApiRequest,
     response: NextApiResponse
-) {
+): void {
     const products: products = [
         {
             product: 'chow mein',

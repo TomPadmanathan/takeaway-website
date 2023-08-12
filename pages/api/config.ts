@@ -4,7 +4,7 @@ import { config } from '@/interfaces/config';
 export default function handler(
     request: NextApiRequest,
     response: NextApiResponse
-) {
+): void {
     response.status(200);
 
     const siteConfig: config = {

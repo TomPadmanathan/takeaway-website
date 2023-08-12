@@ -5,17 +5,20 @@ dotenv.config({
     path: path.resolve(__dirname, '../../.env'),
 });
 import calculateCheckoutPricesFromServerSide from '@/utils/calculateCheckoutPricesFromServerSide';
-import getIdsOfProductsInCart from '@/utils/getIdsOfProductsInCart';
+import {
+    getIdOfElementsInCart,
+    getIdsAndOptionsInCart,
+} from '@/utils/getIdsOfProductsInCart';
 import { cart } from '@/interfaces/cart';
 import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
 import Stripe from 'stripe';
 
 const stripe: Stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
-async function calculateOrderAmount(cart: cart) {
+async function calculateOrderAmount(cart: cart): Promise<number> {
     return (
         (await calculateCheckoutPricesFromServerSide(
-            getIdsOfProductsInCart(cart)
+            getIdOfElementsInCart(cart)
         )) * 100
     );
 }
@@ -23,18 +26,33 @@ async function calculateOrderAmount(cart: cart) {
 export default async function handler(
     request: NextApiRequest,
     response: NextApiResponse
-) {
+): Promise<void> {
     const cart: cart = request.body.cart;
-    const userData: checkoutUserInfomation = request.body.userData;
-    const userDataStringified: string = JSON.stringify(userData);
+    const userData: checkoutUserInfomation = JSON.parse(request.body.userData);
 
-    // Create a PaymentIntent with the order amount and currency
+    const customer = await stripe.customers.create({
+        email: userData.email,
+        name: userData.name,
+        phone: userData.phoneNumber.toString(),
+        address: {
+            city: userData.cityTown,
+            line1: userData.addressLine1,
+            line2: userData.addressLine2,
+            postal_code: userData.postcode,
+        },
+        metadata: {
+            orderNote: userData.orderNote,
+            includeCutlery: userData.includeCutlery ? 1 : 0,
+        },
+    });
+
     const paymentIntent = await stripe.paymentIntents.create({
         amount: await calculateOrderAmount(cart),
         currency: 'gbp',
         payment_method_types: ['card'],
         metadata: {
-            userDataStringified,
+            customerId: customer.id,
+            cart: JSON.stringify(getIdsAndOptionsInCart(cart)),
         },
     });
 

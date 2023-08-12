@@ -6,5 +6,6 @@ export interface checkoutUserInfomation {
     addressLine2?: string;
     cityTown: string;
     postcode: string;
-    orderNote?: string;
+    orderNote: string;
+    name: string;
 }

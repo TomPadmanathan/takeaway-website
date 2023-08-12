@@ -47,7 +47,13 @@ export default async (
             // Run your server-side code here
             // Access session information and perform necessary actions
 
-            console.log('Webhook:', session.metadata);
+            // console.log('Webhook:', session);
+            console.log('Webhook:', JSON.parse(session.metadata.cart));
+
+            const customer = await stripe.customers.retrieve(
+                session.metadata.customerId
+            );
+            // console.log(customer);
         }
 
         response.status(200).json({ received: true });
