@@ -1,4 +1,5 @@
 export interface order {
+    Status: string;
     DateTime: string;
     Email: string;
     Name: string;

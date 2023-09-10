@@ -1,6 +1,8 @@
 import { order, orders } from '@/interfaces/orders';
 import formatPrice from '@/utils/formatPrice';
 import AdminNav from '@/components/AdminNav';
+import SecondaryButton from '@/components/SecondaryButton';
+import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 
 export async function getServerSideProps() {
     const ordersRes = await fetch('http://localhost:3000/api/orders');
@@ -36,6 +38,33 @@ function isolateTimeFromDateTime(dateTime: string): string {
         .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
+const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];
+const btnHeadings: string[] = ['Accept', 'Dispatch', 'Delivered'];
+
+function findCorrectBtn(currentStatus: string) {
+    let correctBtnHeading: string = '';
+    status.forEach((value: string, index: number) => {
+        if (currentStatus === value) correctBtnHeading = btnHeadings[index];
+    });
+    return correctBtnHeading;
+}
+
+async function fetchData(id: number, currentStatus: string) {
+    let newStatus;
+    status.forEach((value: string, index: number) => {
+        if (value === currentStatus) newStatus = status[index + 1];
+    });
+    if (!newStatus) return;
+    await fetch('/api/changeOrderStatus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: id,
+            status: newStatus,
+        }),
+    });
+}
+
 export default function Orders(props: props) {
     const ordersData: orders = props.ordersData;
 
@@ -44,8 +73,9 @@ export default function Orders(props: props) {
         'Date',
         'Name',
         'PostCode',
-        'OrderId',
-        '',
+        'Order Id',
+        'Change Status',
+        'Status',
         'Total Price',
     ];
 
@@ -87,7 +117,22 @@ export default function Orders(props: props) {
                                     {order.OrderId}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    More Info
+                                    {findCorrectBtn(order.Status) ? (
+                                        <SecondaryButton
+                                            onClick={() =>
+                                                fetchData(
+                                                    order.OrderId,
+                                                    order.Status
+                                                )
+                                            }
+                                            content={findCorrectBtn(
+                                                order.Status
+                                            )}
+                                        />
+                                    ) : null}
+                                </td>
+                                <td className="border-collapse border p-10">
+                                    {capitaliseFirstChar(order.Status)}
                                 </td>
                                 <td className="border-collapse border p-10">
                                     £{formatPrice(order.TotalPayment / 100)}

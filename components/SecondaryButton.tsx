@@ -6,7 +6,7 @@ interface props {
 }
 
 export default function SecondaryButton(props: props) {
-    let defaultClasses = 'block h-10 border border-black';
+    let defaultClasses = 'block h-10 border border-black p-2';
 
     return (
         <button
