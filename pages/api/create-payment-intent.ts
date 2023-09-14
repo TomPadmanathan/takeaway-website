@@ -1,9 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import path from 'path';
-import dotenv from 'dotenv';
-dotenv.config({
-    path: path.resolve(__dirname, '../../.env'),
-});
 import calculateCheckoutPricesFromServerSide from '@/utils/calculateCheckoutPricesFromServerSide';
 import {
     getIdOfElementsInCart,
