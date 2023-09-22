@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import mysql, { Connection, QueryError } from 'mysql2';
+import sendCustomerEmail from '@/utils/sendCustomerEmail';
 
 export default function handler(
     request: NextApiRequest,
@@ -19,5 +20,6 @@ export default function handler(
             if (err) throw err;
         });
     });
+    sendCustomerEmail(request.body.id);
     response.send('');
 }

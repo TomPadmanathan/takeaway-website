@@ -7,6 +7,7 @@ const stripe: Stripe = new Stripe(stripePrivateKey, {
     apiVersion: '2022-11-15',
 });
 import mysql, { Connection } from 'mysql2';
+import sendCustomerEmail from '@/utils/sendCustomerEmail';
 
 interface config {
     api: {
@@ -80,8 +81,9 @@ function createOrder(customer: any, session: stripeSession): void {
     }', '${session.id}', '${session.metadata.cart}', '${session.amount}');`;
     connection.connect((err: mysql.QueryError | null) => {
         if (err) throw err;
-        connection.query(insertStatement, err => {
+        connection.query(insertStatement, (err: string, result: any) => {
             if (err) throw err;
+            sendCustomerEmail(result.insertId);
         });
     });
 }
