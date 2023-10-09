@@ -1,18 +1,13 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
-import formatCart from '@/utils/formatCart';
-import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
-import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
-import formatPrice from '@/utils/formatPrice';
 import { useRouter } from 'next/router';
-import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
 import SecondaryButton from '@/components/SecondaryButton';
 import PrimaryInput from '@/components/PrimaryInput';
 import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
 import { ParsedUrlQueryInput } from 'querystring';
-import { modifiedCartItem } from '@/interfaces/cart';
 import { config } from '@/interfaces/config';
+import ListItemsWithPrice from '@/components/ListItemsWithPrice';
 
 interface props {
     configData: config;
@@ -50,8 +45,6 @@ function checkoutUserInfomationToQueryParams(
 export default function Home({ configData }: props) {
     const router = useRouter();
     const { cart } = useContext(AppContext);
-    const modifiedCart = formatCart(cart);
-    const prices = new CalculateCheckoutPrices(cart, configData);
     const [checkoutUserInfomation, setCheckoutUserInfomation] =
         useState<checkoutUserInfomation>({
             includeCutlery: false,
@@ -68,96 +61,7 @@ export default function Home({ configData }: props) {
     return (
         <>
             <div className="mx-96 my-10 flex h-screen items-center justify-between">
-                <section className="w-[30rem] border-2 border-black p-10">
-                    <ul className="py-5">
-                        {modifiedCart.map(
-                            (element: modifiedCartItem, index: number) => (
-                                <li
-                                    key={index}
-                                    className="mb-10 flex justify-between "
-                                >
-                                    <span className="mr-4">
-                                        {element.quantity + ' x'}
-                                    </span>
-
-                                    <div className="flex flex-col items-center">
-                                        <span>
-                                            {capitaliseFirstCharWords(
-                                                element.product
-                                            )}
-                                        </span>
-                                        <ul className="ml-10 list-disc">
-                                            {element.options &&
-                                            Array.isArray(element.options)
-                                                ? element.options.map(
-                                                      (
-                                                          option: string[],
-                                                          index: number
-                                                      ) => {
-                                                          if (
-                                                              Array.isArray(
-                                                                  option
-                                                              )
-                                                          ) {
-                                                              return (
-                                                                  <li
-                                                                      key={
-                                                                          index
-                                                                      }
-                                                                  >
-                                                                      {option
-                                                                          .map(
-                                                                              item =>
-                                                                                  capitaliseFirstChar(
-                                                                                      item
-                                                                                  )
-                                                                          )
-                                                                          .join(
-                                                                              ', '
-                                                                          )}
-                                                                  </li>
-                                                              );
-                                                          } else {
-                                                              return (
-                                                                  <li
-                                                                      key={
-                                                                          index
-                                                                      }
-                                                                  >
-                                                                      {capitaliseFirstChar(
-                                                                          option
-                                                                      )}{' '}
-                                                                  </li>
-                                                              );
-                                                          }
-                                                      }
-                                                  )
-                                                : null}
-                                        </ul>
-                                    </div>
-
-                                    <span>
-                                        £{formatPrice(element.totalPrice)}
-                                    </span>
-                                </li>
-                            )
-                        )}
-                    </ul>
-                    <span className="block text-end">
-                        Sub-Total: £{formatPrice(prices.subTotal)}
-                    </span>
-                    {prices.lowOrderFee ? (
-                        <span className="block text-end">
-                            Low Order Fee: £{formatPrice(prices.lowOrderFee)}
-                        </span>
-                    ) : null}
-                    <span className="block text-end">
-                        Delivery Fee: £{formatPrice(prices.deliveryFee)}
-                    </span>
-                    <span className="block text-end">
-                        Total: £{formatPrice(prices.total)}
-                    </span>
-                </section>
+                <ListItemsWithPrice cart={cart} config={configData} />
                 <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
                     <form
                         onSubmit={(): Promise<boolean> =>
