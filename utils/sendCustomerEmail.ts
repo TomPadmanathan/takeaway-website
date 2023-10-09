@@ -70,8 +70,7 @@ export default async function sendCustomerEmail(orderId: number) {
                 queryResult.Products
             );
             msg.subject = 'We have recived your order';
-            msg.html = `<h1>Thank you for ordering</h1><h2>Your order is currently pending and you will recieve an order acceptance email shortly.</h2><p>Order Id: ${queryResult.OrderId}</p><p>You have ordered:</p>`;
-            console.log(itemsOrdered);
+            msg.html = `<h1>Thank you for ordering</h1><h2>Your order is currently pending and you will recieve an order acceptance email shortly.</h2><p>Order Id: ${queryResult.OrderId}</p>`;
         }
 
         await sgMail.send(msg);

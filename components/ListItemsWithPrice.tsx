@@ -11,7 +11,7 @@ interface props {
     config: config;
 }
 
-export default function ListItemsWithPrice(props: any) {
+export default function ListItemsWithPrice(props: props) {
     const modifiedCart = formatCart(props.cart);
     const prices = new CalculateCheckoutPrices(props.cart, props.config);
 
