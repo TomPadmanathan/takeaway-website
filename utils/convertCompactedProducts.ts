@@ -4,7 +4,9 @@ export default async function convertCompactedProducts(products: string) {
     type oldProduct = [number, string[][]];
     type oldProducts = oldProduct[];
 
-    const productsRes = await fetch('http://localhost:3000/api/products');
+    const productsRes = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/products'
+    );
     const productsData: products = await productsRes.json();
     const oldProducts: oldProducts = JSON.parse(products);
     let newItemArr: any = [];

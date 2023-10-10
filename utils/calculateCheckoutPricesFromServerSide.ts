@@ -4,7 +4,9 @@ import { config } from '@/interfaces/config';
 export default async function calculateCheckoutPricesFromServerSide(
     idOfElementsInCart: number[]
 ): Promise<number> {
-    const productsRes = await fetch('http://localhost:3000/api/products');
+    const productsRes = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/products'
+    );
     const productsData: products = await productsRes.json();
 
     let subTotal: number = 0;
@@ -15,7 +17,7 @@ export default async function calculateCheckoutPricesFromServerSide(
         });
     });
 
-    const configRes = await fetch('http://localhost:3000/api/config');
+    const configRes = await fetch(process.env.NEXT_PUBLIC_URL + '/api/config');
     const configData: config = await configRes.json();
 
     const lowOrderFee: number =

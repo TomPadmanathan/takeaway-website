@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 
 export async function getServerSideProps(context: any) {
     const response: Response = await fetch(
-        'http://localhost:3000/api/getOrderFromId',
+        process.env.NEXT_PUBLIC_URL + '/api/getOrderFromId',
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -18,7 +18,9 @@ export async function getServerSideProps(context: any) {
         }
     );
     const order: orders = await response.json();
-    const configRes: Response = await fetch('http://localhost:3000/api/config');
+    const configRes: Response = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/config'
+    );
     const configData: config = await configRes.json();
     return {
         props: {

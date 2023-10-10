@@ -6,7 +6,7 @@ async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
     const paymentIntent: string | string[] = router.query.payment_intent;
 
     const response: Response = await fetch(
-        'http://localhost:3000/api/getOrderFromPaymentIntent',
+        process.env.NEXT_PUBLIC_URL + '/api/getOrderFromPaymentIntent',
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -16,6 +16,13 @@ async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
         }
     );
     const data: orders = await response.json();
+    console.log(data);
+
+    if (!data.length) {
+        console.error('paymentIntent is undefined');
+        return;
+    }
+
     router.push({
         pathname: `orders/${data[0].OrderId}`,
     });

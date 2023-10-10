@@ -7,8 +7,6 @@ import mysql, {
     FieldPacket,
     PoolConnection,
 } from 'mysql2/promise';
-import { products } from '@/interfaces/products';
-import convertCompactedProducts from './convertCompactedProducts';
 
 dotenv.config({
     path: path.resolve(__dirname, '../../.env'),

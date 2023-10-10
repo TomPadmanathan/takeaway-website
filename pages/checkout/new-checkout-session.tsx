@@ -5,27 +5,16 @@ import CheckoutForm from '@/components/CheckoutForm';
 import { AppContext } from '@/context/AppContext';
 import { NextRouter, useRouter } from 'next/router';
 
-const stripePromise: Promise<Stripe | null> = loadStripe(
-    'pk_test_51NHEXnCgtXcc2Q70RVpnW27B2K9q2NSYP5VA9m7AMjaDpWtpXsVyH8ApqUe3dcoU7iln44Xih7zJgVdOMpTNNv6I00Z3xlQnlO'
-);
+let stripePromise: Promise<Stripe | null>;
+
+if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+    console.error('Stripe public key not defined');
+else stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function App() {
     const [clientSecret, setClientSecret] = useState<string>('');
     const { cart } = useContext(AppContext);
     const router: NextRouter = useRouter();
-
-    // async function fetchData() {
-    //     const response: Response = await fetch('/api/create-payment-intent', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({
-    //             cart: cart,
-    //             userData: JSON.stringify(router.query),
-    //         }),
-    //     });
-    //     const data = await response.json();
-    //     setClientSecret(data.clientSecret);
-    // }
 
     const fetchData = useCallback(async () => {
         const response: Response = await fetch('/api/create-payment-intent', {

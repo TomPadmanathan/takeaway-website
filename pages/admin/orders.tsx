@@ -8,7 +8,7 @@ import isolateDateFromDateTime from '@/utils/isolateDateFromDateTime';
 import isolateTimeFromDateTime from '@/utils/isolateTimeFromDateTime';
 
 export async function getServerSideProps() {
-    const ordersRes = await fetch('http://localhost:3000/api/orders');
+    const ordersRes = await fetch(process.env.NEXT_PUBLIC_URL + '/api/orders');
     const ordersData: orders = await ordersRes.json();
     return {
         props: {
@@ -61,7 +61,7 @@ export default function Orders(props: props) {
         // Change later to wait for response from change status then update
         setTimeout(async () => {
             const ordersRes: Response = await fetch(
-                'http://localhost:3000/api/orders'
+                process.env.NEXT_PUBLIC_URL + '/api/orders'
             );
             const ordersData: orders = await ordersRes.json();
             setOrdersData(ordersData);
