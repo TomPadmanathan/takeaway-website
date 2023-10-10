@@ -3,6 +3,7 @@ import formatPrice from '@/utils/formatPrice';
 import AdminNav from '@/components/AdminNav';
 import SecondaryButton from '@/components/SecondaryButton';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
+import { useState } from 'react';
 
 export async function getServerSideProps() {
     const ordersRes = await fetch('http://localhost:3000/api/orders');
@@ -41,7 +42,7 @@ function isolateTimeFromDateTime(dateTime: string): string {
 const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];
 const btnHeadings: string[] = ['Accept', 'Dispatch', 'Delivered'];
 
-function findCorrectBtn(currentStatus: string) {
+function findCorrectBtn(currentStatus: string): string {
     let correctBtnHeading: string = '';
     status.forEach((value: string, index: number) => {
         if (currentStatus === value) correctBtnHeading = btnHeadings[index];
@@ -49,7 +50,10 @@ function findCorrectBtn(currentStatus: string) {
     return correctBtnHeading;
 }
 
-async function fetchData(id: number, currentStatus: string) {
+async function changeOrderStatus(
+    id: number,
+    currentStatus: string
+): Promise<void> {
     let newStatus;
     status.forEach((value: string, index: number) => {
         if (value === currentStatus) newStatus = status[index + 1];
@@ -66,7 +70,16 @@ async function fetchData(id: number, currentStatus: string) {
 }
 
 export default function Orders(props: props) {
-    const ordersData: orders = props.ordersData;
+    const [ordersData, setOrdersData] = useState(props.ordersData);
+
+    async function fetchOrdersData(): Promise<void> {
+        // Change later to wait for response from change status then update
+        setTimeout(async () => {
+            const ordersRes = await fetch('http://localhost:3000/api/orders');
+            const ordersData: orders = await ordersRes.json();
+            setOrdersData(ordersData);
+        }, 50);
+    }
 
     const tableHeadings = [
         'Time',
@@ -119,12 +132,13 @@ export default function Orders(props: props) {
                                 <td className="border-collapse border p-10">
                                     {findCorrectBtn(order.Status) ? (
                                         <SecondaryButton
-                                            onClick={() =>
-                                                fetchData(
+                                            onClick={() => {
+                                                changeOrderStatus(
                                                     order.OrderId,
                                                     order.Status
-                                                )
-                                            }
+                                                );
+                                                fetchOrdersData();
+                                            }}
                                             content={findCorrectBtn(
                                                 order.Status
                                             )}
