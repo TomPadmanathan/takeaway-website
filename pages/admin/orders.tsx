@@ -4,6 +4,8 @@ import AdminNav from '@/components/AdminNav';
 import SecondaryButton from '@/components/SecondaryButton';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import { useState } from 'react';
+import isolateDateFromDateTime from '@/utils/isolateDateFromDateTime';
+import isolateTimeFromDateTime from '@/utils/isolateTimeFromDateTime';
 
 export async function getServerSideProps() {
     const ordersRes = await fetch('http://localhost:3000/api/orders');
@@ -17,26 +19,6 @@ export async function getServerSideProps() {
 
 interface props {
     ordersData: orders;
-}
-
-function isolateDateFromDateTime(dateTime: string): string {
-    const date: Date = new Date(dateTime);
-    const day: number = date.getUTCDate();
-    const month: number = date.getUTCMonth() + 1;
-    const year: number = date.getUTCFullYear();
-    return `${day.toString().padStart(2, '0')}-${month
-        .toString()
-        .padStart(2, '0')}-${year}`;
-}
-function isolateTimeFromDateTime(dateTime: string): string {
-    const date: Date = new Date(dateTime);
-    const hours: number = date.getUTCHours();
-    const minutes: number = date.getUTCMinutes();
-    const seconds: number = date.getUTCSeconds();
-
-    return `${hours.toString().padStart(2, '0')}:${minutes
-        .toString()
-        .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
 const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];

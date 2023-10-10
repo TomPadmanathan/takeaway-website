@@ -15,5 +15,7 @@ export default async function convertCompactedProducts(products: string) {
                 newItemArr.push({ ...element2, options: element[1] });
         });
     });
+
+    await newItemArr;
     return newItemArr;
 }

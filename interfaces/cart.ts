@@ -4,7 +4,7 @@ export interface cartItem {
     image: any;
     category: string[];
     id: number;
-    options?: string[][];
+    options?: string[][] | string[];
 }
 export type cart = cartItem[];
 

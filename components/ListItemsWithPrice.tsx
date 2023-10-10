@@ -17,7 +17,7 @@ export default function ListItemsWithPrice(props: props) {
     const prices = new CalculateCheckoutPrices(props.cart, props.config);
 
     return (
-        <section className="w-[30rem] border-2 border-black p-10">
+        <section className="mb-10 w-[30rem] border-2 border-black p-10">
             <ul className="py-5">
                 {modifiedCart.map(
                     (element: modifiedCartItem, index: number) => (
@@ -35,7 +35,7 @@ export default function ListItemsWithPrice(props: props) {
                                     Array.isArray(element.options)
                                         ? element.options.map(
                                               (
-                                                  option: string[],
+                                                  option: string[] | string,
                                                   index: number
                                               ) => {
                                                   if (Array.isArray(option)) {
