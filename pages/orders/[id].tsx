@@ -46,7 +46,7 @@ interface props {
     configData: config;
 }
 
-export default function orderId(props: props) {
+export default function OrderId(props: props) {
     const order: order = props.order[0];
     const [products, setProducts] = useState([]);
 
@@ -60,7 +60,7 @@ export default function orderId(props: props) {
             }
         }
         fetchData();
-    }, []);
+    }, [order.Products]);
 
     return (
         <>
