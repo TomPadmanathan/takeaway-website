@@ -1,7 +1,7 @@
 import { product, products } from '@/interfaces/products';
 
 export default async function convertCompactedProducts(products: string) {
-    type oldProduct = [number, options?: string[][]];
+    type oldProduct = [number, string[][]];
     type oldProducts = oldProduct[];
 
     const productsRes = await fetch('http://localhost:3000/api/products');
