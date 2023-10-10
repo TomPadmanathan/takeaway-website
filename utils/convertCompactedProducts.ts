@@ -9,8 +9,8 @@ export default async function convertCompactedProducts(products: string) {
     const oldProducts: oldProducts = JSON.parse(products);
     let newItemArr: any = [];
 
-    oldProducts.forEach((element: oldProduct) => {
-        productsData.forEach((element2: product) => {
+    oldProducts.forEach((element: oldProduct): void => {
+        productsData.forEach((element2: product): void => {
             if (element[0] === element2.id)
                 newItemArr.push({ ...element2, options: element[1] });
         });
