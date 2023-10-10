@@ -5,6 +5,7 @@ import formatCart from '@/utils/formatCart';
 import { cart, modifiedCartItem } from '@/interfaces/cart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import { config } from '@/interfaces/config';
+import { modifiedCart } from '@/interfaces/cart';
 
 interface props {
     cart: cart;
@@ -12,7 +13,7 @@ interface props {
 }
 
 export default function ListItemsWithPrice(props: props) {
-    const modifiedCart = formatCart(props.cart);
+    const modifiedCart: modifiedCart = formatCart(props.cart);
     const prices = new CalculateCheckoutPrices(props.cart, props.config);
 
     return (

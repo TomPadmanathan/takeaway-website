@@ -26,7 +26,7 @@ export default function AddCartModel(props: props) {
         setSelectedOption(initialSelectedOption);
     }, [props.product.options]);
 
-    function handleAddItemCart() {
+    function handleAddItemCart(): void {
         const newItem = [];
 
         for (let index = quantity; index != 0; index--) {
@@ -55,7 +55,7 @@ export default function AddCartModel(props: props) {
             >
                 <div className="relative flex h-96 w-[40rem] items-center justify-center border-2 border-black bg-slate-200">
                     <button
-                        onClick={() => setOpen(false)}
+                        onClick={(): void => setOpen(false)}
                         className="absolute right-0 top-0"
                     >
                         Close

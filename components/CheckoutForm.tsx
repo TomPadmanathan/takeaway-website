@@ -59,7 +59,7 @@ export default function CheckoutForm() {
             },
         });
 
-        // This only reached if imediate error
+        // This only reached if imediate
         if (error.type === 'card_error' || error.type === 'validation_error')
             setMessage(error.message);
         else setMessage('An unexpected error occurred.');
