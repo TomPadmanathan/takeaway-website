@@ -2,6 +2,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import mysql, { Connection, QueryError } from 'mysql2';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
 
+export const config = {
+    api: {
+        externalResolver: true,
+    },
+};
+
 export default function handler(
     request: NextApiRequest,
     response: NextApiResponse
