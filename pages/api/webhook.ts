@@ -21,7 +21,7 @@ export const config: config = {
     },
 };
 
-export default async (
+const webhookHandler = async (
     request: NextApiRequest,
     response: NextApiResponse
 ): Promise<void> => {
@@ -102,3 +102,4 @@ function createOrder(customer: any, session: stripeSession): void {
         });
     });
 }
+export default webhookHandler;
