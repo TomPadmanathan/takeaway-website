@@ -6,7 +6,8 @@ import { config } from '@/interfaces/config';
 
 export async function getServerSideProps() {
     const productsRes: Response = await fetch(
-        process.env.NEXT_PUBLIC_URL + '/api/products'
+        // process.env.NEXT_PUBLIC_URL + '/api/products'
+        'https://takeaway-website.vercel.app/api/products'
     );
     const productsData: products = await productsRes.json();
 
