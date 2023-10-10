@@ -20,17 +20,14 @@ export default function handler(
         password: process.env.dbPass,
         database: process.env.dbName,
     });
-    const selectStatement: string = `SELECT * FROM Orders;`;
-    connection.connect((err: mysql.QueryError | null) => {
-        if (err) throw err;
-        connection.query(
-            selectStatement,
-            (err: mysql.QueryError, result: orders) => {
-                if (err) throw err;
-                else response.send(result);
+    const sql: string = `SELECT * FROM Orders;`;
+    connection.connect((error: mysql.QueryError | null): void => {
+        if (error) throw error;
+        connection.query(sql, (err: mysql.QueryError, result: orders): void => {
+            if (err) throw err;
+            else response.send(result);
 
-                connection.end();
-            }
-        );
+            connection.end();
+        });
     });
 }

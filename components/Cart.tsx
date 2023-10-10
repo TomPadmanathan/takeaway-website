@@ -4,12 +4,12 @@ import formatPrice from '@/utils/formatPrice';
 import deleteItemCart from '@/utils/deleteItemCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import SecondaryButton from '@/components/SecondaryButton';
 import { config } from '@/interfaces/config';
-import { modifiedCartItem } from '@/interfaces/cart';
+import { modifiedCartItem, modifiedCart } from '@/interfaces/cart';
 
 interface props {
     isVisible: boolean;
@@ -18,9 +18,9 @@ interface props {
 
 export default function Cart(props: props) {
     const { cart, setCart } = useContext(AppContext);
-    const modifiedCart = formatCart(cart);
+    const modifiedCart: modifiedCart = formatCart(cart);
 
-    const router = useRouter();
+    const router: NextRouter = useRouter();
     const prices = new CalculateCheckoutPrices(cart, props.configData);
 
     return (
@@ -39,7 +39,7 @@ export default function Cart(props: props) {
                                 className="mb-10 flex justify-between "
                             >
                                 <SecondaryButton
-                                    onClick={() =>
+                                    onClick={(): void =>
                                         deleteItemCart(index, cart, setCart)
                                     }
                                     content="Delete"
@@ -117,7 +117,7 @@ export default function Cart(props: props) {
 
                 <button
                     className="h-10 border border-black p-2"
-                    onClick={() => {
+                    onClick={(): void => {
                         prices.subTotal ? router.push('/checkout') : null;
                     }}
                 >

@@ -5,10 +5,12 @@ import { products } from '@/interfaces/products';
 import { config } from '@/interfaces/config';
 
 export async function getServerSideProps() {
-    const productsRes = await fetch('http://localhost:3000/api/products');
+    const productsRes: Response = await fetch(
+        'http://localhost:3000/api/products'
+    );
     const productsData: products = await productsRes.json();
 
-    const configRes = await fetch('http://localhost:3000/api/config');
+    const configRes: Response = await fetch('http://localhost:3000/api/config');
     const configData: config = await configRes.json();
     return {
         props: {

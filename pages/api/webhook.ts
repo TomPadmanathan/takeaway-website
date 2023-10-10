@@ -1,11 +1,6 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
-const stripePrivateKey: any = process.env.STRIPE_PRIVATE_KEY;
-const stripeWebhookSecret: any = process.env.STRIPE_WEBHOOK_SECRET;
-const stripe: Stripe = new Stripe(stripePrivateKey, {
-    apiVersion: '2022-11-15',
-});
 import mysql, { Connection } from 'mysql2';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
 
@@ -30,9 +25,29 @@ export default async (
     request: NextApiRequest,
     response: NextApiResponse
 ): Promise<void> => {
+    if (!process.env.STRIPE_PRIVATE_KEY) {
+        console.error('Stripe private key undefined');
+        return;
+    }
+    if (!process.env.STRIPE_WEBHOOK_SECRET) {
+        console.error('Stripe webhook key undefined');
+        return;
+    }
+    const stripePrivateKey: string = process.env.STRIPE_PRIVATE_KEY;
+    const stripeWebhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET;
+
+    const stripe: Stripe = new Stripe(stripePrivateKey, {
+        apiVersion: '2022-11-15',
+    });
+
     if (request.method === 'POST') {
         const buf: Buffer = await buffer(request);
-        const signature: any = request.headers['stripe-signature'];
+        if (!request.headers['stripe-signature']) {
+            console.error('Signature undefined');
+            return;
+        }
+        const signature: string | string[] =
+            request.headers['stripe-signature'];
 
         let event: Stripe.Event;
 
@@ -69,7 +84,7 @@ function createOrder(customer: any, session: stripeSession): void {
         password: process.env.dbPass,
         database: process.env.dbName,
     });
-    const insertStatement: string = `INSERT INTO orders (DateTime, Email, Name, PhoneNumber, CityTown, AddressLine1, AddressLine2, PostCode, OrderNote, StripeCustomerId, StripePaymentId, Products, TotalPayment) VALUES ('${new Date()
+    const sql: string = `INSERT INTO orders (DateTime, Email, Name, PhoneNumber, CityTown, AddressLine1, AddressLine2, PostCode, OrderNote, StripeCustomerId, StripePaymentId, Products, TotalPayment) VALUES ('${new Date()
         .toISOString()
         .slice(0, 19)
         .replace('T', ' ')}', '${customer.email}', '${customer.name}', '${
@@ -79,9 +94,9 @@ function createOrder(customer: any, session: stripeSession): void {
     }', '${customer.address.postal_code}', '${customer.metadata.orderNote}', '${
         session.metadata.customerId
     }', '${session.id}', '${session.metadata.cart}', '${session.amount}');`;
-    connection.connect((err: mysql.QueryError | null) => {
+    connection.connect((err: mysql.QueryError | null): void => {
         if (err) throw err;
-        connection.query(insertStatement, (err: string, result: any) => {
+        connection.query(sql, (err: string, result: any): void => {
             if (err) throw err;
             sendCustomerEmail(result.insertId);
         });

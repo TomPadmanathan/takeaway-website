@@ -16,8 +16,8 @@ export default function Products(props: props) {
 
     let filteredData = search
         ? props.products.filter((element: product): boolean => {
-              const productName = element.product.toLowerCase();
-              const category = element.category
+              const productName: string = element.product.toLowerCase();
+              const category: string = element.category
                   .map((currentValue: string) => currentValue.toLowerCase())
                   .join(' ');
               return (

@@ -20,19 +20,19 @@ interface props {
 }
 
 function isolateDateFromDateTime(dateTime: string): string {
-    const date = new Date(dateTime);
-    const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1;
-    const year = date.getUTCFullYear();
+    const date: Date = new Date(dateTime);
+    const day: number = date.getUTCDate();
+    const month: number = date.getUTCMonth() + 1;
+    const year: number = date.getUTCFullYear();
     return `${day.toString().padStart(2, '0')}-${month
         .toString()
         .padStart(2, '0')}-${year}`;
 }
 function isolateTimeFromDateTime(dateTime: string): string {
-    const date = new Date(dateTime);
-    const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    const seconds = date.getUTCSeconds();
+    const date: Date = new Date(dateTime);
+    const hours: number = date.getUTCHours();
+    const minutes: number = date.getUTCMinutes();
+    const seconds: number = date.getUTCSeconds();
 
     return `${hours.toString().padStart(2, '0')}:${minutes
         .toString()
@@ -44,7 +44,7 @@ const btnHeadings: string[] = ['Accept', 'Dispatch', 'Delivered'];
 
 function findCorrectBtn(currentStatus: string): string {
     let correctBtnHeading: string = '';
-    status.forEach((value: string, index: number) => {
+    status.forEach((value: string, index: number): void => {
         if (currentStatus === value) correctBtnHeading = btnHeadings[index];
     });
     return correctBtnHeading;
@@ -55,10 +55,13 @@ async function changeOrderStatus(
     currentStatus: string
 ): Promise<void> {
     let newStatus;
-    status.forEach((value: string, index: number) => {
+    status.forEach((value: string, index: number): void => {
         if (value === currentStatus) newStatus = status[index + 1];
     });
-    if (!newStatus) return;
+    if (!newStatus) {
+        console.error('New status is undefined');
+        return;
+    }
     await fetch('/api/changeOrderStatus', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,12 +73,14 @@ async function changeOrderStatus(
 }
 
 export default function Orders(props: props) {
-    const [ordersData, setOrdersData] = useState(props.ordersData);
+    const [ordersData, setOrdersData] = useState<orders>(props.ordersData);
 
     async function fetchOrdersData(): Promise<void> {
         // Change later to wait for response from change status then update
         setTimeout(async () => {
-            const ordersRes = await fetch('http://localhost:3000/api/orders');
+            const ordersRes: Response = await fetch(
+                'http://localhost:3000/api/orders'
+            );
             const ordersData: orders = await ordersRes.json();
             setOrdersData(ordersData);
         }, 50);
@@ -132,7 +137,7 @@ export default function Orders(props: props) {
                                 <td className="border-collapse border p-10">
                                     {findCorrectBtn(order.Status) ? (
                                         <SecondaryButton
-                                            onClick={() => {
+                                            onClick={(): void => {
                                                 changeOrderStatus(
                                                     order.OrderId,
                                                     order.Status

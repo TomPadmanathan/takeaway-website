@@ -20,11 +20,14 @@ export default function handler(
         password: process.env.dbPass,
         database: process.env.dbName,
     });
-    if (!request.body.paymentIntent) return;
+    if (!request.body.paymentIntent) {
+        console.error('Stripe payment intent is not defined');
+        return;
+    }
     const sql: string = `SELECT * FROM Orders WHERE StripePaymentId = ${request.body.paymentIntent};`;
-    connection.connect((err: mysql.QueryError | null) => {
+    connection.connect((err: mysql.QueryError | null): void => {
         if (err) throw err;
-        connection.query(sql, (err: mysql.QueryError, result: order) => {
+        connection.query(sql, (err: mysql.QueryError, result: order): void => {
             if (err) throw err;
             response.send(result);
             connection.end();

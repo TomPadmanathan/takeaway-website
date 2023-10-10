@@ -3,7 +3,8 @@ import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from '@/components/CheckoutForm';
 import { AppContext } from '@/context/AppContext';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
+import { cart } from '@/interfaces/cart';
 
 const stripePromise: Promise<Stripe | null> = loadStripe(
     'pk_test_51NHEXnCgtXcc2Q70RVpnW27B2K9q2NSYP5VA9m7AMjaDpWtpXsVyH8ApqUe3dcoU7iln44Xih7zJgVdOMpTNNv6I00Z3xlQnlO'
@@ -12,10 +13,10 @@ const stripePromise: Promise<Stripe | null> = loadStripe(
 export default function App() {
     const [clientSecret, setClientSecret] = useState<string>('');
     const { cart } = useContext(AppContext);
-    const router = useRouter();
+    const router: NextRouter = useRouter();
 
     async function fetchData() {
-        const response = await fetch('/api/create-payment-intent', {
+        const response: Response = await fetch('/api/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -27,7 +28,7 @@ export default function App() {
         setClientSecret(data.clientSecret);
     }
 
-    useEffect(() => {
+    useEffect((): void => {
         if (cart.length > 0 && router.isReady) fetchData();
     }, [cart, router.isReady]);
 

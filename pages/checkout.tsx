@@ -17,7 +17,7 @@ interface getServerSideProps {
 }
 
 export async function getServerSideProps(): Promise<getServerSideProps> {
-    const configRes = await fetch('http://localhost:3000/api/config');
+    const configRes: Response = await fetch('http://localhost:3000/api/config');
     const configData: config = await configRes.json();
     return {
         props: {

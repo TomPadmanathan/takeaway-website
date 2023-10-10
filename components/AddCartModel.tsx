@@ -18,7 +18,7 @@ export default function AddCartModel(props: props) {
     const [selectedOption, setSelectedOption] = useState<string[]>([]);
     const [quantity, setQuantity] = useState<number>(1);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (!props.product.options) return;
         const initialSelectedOption = props.product.options.map(
             (subArray: string[]) => subArray[0]

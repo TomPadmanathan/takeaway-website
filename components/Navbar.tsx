@@ -4,7 +4,7 @@ import formatPrice from '@/utils/formatPrice';
 import Cart from '@/components/Cart';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import { config } from '@/interfaces/config';
 
@@ -17,7 +17,7 @@ export default function Navbar(props: props) {
     const { cart } = useContext(AppContext);
     const [cartOpen, setCartOpen] = useState<boolean>(false);
     const [search, setSearch] = props.search;
-    const router = useRouter();
+    const router: NextRouter = useRouter();
     const checkoutPrices = new CalculateCheckoutPrices(cart, props.configData);
 
     return (
@@ -27,7 +27,7 @@ export default function Navbar(props: props) {
                     src={Black}
                     className="h-20 w-40 border border-black hover:cursor-pointer"
                     alt={'site-icon'}
-                    onClick={() => {
+                    onClick={(): void => {
                         router.push('/');
                         setSearch('');
                         setCartOpen(false);
@@ -40,7 +40,9 @@ export default function Navbar(props: props) {
                         type="text"
                         className="h-10 w-96 border border-black"
                         value={search}
-                        onChange={event => setSearch(event.target.value)}
+                        onChange={(
+                            event: React.ChangeEvent<HTMLInputElement>
+                        ): void => setSearch(event.target.value)}
                     ></input>
                 </div>
 
@@ -49,7 +51,7 @@ export default function Navbar(props: props) {
                         Profile
                     </button>
                     <button
-                        onClick={() => setCartOpen(!cartOpen)}
+                        onClick={(): void => setCartOpen(!cartOpen)}
                         className="h-10 w-10 overflow-hidden border border-black"
                     >
                         Cart

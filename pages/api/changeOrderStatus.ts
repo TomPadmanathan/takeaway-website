@@ -21,15 +21,15 @@ export default function handler(
         database: process.env.dbName,
     });
 
-    const alterStatement: string = `UPDATE orders SET Status='${request.body.status}' WHERE OrderId='${request.body.id}' `;
+    const sql: string = `UPDATE orders SET Status='${request.body.status}' WHERE OrderId='${request.body.id}' `;
 
-    connection.connect((error: QueryError | null) => {
+    connection.connect((error: QueryError | null): void => {
         if (error) {
             response.status(500).send('Database connection error');
             return;
         }
 
-        connection.query(alterStatement, (error: QueryError) => {
+        connection.query(sql, (error: QueryError): void => {
             if (error) {
                 response.status(500).send('Database query error');
                 return;
@@ -40,10 +40,10 @@ export default function handler(
 
             // Send the email asynchronously
             sendCustomerEmail(request.body.id)
-                .then(() => {
+                .then((): void => {
                     response.send('Operation completed successfully');
                 })
-                .catch((emailError: string) => {
+                .catch((emailError: string): void => {
                     response
                         .status(500)
                         .send('Email sending error: ' + emailError);
