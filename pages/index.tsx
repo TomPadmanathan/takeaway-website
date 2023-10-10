@@ -6,14 +6,14 @@ import { config } from '@/interfaces/config';
 
 export async function getServerSideProps() {
     const productsRes: Response = await fetch(
-        // process.env.NEXT_PUBLIC_URL + '/api/products'
-        'https://takeaway-website.vercel.app/api/products'
+        process.env.NEXT_PUBLIC_URL + '/api/products'
+        // 'https://takeaway-website.vercel.app/api/products'
     );
     const productsData: products = await productsRes.json();
 
     const configRes: Response = await fetch(
-        // process.env.NEXT_PUBLIC_URL + '/api/config'
-        'https://takeaway-website.vercel.app/api/config'
+        process.env.NEXT_PUBLIC_URL + '/api/config'
+        // 'https://takeaway-website.vercel.app/api/config'
     );
     const configData: config = await configRes.json();
     return {
