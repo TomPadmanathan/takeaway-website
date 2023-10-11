@@ -2,6 +2,26 @@
 
 This repository contains a work-in-progress takeaway website built using TypeScript, Next.js, MySQL Tailwind CSS. This web application is designed to provide users with a simple way to place orders from restuants.
 
+## View the Hosted Website
+
+You can explore the current version of this project by visiting the following link, which is hosted on Vercel:
+
+[Takeaway Website on Vercel](https://takeaway-website.vercel.app/)
+
+Feel free to browse the site and experience the features we've implemented so far.
+
+This project has been launched in Stripe test mode meaning that the website will not be taking payment upon checkout at this time. To test this please visit the stripe documentation
+
+[Stripe Test Mode Documentation](https://stripe.com/docs/test-mode/)
+
+[Stripe Test Payment Methods](https://stripe.com/docs/testing#cards/)
+
+After creating an order you will be redirected to a customer order page where you can see your order details and status. You will also recieve an email after an order has been places aswell as emails upon order status change.
+
+To see a list of all orders and change the order status visit:
+
+[Takeaway Website Order Page](https://takeaway-website.vercel.app/admin/orders)
+
 ## Features
 
 -   **Ordering System**: Easily place and customize orders. Select items, specify preferences, and add them to your cart.
