@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import mysql, { Connection } from 'mysql2';
-import { order } from '@/interfaces/orders';
+import Order from '@/database/models/Order';
+import sequelize from '@/database/sequlize';
 
 export const config = {
     api: {
@@ -8,25 +8,24 @@ export const config = {
     },
 };
 
-export default function handler(
+export default async function handler(
     request: NextApiRequest,
     response: NextApiResponse
-): void {
+): Promise<void> {
     response.status(200);
 
-    const connection: Connection = mysql.createConnection({
-        host: process.env.dbHost,
-        user: process.env.dbUser,
-        password: process.env.dbPass,
-        database: process.env.dbName,
-    });
-    const sql: string = `SELECT * FROM Orders WHERE OrderId = ${request.body.orderId};`;
-    connection.connect((err: mysql.QueryError | null): void => {
-        if (err) throw err;
-        connection.query(sql, (err: mysql.QueryError, result: order): void => {
-            if (err) throw err;
-            response.send(result);
-            connection.end();
+    await sequelize.sync();
+
+    try {
+        const order = await Order.findOne({
+            where: {
+                orderId: request.body.orderId,
+            },
         });
-    });
+
+        if (order) response.send(order);
+        else console.error('Order not found');
+    } catch (error) {
+        console.error('Sequlize error:', error);
+    }
 }

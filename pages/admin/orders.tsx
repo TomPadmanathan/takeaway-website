@@ -4,7 +4,7 @@ import AdminNav from '@/components/AdminNav';
 import SecondaryButton from '@/components/SecondaryButton';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import { useState } from 'react';
-import isolateDateFromDateTime from '@/utils/isolateDateFromDateTime';
+import isolateDateFromDateTime from '@/utils/getDateFromTimestamp';
 import isolateTimeFromDateTime from '@/utils/isolateTimeFromDateTime';
 
 export async function getServerSideProps() {

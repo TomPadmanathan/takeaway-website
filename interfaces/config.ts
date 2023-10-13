@@ -5,5 +5,6 @@ export interface config {
     };
     delivery: {
         fee: number;
+        estimatedTimeOffset: number;
     };
 }

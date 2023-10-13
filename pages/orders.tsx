@@ -1,4 +1,3 @@
-import { orders } from '@/interfaces/orders';
 import { NextRouter, useRouter } from 'next/router';
 
 async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
@@ -11,20 +10,14 @@ async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                paymentIntent: JSON.stringify(paymentIntent),
+                paymentIntent: paymentIntent,
             }),
         }
     );
-    const data: orders = await response.json();
-    console.log(data);
-
-    if (!data.length) {
-        console.error('paymentIntent is undefined');
-        return;
-    }
+    const data = await response.json();
 
     router.push({
-        pathname: `orders/${data[0].OrderId}`,
+        pathname: `orders/${data.orderId}`,
     });
 }
 

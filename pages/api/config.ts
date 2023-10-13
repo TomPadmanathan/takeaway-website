@@ -14,6 +14,8 @@ export default function handler(
         },
         delivery: {
             fee: 3,
+            // mins
+            estimatedTimeOffset: 45,
         },
     };
 

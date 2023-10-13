@@ -1,19 +1,21 @@
-import { order, orders } from '@/interfaces/orders';
-import isolateDateFromDateTime from '@/utils/isolateDateFromDateTime';
-import isolateTimeFromDateTime from '@/utils/isolateTimeFromDateTime';
+import { orders } from '@/interfaces/orders';
+import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
+import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
 import ListItemsWithPrice from '@/components/ListItemsWithPrice';
 import convertCompactedProducts from '@/utils/convertCompactedProducts';
 import { config } from '@/interfaces/config';
 import { useState, useEffect } from 'react';
+import { NextPageContext } from 'next';
+import Order from '@/database/models/Order';
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: NextPageContext) {
     const response: Response = await fetch(
         process.env.NEXT_PUBLIC_URL + '/api/getOrderFromId',
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                orderId: JSON.stringify(context.query.id),
+                orderId: context.query.id,
             }),
         }
     );
@@ -30,51 +32,41 @@ export async function getServerSideProps(context: any) {
     };
 }
 
-function calculateEstimatedDelvieryTime(timeString: string): string {
-    const [hours, minutes, seconds]: number[] = timeString
-        .split(':')
-        .map(Number);
-    const totalMinutes: number = hours * 60 + minutes + 45;
-    const newHours: number = Math.floor(totalMinutes / 60);
-    const newMinutes: number = totalMinutes % 60;
-    const resultTime: string = `${String(newHours).padStart(2, '0')}:${String(
-        newMinutes
-    ).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    return resultTime;
-}
-
 interface props {
-    order: order[];
+    order: Order;
     configData: config;
 }
 
 export default function OrderId(props: props) {
-    const order: order = props.order[0];
+    const order = props.order;
     const [products, setProducts] = useState([]);
 
     useEffect((): void => {
         async function fetchData() {
             try {
-                const result = await convertCompactedProducts(order.Products);
+                const result = await convertCompactedProducts(order.products);
                 setProducts(result);
             } catch (error) {
                 console.error('Error converting products: ', error);
             }
         }
         fetchData();
-    }, [order.Products]);
+    }, [order.products]);
 
     return (
         <>
             <center className="mt-10 pb-10">
                 <h2 className="text-4xl">Your order is:</h2>
-                <h1 className="text-[80px]">{order.Status.toUpperCase()}</h1>
-                {order.Status === 'delivered' ? null : (
+                <h1 className="text-[80px]">{order.status.toUpperCase()}</h1>
+                {order.status === 'delivered' ? null : (
                     <>
                         <h2>Estimated Delivery Time:</h2>
                         <h2>
-                            {calculateEstimatedDelvieryTime(
-                                isolateTimeFromDateTime(order.DateTime)
+                            {getTimeFromTimestamp(
+                                parseInt(order.timestamp) +
+                                    props.configData.delivery
+                                        .estimatedTimeOffset *
+                                        60000
                             )}
                         </h2>
                     </>
@@ -85,68 +77,63 @@ export default function OrderId(props: props) {
                     <ul className="text-2xl leading-10">
                         <li>
                             <span className="text-slate-500">Date: </span>
-                            {isolateDateFromDateTime(order.DateTime)}
+                            {getDateFromTimestamp(parseInt(order.timestamp))}
                         </li>
                         <li>
                             <span className="text-slate-500">Time: </span>
-                            {isolateTimeFromDateTime(order.DateTime)}
+                            {getTimeFromTimestamp(parseInt(order.timestamp))}
                         </li>
                         <li>
                             <span className="text-slate-500">Email: </span>
-                            {order.Email}
+                            {order.email}
                         </li>
                         <li>
                             <span className="text-slate-500">Name: </span>
-                            {order.Name}
+                            {order.name}
                         </li>
                         <li>
                             <span className="text-slate-500">
                                 Phone Number:{' '}
                             </span>
-                            {order.PhoneNumber}
+                            {order.phoneNumber}
                         </li>
                         <li>
                             <span className="text-slate-500">City/Town: </span>
-                            {order.CityTown}
+                            {order.cityTown}
                         </li>
                         <li>
                             <span className="text-slate-500">
                                 Address Line 1:{' '}
                             </span>
-                            {order.AddressLine1}
+                            {order.addressLine1}
                         </li>
-                        {order.AddressLine2 ? (
+                        {order.addressLine2 ? (
                             <li>
                                 <span className="text-slate-500">
                                     Address Line 2:{' '}
                                 </span>
-                                {order.AddressLine2}
+                                {order.addressLine2}
                             </li>
                         ) : null}
                         <li>
                             <span className="text-slate-500">Postcode: </span>
-                            {order.PostCode}
+                            {order.postCode}
                         </li>
                         <li>
                             <span className="text-slate-500">Order Id: </span>
-                            {order.OrderId}
+                            {order.orderId}
                         </li>
-                        {order.OrderNote === 'undefined' ? null : (
+                        {order.orderNote === 'undefined' ? null : (
                             <li>
                                 <span className="text-slate-500">
                                     Order Note:
                                 </span>
-                                {order.OrderNote}
+                                {order.orderNote}
                             </li>
                         )}
                     </ul>
                 </section>
-                {products.length > 0 && (
-                    <ListItemsWithPrice
-                        cart={products}
-                        config={props.configData}
-                    />
-                )}
+                <ListItemsWithPrice cart={products} config={props.configData} />
             </div>
         </>
     );
