@@ -4,12 +4,13 @@ import AdminNav from '@/components/AdminNav';
 import SecondaryButton from '@/components/SecondaryButton';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import { useState } from 'react';
-import isolateDateFromDateTime from '@/utils/getDateFromTimestamp';
-import isolateTimeFromDateTime from '@/utils/isolateTimeFromDateTime';
+import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
+import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
+import Order from '@/database/models/Order';
 
 export async function getServerSideProps() {
     const ordersRes = await fetch(process.env.NEXT_PUBLIC_URL + '/api/orders');
-    const ordersData: orders = await ordersRes.json();
+    const ordersData: Order[] = await ordersRes.json();
     return {
         props: {
             ordersData,
@@ -99,44 +100,48 @@ export default function Orders(props: props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {ordersData.map((order: order, index: number) => (
+                        {ordersData.map((order: any, index: number) => (
                             <tr key={index}>
                                 <td className="border-collapse border p-10">
-                                    {isolateTimeFromDateTime(order.DateTime)}
+                                    {getTimeFromTimestamp(
+                                        parseInt(order.timestamp)
+                                    )}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {isolateDateFromDateTime(order.DateTime)}
+                                    {getDateFromTimestamp(
+                                        parseInt(order.timestamp)
+                                    )}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {order.Name}
+                                    {order.name}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {order.PostCode}
+                                    {order.postCode}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {order.OrderId}
+                                    {order.orderId}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {findCorrectBtn(order.Status) ? (
+                                    {findCorrectBtn(order.status) ? (
                                         <SecondaryButton
                                             onClick={(): void => {
                                                 changeOrderStatus(
-                                                    order.OrderId,
-                                                    order.Status
+                                                    order.orderId,
+                                                    order.status
                                                 );
                                                 fetchOrdersData();
                                             }}
                                             content={findCorrectBtn(
-                                                order.Status
+                                                order.status
                                             )}
                                         />
                                     ) : null}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {capitaliseFirstChar(order.Status)}
+                                    {capitaliseFirstChar(order.status)}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    £{formatPrice(order.TotalPayment / 100)}
+                                    £{formatPrice(order.totalPayment / 100)}
                                 </td>
                             </tr>
                         ))}

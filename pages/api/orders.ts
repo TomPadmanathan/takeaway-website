@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import mysql, { Connection } from 'mysql2';
-import { orders } from '@/interfaces/orders';
+import sequelize from '@/database/sequlize';
+import Order from '@/database/models/Order';
 
 export const config = {
     api: {
@@ -8,26 +8,35 @@ export const config = {
     },
 };
 
-export default function handler(
+export default async function handler(
     request: NextApiRequest,
     response: NextApiResponse
-): void {
+): Promise<void> {
     response.status(200);
 
-    const connection: Connection = mysql.createConnection({
-        host: process.env.dbHost,
-        user: process.env.dbUser,
-        password: process.env.dbPass,
-        database: process.env.dbName,
-    });
-    const sql: string = `SELECT * FROM Orders;`;
-    connection.connect((error: mysql.QueryError | null): void => {
-        if (error) throw error;
-        connection.query(sql, (err: mysql.QueryError, result: orders): void => {
-            if (err) throw err;
-            else response.send(result);
+    // const connection: Connection = mysql.createConnection({
+    //     host: process.env.dbHost,
+    //     user: process.env.dbUser,
+    //     password: process.env.dbPass,
+    //     database: process.env.dbName,
+    // });
+    // const sql: string = `SELECT * FROM Orders;`;
+    // connection.connect((error: mysql.QueryError | null): void => {
+    //     if (error) throw error;
+    //     connection.query(sql, (err: mysql.QueryError, result: orders): void => {
+    //         if (err) throw err;
+    //         else response.send(result);
 
-            connection.end();
-        });
-    });
+    //         connection.end();
+    //     });
+    // });
+    await sequelize.sync();
+
+    try {
+        const order = await Order.findAll();
+
+        response.send(order);
+    } catch (error) {
+        console.error('Sequlize error:', error);
+    }
 }
