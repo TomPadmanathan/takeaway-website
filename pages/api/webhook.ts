@@ -3,8 +3,8 @@ import Stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql, { Connection } from 'mysql2';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
-import Order from '@/models/Order';
-import sequelize from '@/database';
+import Order from '@/database/models/Order';
+import sequelize from '@/database/sequlize';
 
 interface config {
     api: {

@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import Order from '@/models/Order';
+import Order from '@/database/models/Order';
 
 const sequelize = new Sequelize({
     database: process.env.dbName,
