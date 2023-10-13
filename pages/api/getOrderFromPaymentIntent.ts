@@ -26,7 +26,6 @@ export default async function handler(
                 stripePaymentId: request.body.paymentIntent,
             },
         });
-        console.log(request.body.paymentIntent);
 
         if (order) response.send(order);
         else console.error('Order not found');

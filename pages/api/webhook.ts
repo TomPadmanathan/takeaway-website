@@ -108,7 +108,10 @@ async function createOrder(
         totalPayment: session.amount,
     } as Order);
 
-    await newOrder.save().catch((error: string) => {
-        console.error('Error inserting order:', error);
-    });
+    await newOrder
+        .save()
+        .then((order: Order) => sendCustomerEmail(order.orderId))
+        .catch((error: string) => {
+            console.error('Error inserting order:', error);
+        });
 }
