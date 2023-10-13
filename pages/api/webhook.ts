@@ -3,6 +3,8 @@ import Stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
 import mysql, { Connection } from 'mysql2';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
+import Order from '@/models/Order';
+import sequelize from '@/database';
 
 interface config {
     api: {
@@ -21,10 +23,10 @@ export const config: config = {
     },
 };
 
-const webhookHandler = async (
+export default async function webhookHandler(
     request: NextApiRequest,
     response: NextApiResponse
-): Promise<void> => {
+): Promise<void> {
     if (!process.env.STRIPE_PRIVATE_KEY) {
         console.error('Stripe private key undefined');
         return;
@@ -75,31 +77,38 @@ const webhookHandler = async (
         response.setHeader('Allow', 'POST');
         response.status(405).end('Method Not Allowed');
     }
-};
+}
 
-function createOrder(customer: any, session: stripeSession): void {
-    const connection: Connection = mysql.createConnection({
-        host: process.env.dbHost,
-        user: process.env.dbUser,
-        password: process.env.dbPass,
-        database: process.env.dbName,
-    });
-    const sql: string = `INSERT INTO orders (DateTime, Email, Name, PhoneNumber, CityTown, AddressLine1, AddressLine2, PostCode, OrderNote, StripeCustomerId, StripePaymentId, Products, TotalPayment) VALUES ('${new Date()
-        .toISOString()
-        .slice(0, 19)
-        .replace('T', ' ')}', '${customer.email}', '${customer.name}', '${
-        customer.phone
-    }', '${customer.address.city}', '${customer.address.line1}', '${
-        customer.address.line2
-    }', '${customer.address.postal_code}', '${customer.metadata.orderNote}', '${
-        session.metadata.customerId
-    }', '${session.id}', '${session.metadata.cart}', '${session.amount}');`;
-    connection.connect((err: mysql.QueryError | null): void => {
-        if (err) throw err;
-        connection.query(sql, (err: string, result: any): void => {
-            if (err) throw err;
-            sendCustomerEmail(result.insertId);
-        });
+async function createOrder(
+    customer: any,
+    session: stripeSession
+): Promise<void> {
+    if (!session.id) {
+        console.error('Stripe payment id is undefined');
+        return;
+    }
+    if (!session.amount) {
+        console.error('Stripe total price is undefined');
+        return;
+    }
+    await sequelize.sync();
+    const newOrder: Order = Order.build({
+        timestamp: String(Date.now()),
+        email: customer.email,
+        name: customer.name,
+        phoneNumber: customer.phone,
+        cityTown: customer.address.city,
+        addressLine1: customer.address.line1,
+        addressLine2: customer.address.line2,
+        postCode: customer.address.postal_code,
+        orderNote: customer.metadata.orderNote,
+        stripeCustomerId: session.metadata.customerId,
+        stripePaymentId: session.id,
+        products: session.metadata.cart,
+        totalPayment: session.amount,
+    } as Order);
+
+    await newOrder.save().catch((error: string) => {
+        console.error('Error inserting order:', error);
     });
 }
-export default webhookHandler;
