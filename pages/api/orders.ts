@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import sequelize from '@/database/sequlize';
+import sequelize from '@/database/sequelize';
 import Order from '@/database/models/Order';
 
 export const config = {

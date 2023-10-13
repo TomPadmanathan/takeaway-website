@@ -39,7 +39,7 @@ class Order extends Model<Order> {
     postCode!: string;
 
     @Column
-    orderNote: string = '';
+    orderNote!: string;
 
     @Column
     stripeCustomerId!: string;

@@ -1,10 +1,9 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
-import mysql, { Connection } from 'mysql2';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
 import Order from '@/database/models/Order';
-import sequelize from '@/database/sequlize';
+import sequelize from '@/database/sequelize';
 
 interface config {
     api: {

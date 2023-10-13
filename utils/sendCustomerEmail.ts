@@ -1,42 +1,22 @@
 import path from 'path';
 import dotenv from 'dotenv';
 import sgMail from '@sendgrid/mail';
-import mysql, {
-    Pool,
-    OkPacket,
-    FieldPacket,
-    PoolConnection,
-} from 'mysql2/promise';
+import sequelize from '@/database/sequelize';
+import Order from '@/database/models/Order';
 
 dotenv.config({
     path: path.resolve(__dirname, '../../.env'),
 });
 
 export default async function sendCustomerEmail(orderId: number) {
+    const orderTypeCheck = await queryDatabase(orderId);
+    if (!orderTypeCheck) {
+        console.error('OrderId invalid');
+        return;
+    }
+    const order: Order = orderTypeCheck;
+
     try {
-        const pool: Pool = mysql.createPool({
-            host: process.env.dbHost!,
-            user: process.env.dbUser!,
-            password: process.env.dbPass!,
-            database: process.env.dbName!,
-        });
-
-        // Get a connection from the pool
-        const connection: PoolConnection = await pool.getConnection();
-
-        // Define your SQL query to retrieve data
-        const sql: string = `SELECT * FROM orders WHERE OrderId = ${orderId}`;
-
-        // Execute the SQL query with the provided orderId
-        const [rows]: [OkPacket, FieldPacket[]] = await connection.query(sql, [
-            orderId,
-        ]);
-
-        // Release the connection back to the pool
-        connection.release();
-
-        const [queryResult]: any = rows;
-
         // Check if SENDGRID ENV's are defined in the environment
         if (!process.env.SENDGRID_API_KEY) {
             console.error('SENDGRID_API_KEY is not defined in the env.');
@@ -58,28 +38,28 @@ export default async function sendCustomerEmail(orderId: number) {
         }
 
         const msg: msg = {
-            to: queryResult.Email,
+            to: order.email,
             from: process.env.SENDGRID_SENDING_EMAIL,
             subject: 'Sending with SendGrid is Fun',
             text: 'and easy to do anywhere, even with Node.js',
-            html: `<strong>Order Id: ${JSON.stringify(queryResult)}</strong>`,
+            html: `<strong>Order Id: ${order.orderId}</strong>`,
         };
-        switch (queryResult.Status) {
+        switch (order.status) {
             case 'pending':
                 msg.subject = 'We have recived your order';
-                msg.html = `<h1>Thank you for ordering</h1><h2>Your order is currently pending and you will recieve an order acceptance email shortly.</h2><p>Order Id: ${queryResult.OrderId}</p>`;
+                msg.html = `<h1>Thank you for ordering</h1><h2>Your order is currently pending and you will recieve an order acceptance email shortly.</h2><p>Order Id: ${order.orderId}</p>`;
                 break;
             case 'accepted':
                 msg.subject = 'Your order has been accepted';
-                msg.html = `<h1>Thank you for ordering</h1><h2>Your order has been accepted and you will recieve an email once your order has been dispatched.</h2><p>Order Id: ${queryResult.OrderId}</p>`;
+                msg.html = `<h1>Thank you for ordering</h1><h2>Your order has been accepted and you will recieve an email once your order has been dispatched.</h2><p>Order Id: ${order.orderId}</p>`;
                 break;
             case 'dispatched':
                 msg.subject = 'Your order has been dispatched';
-                msg.html = `<h1>Thank you for ordering</h1><h2>Your order has been dispatched and your food will be with you shortly.</h2><p>Order Id: ${queryResult.OrderId}</p>`;
+                msg.html = `<h1>Thank you for ordering</h1><h2>Your order has been dispatched and your food will be with you shortly.</h2><p>Order Id: ${order.orderId}</p>`;
                 break;
             case 'delivered':
                 msg.subject = 'Your order has been delivered';
-                msg.html = `<h1>Thank you for ordering</h1><h2>Your order has been delivered. Enjoy your meal!</h2><p>Order Id: ${queryResult.OrderId}</p>`;
+                msg.html = `<h1>Thank you for ordering</h1><h2>Your order has been delivered. Enjoy your meal!</h2><p>Order Id: ${order.orderId}</p>`;
                 break;
             default:
                 console.error('Order Status is not recognised');
@@ -91,4 +71,20 @@ export default async function sendCustomerEmail(orderId: number) {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+async function queryDatabase(orderId: number): Promise<Order | void | null> {
+    await sequelize.sync();
+
+    try {
+        const order: Order | null = await Order.findOne({
+            where: {
+                orderId: orderId,
+            },
+        });
+        return order;
+    } catch (error) {
+        console.error('Sequlize error:', error);
+    }
+    return;
 }

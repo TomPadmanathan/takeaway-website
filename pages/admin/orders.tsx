@@ -34,7 +34,7 @@ function findCorrectBtn(currentStatus: string): string {
 }
 
 async function changeOrderStatus(
-    id: number,
+    orderId: number,
     currentStatus: string
 ): Promise<void> {
     let newStatus;
@@ -49,7 +49,7 @@ async function changeOrderStatus(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            id: id,
+            orderId: orderId,
             status: newStatus,
         }),
     });
