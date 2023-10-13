@@ -19,7 +19,7 @@ export async function getServerSideProps() {
 }
 
 interface props {
-    ordersData: orders;
+    ordersData: Order[];
 }
 
 const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];
@@ -56,7 +56,7 @@ async function changeOrderStatus(
 }
 
 export default function Orders(props: props) {
-    const [ordersData, setOrdersData] = useState<orders>(props.ordersData);
+    const [ordersData, setOrdersData] = useState<Order[]>(props.ordersData);
 
     async function fetchOrdersData(): Promise<void> {
         // Change later to wait for response from change status then update
@@ -64,7 +64,7 @@ export default function Orders(props: props) {
             const ordersRes: Response = await fetch(
                 process.env.NEXT_PUBLIC_URL + '/api/orders'
             );
-            const ordersData: orders = await ordersRes.json();
+            const ordersData: Order[] = await ordersRes.json();
             setOrdersData(ordersData);
         }, 50);
     }
