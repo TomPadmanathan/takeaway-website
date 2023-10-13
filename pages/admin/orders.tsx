@@ -100,7 +100,7 @@ export default function Orders(props: props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {ordersData.map((order: any, index: number) => (
+                        {ordersData.map((order: Order, index: number) => (
                             <tr key={index}>
                                 <td className="border-collapse border p-10">
                                     {getTimeFromTimestamp(
