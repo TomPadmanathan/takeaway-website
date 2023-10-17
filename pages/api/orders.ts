@@ -21,6 +21,7 @@ export default async function handler(
 
         response.send(order);
     } catch (error) {
+        response.send('Sequlize error');
         console.error('Sequlize error:', error);
     }
 }
