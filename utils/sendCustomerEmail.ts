@@ -40,9 +40,8 @@ export default async function sendCustomerEmail(orderId: number) {
         const msg: msg = {
             to: order.email,
             from: process.env.SENDGRID_SENDING_EMAIL,
-            subject: 'Sending with SendGrid is Fun',
-            text: 'and easy to do anywhere, even with Node.js',
-            html: `<strong>Order Id: ${order.orderId}</strong>`,
+            subject: '',
+            html: '',
         };
         switch (order.status) {
             case 'pending':
