@@ -12,7 +12,7 @@ import {
 @Table
 class Order extends Model<Order> {
     @Column
-    status: string = 'pending';
+    status!: string;
 
     @Column
     timestamp!: string;

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import mysql, { Connection, QueryError } from 'mysql2';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
+import sequelize from '@/database/sequelize';
+import Order from '@/database/models/Order';
 
 export const config = {
     api: {
@@ -8,46 +9,30 @@ export const config = {
     },
 };
 
-export default function handler(
+export default async function handler(
     request: NextApiRequest,
     response: NextApiResponse
-): void {
+): Promise<void> {
     response.status(200);
 
-    const connection: Connection = mysql.createConnection({
-        host: process.env.dbHost,
-        user: process.env.dbUser,
-        password: process.env.dbPass,
-        database: process.env.dbName,
-    });
+    await sequelize.sync();
 
-    const sql: string = `UPDATE orders SET Status='${request.body.status}' WHERE OrderId='${request.body.id}' `;
-
-    connection.connect((error: QueryError | null): void => {
-        if (error) {
-            response.status(500).send('Database connection error');
-            return;
-        }
-
-        connection.query(sql, (error: QueryError): void => {
-            if (error) {
-                response.status(500).send('Database query error');
-                return;
+    try {
+        await Order.update(
+            { status: request.body.status },
+            {
+                where: {
+                    orderId: request.body.orderId,
+                },
             }
+        );
 
-            // Close the database connection
-            connection.end();
-
-            // Send the email asynchronously
-            sendCustomerEmail(request.body.id)
-                .then((): void => {
-                    response.send('Operation completed successfully');
-                })
-                .catch((emailError: string): void => {
-                    response
-                        .status(500)
-                        .send('Email sending error: ' + emailError);
-                });
-        });
-    });
+        sendCustomerEmail(request.body.orderId).catch(
+            (emailError: string): void => {
+                response.status(500).send('Email sending error: ' + emailError);
+            }
+        );
+    } catch (error) {
+        console.error('Sequlize error:', error);
+    }
 }

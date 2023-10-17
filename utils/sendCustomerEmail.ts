@@ -66,9 +66,8 @@ export default async function sendCustomerEmail(orderId: number) {
         }
 
         await sgMail.send(msg);
-        console.log('Email sent');
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error sending email:', error);
     }
 }
 
