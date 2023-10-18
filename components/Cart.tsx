@@ -16,7 +16,7 @@ interface props {
     configData: config;
 }
 
-export default function Cart(props: props) {
+export default function Cart(props: props): JSX.Element {
     const { cart, setCart } = useContext(AppContext);
     const modifiedCart: modifiedCart = formatCart(cart);
 

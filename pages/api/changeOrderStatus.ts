@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse, NextConfig } from 'next';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
 import sequelize from '@/database/sequelize';
 import Order from '@/database/models/Order';
 
-export const config = {
+export const config: NextConfig = {
     api: {
         externalResolver: true,
     },
@@ -32,7 +32,7 @@ export default async function handler(
                 response.status(500).send('Email sending error: ' + emailError);
             }
         );
-    } catch (error) {
+    } catch (error: unknown) {
         console.error('Sequlize error:', error);
     }
 }

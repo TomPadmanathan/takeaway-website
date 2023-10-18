@@ -21,7 +21,7 @@ async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
     });
 }
 
-export default function Orders() {
+export default function Orders(): void {
     const router: NextRouter = useRouter();
     fetchOrderFromPaymentIntent(router);
 }

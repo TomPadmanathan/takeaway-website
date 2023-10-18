@@ -12,7 +12,7 @@ interface props {
     config: config;
 }
 
-export default function ListItemsWithPrice(props: props) {
+export default function ListItemsWithPrice(props: props): JSX.Element {
     const modifiedCart: modifiedCart = formatCart(props.cart);
     const prices = new CalculateCheckoutPrices(props.cart, props.config);
 

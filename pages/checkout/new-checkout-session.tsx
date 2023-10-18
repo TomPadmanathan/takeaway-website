@@ -11,7 +11,7 @@ if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
     console.error('Stripe public key not defined');
 else stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-export default function App() {
+export default function App(): JSX.Element {
     const [clientSecret, setClientSecret] = useState<string>('');
     const { cart } = useContext(AppContext);
     const router: NextRouter = useRouter();

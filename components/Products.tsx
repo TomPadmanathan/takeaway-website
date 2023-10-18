@@ -9,7 +9,7 @@ interface props {
     products: products;
 }
 
-export default function Products(props: props) {
+export default function Products(props: props): JSX.Element {
     const [activeProductNav, setActiveProductNav] =
         useState<productNavButtons>('popular');
     const search: string = props.search;

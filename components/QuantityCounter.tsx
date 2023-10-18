@@ -5,7 +5,7 @@ interface props {
     ];
 }
 
-export default function QuantityCounter(props: props) {
+export default function QuantityCounter(props: props): JSX.Element {
     const [quantity, setQuantity] = props.quantity;
     return (
         <>

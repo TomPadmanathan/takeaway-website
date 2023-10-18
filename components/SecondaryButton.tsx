@@ -5,7 +5,7 @@ interface props {
     type?: 'button' | 'reset' | 'submit';
 }
 
-export default function SecondaryButton(props: props) {
+export default function SecondaryButton(props: props): JSX.Element {
     let defaultClasses: string = 'block h-10 border border-black p-2';
 
     return (

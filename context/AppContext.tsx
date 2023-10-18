@@ -11,7 +11,7 @@ export const AppContext = createContext<IAppContext>({
     setCart: () => {},
 });
 
-export function useCart() {
+export function useCart(): IAppContext {
     const { cart, setCart } = useContext(AppContext);
     return { cart, setCart };
 }
@@ -24,7 +24,7 @@ export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
     const [cart, setCart] = useState<cart>([]);
 
     // Get cart from storage
-    useEffect(() => {
+    useEffect((): void => {
         if (!cart.length) {
             const storedCart = localStorage.getItem('cart');
             if (storedCart) setCart(JSON.parse(storedCart));

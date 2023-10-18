@@ -42,7 +42,7 @@ interface props {
     value?: string;
 }
 
-export default function PrimaryInput(props: props) {
+export default function PrimaryInput(props: props): JSX.Element {
     return (
         <input
             type={props.type ? props.type : 'text'}

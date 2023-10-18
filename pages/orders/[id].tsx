@@ -1,4 +1,4 @@
-import { orders } from '@/interfaces/orders';
+import { orders, order } from '@/interfaces/orders';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
 import ListItemsWithPrice from '@/components/ListItemsWithPrice';
@@ -8,7 +8,18 @@ import { useState, useEffect } from 'react';
 import { NextPageContext } from 'next';
 import Order from '@/database/models/Order';
 
-export async function getServerSideProps(context: NextPageContext) {
+interface props {
+    order: Order;
+    configData: config;
+}
+
+interface getServerSideProps {
+    props: props;
+}
+
+export async function getServerSideProps(
+    context: NextPageContext
+): Promise<getServerSideProps> {
     const response: Response = await fetch(
         process.env.NEXT_PUBLIC_URL + '/api/getOrderFromId',
         {
@@ -19,7 +30,7 @@ export async function getServerSideProps(context: NextPageContext) {
             }),
         }
     );
-    const order: orders = await response.json();
+    const order: Order = await response.json();
     const configRes: Response = await fetch(
         process.env.NEXT_PUBLIC_URL + '/api/config'
     );
@@ -32,13 +43,8 @@ export async function getServerSideProps(context: NextPageContext) {
     };
 }
 
-interface props {
-    order: Order;
-    configData: config;
-}
-
-export default function OrderId(props: props) {
-    const order = props.order;
+export default function OrderId(props: props): JSX.Element {
+    const order: Order = props.order;
     const [products, setProducts] = useState([]);
 
     useEffect((): void => {

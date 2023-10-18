@@ -4,7 +4,16 @@ import Products from '@/components/Products';
 import { products } from '@/interfaces/products';
 import { config } from '@/interfaces/config';
 
-export async function getServerSideProps() {
+interface props {
+    productsData: products;
+    configData: config;
+}
+
+interface getServerSideProps {
+    props: props;
+}
+
+export async function getServerSideProps(): Promise<getServerSideProps> {
     const productsRes: Response = await fetch(
         process.env.NEXT_PUBLIC_URL + '/api/products'
     );
@@ -22,12 +31,7 @@ export async function getServerSideProps() {
     };
 }
 
-interface props {
-    productsData: products;
-    configData: config;
-}
-
-export default function Home({ productsData, configData }: props) {
+export default function Home({ productsData, configData }: props): JSX.Element {
     const [search, setSearch] = useState<string>('');
 
     return (

@@ -1,22 +1,17 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse, NextConfig } from 'next';
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
 import Order from '@/database/models/Order';
 import sequelize from '@/database/sequelize';
 
-interface config {
-    api: {
-        bodyParser: boolean;
-    };
-}
 interface stripeSession extends Stripe.Event.Data.Object {
     metadata?: any;
     id?: string;
     amount?: number;
 }
 
-export const config: config = {
+export const config: NextConfig = {
     api: {
         bodyParser: false,
     },

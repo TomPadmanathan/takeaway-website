@@ -10,7 +10,7 @@ interface props {
     product: product;
 }
 
-export default function ProductTab(props: props) {
+export default function ProductTab(props: props): JSX.Element {
     const [open, setOpen] = useState<boolean>(false);
 
     return (

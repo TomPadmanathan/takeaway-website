@@ -12,7 +12,7 @@ interface props {
     product: product;
 }
 
-export default function AddCartModel(props: props) {
+export default function AddCartModel(props: props): JSX.Element {
     const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<string[]>([]);

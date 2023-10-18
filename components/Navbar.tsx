@@ -13,7 +13,7 @@ interface props {
     configData: config;
 }
 
-export default function Navbar(props: props) {
+export default function Navbar(props: props): JSX.Element {
     const { cart } = useContext(AppContext);
     const [cartOpen, setCartOpen] = useState<boolean>(false);
     const [search, setSearch] = props.search;

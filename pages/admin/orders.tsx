@@ -8,7 +8,14 @@ import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
 import Order from '@/database/models/Order';
 
-export async function getServerSideProps() {
+interface props {
+    ordersData: Order[];
+}
+interface serverSideProps {
+    props: props;
+}
+
+export async function getServerSideProps(): Promise<serverSideProps> {
     const ordersRes = await fetch(process.env.NEXT_PUBLIC_URL + '/api/orders');
     const ordersData: Order[] = await ordersRes.json();
     return {
@@ -16,10 +23,6 @@ export async function getServerSideProps() {
             ordersData,
         },
     };
-}
-
-interface props {
-    ordersData: Order[];
 }
 
 const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];
@@ -55,7 +58,7 @@ async function changeOrderStatus(
     });
 }
 
-export default function Orders(props: props) {
+export default function Orders(props: props): JSX.Element {
     const [ordersData, setOrdersData] = useState<Order[]>(props.ordersData);
 
     async function fetchOrdersData(): Promise<void> {
@@ -69,7 +72,7 @@ export default function Orders(props: props) {
         }, 50);
     }
 
-    const tableHeadings = [
+    const tableHeadings: string[] = [
         'Time',
         'Date',
         'Name',

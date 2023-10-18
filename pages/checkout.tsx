@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { useRouter } from 'next/router';
+import { NextRouter, Router, useRouter } from 'next/router';
 import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
 import SecondaryButton from '@/components/SecondaryButton';
 import PrimaryInput from '@/components/PrimaryInput';
@@ -44,8 +44,8 @@ function checkoutUserInfomationToQueryParams(
     };
 }
 
-export default function Home({ configData }: props) {
-    const router = useRouter();
+export default function Home({ configData }: props): JSX.Element {
+    const router: NextRouter = useRouter();
     const { cart } = useContext(AppContext);
     const [checkoutUserInfomation, setCheckoutUserInfomation] =
         useState<checkoutUserInfomation>({

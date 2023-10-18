@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
 import sequelize from '@/database/sequelize';
 import Order from '@/database/models/Order';
 
-export const config = {
+export const config: NextConfig = {
     api: {
         externalResolver: true,
     },
@@ -17,7 +17,7 @@ export default async function handler(
     await sequelize.sync();
 
     try {
-        const order = await Order.findAll();
+        const order: Order[] = await Order.findAll();
 
         response.send(order);
     } catch (error) {

@@ -6,7 +6,7 @@ interface props {
     title: productNavButtons;
 }
 
-export default function ProductNavButton(props: props) {
+export default function ProductNavButton(props: props): JSX.Element {
     const [activeProductNav, setActiveProductNav] = props.activeProductNav;
 
     return (
