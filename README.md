@@ -48,11 +48,11 @@ Production Database currently unavalible
 
 -   **MySQL**: Currently using MySQL as the database management system to store and retrieve data efficiently.
 
+-   **Sequelize**: To query the MySQL database efficiently and to prevent sequrity risks.
+
 ## Upcoming Changes
 
 I am committed to continuously improving this project. Here are some changes and features I plan to implement in the near future:
-
--   **Implement Database ORM:** I will be introducing a database ORM (Object-Relational Mapping) to simplify database operations and enhance data integrity.
 
 -   **Switch from Flatfile to Relational Database:** Migrate from a flatfile data storage system to a more robust relational database to improve data management and scalability.
 
@@ -76,19 +76,27 @@ git clone https://github.com/TomPadmanathan/takeaway-website.git
 cd takeaway-website
 ```
 
-3. Install the project dependencies
+3. Install the project dependencies.
 
 ```bash
 npm i
 ```
 
-4. Start the development server.
+4. Set environment variables.
+
+```bash
+cp .env.example .env
+```
+
+Then enter your environment variables.
+
+5. Start the development server.
 
 ```bash
 npm run dev
 ```
 
-5. Open your browser and access the website at http://localhost:3000.
+6. Open your browser and access the website at http://localhost:3000
 
 ## Contribution Guidelines
 
