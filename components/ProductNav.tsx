@@ -1,4 +1,7 @@
+// Components
 import ProductNavButton from '@/components/ProductNavButton';
+
+// Types/Interfaces
 import { activeProductNav } from '@/interfaces/productNav';
 
 interface props {

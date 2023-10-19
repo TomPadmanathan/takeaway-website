@@ -1,9 +1,16 @@
+// React/Next
 import Image from 'next/image';
-import formatPrice from '@/utils/formatPrice';
 import { useState } from 'react';
-import AddCartModel from '@/components/AddCartModel';
+
+// Utils
+import formatPrice from '@/utils/formatPrice';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
+
+// Components
+import AddCartModel from '@/components/AddCartModel';
 import SecondaryButton from '@/components/SecondaryButton';
+
+// Types/Interfaces
 import { product } from '@/interfaces/products';
 
 interface props {

@@ -1,9 +1,12 @@
+// Utils
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
-import { activeProductNav, productNavButtons } from '@/interfaces/productNav';
+
+// Types/Interfaces
+import { activeProductNav, productNavButton } from '@/interfaces/productNav';
 
 interface props {
     activeProductNav: activeProductNav;
-    title: productNavButtons;
+    title: productNavButton;
 }
 
 export default function ProductNavButton(props: props): JSX.Element {

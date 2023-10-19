@@ -1,4 +1,7 @@
+// React/Next
 import React, { useState, useEffect, FormEvent } from 'react';
+
+// Packages
 import {
     PaymentElement,
     LinkAuthenticationElement,
@@ -6,15 +9,24 @@ import {
     useElements,
 } from '@stripe/react-stripe-js';
 
+// Types/Interfaces
+import {
+    StripeElements,
+    Stripe,
+    PaymentIntentResult,
+    StripePaymentElementOptions,
+    StripeLinkAuthenticationElementChangeEvent,
+} from '@stripe/stripe-js';
+
 export default function CheckoutForm(): JSX.Element {
-    const stripe = useStripe();
-    const elements = useElements();
+    const stripe: Stripe | null = useStripe();
+    const elements: StripeElements | null = useElements();
 
     const [email, setEmail] = useState<string>('');
     const [message, setMessage] = useState<string | undefined>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (!stripe) return;
 
         const clientSecret = new URLSearchParams(window.location.search).get(
@@ -25,7 +37,12 @@ export default function CheckoutForm(): JSX.Element {
 
         stripe
             .retrievePaymentIntent(clientSecret)
-            .then(({ paymentIntent }: any) => {
+            .then(({ paymentIntent }: PaymentIntentResult) => {
+                if (!paymentIntent?.status) {
+                    console.error('Payment intent status is undefined');
+                    return;
+                }
+
                 switch (paymentIntent.status) {
                     case 'succeeded':
                         setMessage('Payment succeeded!');
@@ -45,7 +62,9 @@ export default function CheckoutForm(): JSX.Element {
             });
     }, [stripe]);
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(
+        event: FormEvent<HTMLFormElement>
+    ): Promise<void> {
         event.preventDefault();
 
         if (!stripe || !elements) return;
@@ -67,7 +86,7 @@ export default function CheckoutForm(): JSX.Element {
         setIsLoading(false);
     }
 
-    const paymentElementOptions: any = {
+    const paymentElementOptions: StripePaymentElementOptions = {
         layout: 'tabs',
     };
 
@@ -75,7 +94,11 @@ export default function CheckoutForm(): JSX.Element {
         <form id="payment-form" onSubmit={handleSubmit}>
             <LinkAuthenticationElement
                 id="link-authentication-element"
-                onChange={(value: any) => setEmail(value)}
+                onChange={(
+                    value: StripeLinkAuthenticationElementChangeEvent
+                ) => {
+                    if (typeof value === 'string') setEmail(value);
+                }}
             />
             <PaymentElement
                 id="payment-element"

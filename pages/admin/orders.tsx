@@ -1,12 +1,18 @@
-import { order, orders } from '@/interfaces/orders';
-import formatPrice from '@/utils/formatPrice';
-import AdminNav from '@/components/AdminNav';
-import SecondaryButton from '@/components/SecondaryButton';
-import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
+// React/Next
 import { useState } from 'react';
+
+// Database Models
+import Order from '@/database/models/Order';
+
+// Utils
+import formatPrice from '@/utils/formatPrice';
+import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
-import Order from '@/database/models/Order';
+
+// Components
+import AdminNav from '@/components/AdminNav';
+import SecondaryButton from '@/components/SecondaryButton';
 
 interface props {
     ordersData: Order[];
@@ -16,7 +22,9 @@ interface serverSideProps {
 }
 
 export async function getServerSideProps(): Promise<serverSideProps> {
-    const ordersRes = await fetch(process.env.NEXT_PUBLIC_URL + '/api/orders');
+    const ordersRes: Response = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/orders'
+    );
     const ordersData: Order[] = await ordersRes.json();
     return {
         props: {
@@ -63,7 +71,7 @@ export default function Orders(props: props): JSX.Element {
 
     async function fetchOrdersData(): Promise<void> {
         // Change later to wait for response from change status then update
-        setTimeout(async () => {
+        setTimeout(async (): Promise<void> => {
             const ordersRes: Response = await fetch(
                 process.env.NEXT_PUBLIC_URL + '/api/orders'
             );

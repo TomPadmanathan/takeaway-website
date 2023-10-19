@@ -1,19 +1,41 @@
+// React/Next
 import { useContext } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+
+// Context
 import { AppContext } from '@/context/AppContext';
+
+// Utils
 import formatPrice from '@/utils/formatPrice';
-import deleteItemCart from '@/utils/deleteItemCart';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
-import { NextRouter, useRouter } from 'next/router';
 import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
+
+// Components
 import SecondaryButton from '@/components/SecondaryButton';
+
+// Types/Interfaces
 import { config } from '@/interfaces/config';
-import { modifiedCartItem, modifiedCart } from '@/interfaces/cart';
+import {
+    modifiedCartItem,
+    modifiedCart,
+    cart,
+    setCart,
+    cartItem,
+} from '@/interfaces/cart';
 
 interface props {
     isVisible: boolean;
     configData: config;
+}
+
+function deleteItemCart(index: number, cart: cart, setCart: setCart): void {
+    const updatedCart = cart.filter(
+        (element: cartItem, secondIndex: number) => secondIndex !== index
+    );
+    setCart(updatedCart);
+    if (updatedCart.length === 0) localStorage.removeItem('cart');
 }
 
 export default function Cart(props: props): JSX.Element {

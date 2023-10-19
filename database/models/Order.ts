@@ -1,3 +1,4 @@
+// Packages
 import {
     Model,
     Table,
@@ -10,7 +11,7 @@ import {
     timestamps: false,
 })
 @Table
-class Order extends Model<Order> {
+export default class Order extends Model<Order> {
     @Column
     status!: string;
 
@@ -58,5 +59,3 @@ class Order extends Model<Order> {
     @Column
     orderId!: number;
 }
-
-export default Order;

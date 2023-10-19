@@ -1,6 +1,11 @@
+// React/Next
 import React, { useState } from 'react';
+
+// Components
 import Navbar from '@/components/Navbar';
 import Products from '@/components/Products';
+
+// Types/Interfaces
 import { products } from '@/interfaces/products';
 import { config } from '@/interfaces/config';
 

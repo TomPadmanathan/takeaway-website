@@ -1,3 +1,4 @@
+// Types/Interfaces
 import { cart, cartItem } from '@/interfaces/cart';
 
 export function getIdOfElementsInCart(cart: cart): number[] {

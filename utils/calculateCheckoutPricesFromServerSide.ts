@@ -1,10 +1,11 @@
+// Types/Interfaces
 import { product, products } from '@/interfaces/products';
 import { config } from '@/interfaces/config';
 
 export default async function calculateCheckoutPricesFromServerSide(
     idOfElementsInCart: number[]
 ): Promise<number> {
-    const productsRes = await fetch(
+    const productsRes: Response = await fetch(
         process.env.NEXT_PUBLIC_URL + '/api/products'
     );
     const productsData: products = await productsRes.json();
@@ -17,7 +18,9 @@ export default async function calculateCheckoutPricesFromServerSide(
         });
     });
 
-    const configRes = await fetch(process.env.NEXT_PUBLIC_URL + '/api/config');
+    const configRes: Response = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/config'
+    );
     const configData: config = await configRes.json();
 
     const lowOrderFee: number =

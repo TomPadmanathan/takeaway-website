@@ -1,12 +1,23 @@
+// React/Next
 import Image from 'next/image';
-import Black from '@/assets/img/black.png';
-import formatPrice from '@/utils/formatPrice';
-import Cart from '@/components/Cart';
-import { useContext, useState } from 'react';
-import { AppContext } from '@/context/AppContext';
 import { NextRouter, useRouter } from 'next/router';
+import { useContext, useState } from 'react';
+
+// Context
+import { AppContext } from '@/context/AppContext';
+
+// Utils
+import formatPrice from '@/utils/formatPrice';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
+
+// Components
+import Cart from '@/components/Cart';
+
+// Types/Interfaces
 import { config } from '@/interfaces/config';
+
+// Assets
+import Black from '@/assets/img/black.png';
 
 interface props {
     search: [string, React.Dispatch<React.SetStateAction<string>>];

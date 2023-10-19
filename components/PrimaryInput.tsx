@@ -1,29 +1,8 @@
+// Types/Interfaces
 import { ChangeEvent, KeyboardEvent } from 'react';
 
 interface props {
-    type?:
-        | 'button'
-        | 'checkbox'
-        | 'color'
-        | 'date'
-        | 'datetime-local'
-        | 'email'
-        | 'file'
-        | 'hidden'
-        | 'image'
-        | 'month'
-        | 'number'
-        | 'password'
-        | 'radio'
-        | 'range'
-        | 'reset'
-        | 'search'
-        | 'submit'
-        | 'tel'
-        | 'text'
-        | 'time'
-        | 'url'
-        | 'week';
+    type?: string;
     placeholder?: string;
     id?: string;
     required?: boolean;
@@ -35,7 +14,8 @@ interface props {
         | 'url'
         | 'none'
         | 'numeric'
-        | 'decimal';
+        | 'decimal'
+        | undefined;
     onKeyPress?: (event: KeyboardEvent<HTMLInputElement>) => void;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
     addClass?: string;

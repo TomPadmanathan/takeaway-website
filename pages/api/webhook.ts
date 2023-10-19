@@ -1,9 +1,16 @@
+// React/Next
+import { NextApiRequest, NextApiResponse, NextConfig } from 'next';
+
+// Packages
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import { NextApiRequest, NextApiResponse, NextConfig } from 'next';
-import sendCustomerEmail from '@/utils/sendCustomerEmail';
-import Order from '@/database/models/Order';
 import sequelize from '@/database/sequelize';
+
+// Database Models
+import Order from '@/database/models/Order';
+
+// Utils
+import sendCustomerEmail from '@/utils/sendCustomerEmail';
 
 interface stripeSession extends Stripe.Event.Data.Object {
     metadata?: any;

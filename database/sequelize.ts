@@ -1,4 +1,7 @@
+// Packages
 import { Sequelize } from 'sequelize-typescript';
+
+// Database Models
 import Order from '@/database/models/Order';
 
 const sequelize: Sequelize = new Sequelize({

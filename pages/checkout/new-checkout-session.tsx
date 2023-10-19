@@ -1,9 +1,16 @@
+// React/Next
 import React, { useEffect, useState, useContext, useCallback } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+
+// Packages
 import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from '@/components/CheckoutForm';
+
+// Context
 import { AppContext } from '@/context/AppContext';
-import { NextRouter, useRouter } from 'next/router';
+
+// Components
+import CheckoutForm from '@/components/CheckoutForm';
 
 let stripePromise: Promise<Stripe | null>;
 
@@ -16,7 +23,7 @@ export default function App(): JSX.Element {
     const { cart } = useContext(AppContext);
     const router: NextRouter = useRouter();
 
-    const fetchData = useCallback(async () => {
+    const fetchData = useCallback(async (): Promise<void> => {
         const response: Response = await fetch('/api/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -1,3 +1,4 @@
+// Types/Interfaces
 import { product, products } from '@/interfaces/products';
 
 export default async function convertCompactedProducts(products: string) {

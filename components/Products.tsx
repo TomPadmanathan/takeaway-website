@@ -1,7 +1,12 @@
-import ProductTab from '@/components/ProductTab';
+// React/Next
 import { useState } from 'react';
+
+// Components
+import ProductTab from '@/components/ProductTab';
 import ProductNav from '@/components/ProductNav';
-import { productNavButtons } from '@/interfaces/productNav';
+
+// Types/Interfaces
+import { productNavButton } from '@/interfaces/productNav';
 import { products, product } from '@/interfaces/products';
 
 interface props {
@@ -9,25 +14,39 @@ interface props {
     products: products;
 }
 
-export default function Products(props: props): JSX.Element {
-    const [activeProductNav, setActiveProductNav] =
-        useState<productNavButtons>('popular');
-    const search: string = props.search;
-
-    let filteredData = search
-        ? props.products.filter((element: product): boolean => {
+function searchProducts(
+    query: string,
+    products: products,
+    activeProductNav: productNavButton
+): products {
+    return query
+        ? products.filter((element: product): boolean => {
               const productName: string = element.product.toLowerCase();
               const category: string = element.category
-                  .map((currentValue: string) => currentValue.toLowerCase())
+                  .map((currentValue: string): string =>
+                      currentValue.toLowerCase()
+                  )
                   .join(' ');
               return (
-                  productName.includes(search.toLowerCase()) ||
-                  category.includes(search.toLowerCase())
+                  productName.includes(query.toLowerCase()) ||
+                  category.includes(query.toLowerCase())
               );
           })
-        : props.products.filter((element: product) =>
+        : products.filter((element: product): boolean =>
               element.category.includes(activeProductNav)
           );
+}
+
+export default function Products(props: props): JSX.Element {
+    const [activeProductNav, setActiveProductNav] =
+        useState<productNavButton>('popular');
+    const search: string = props.search;
+
+    const filteredData = searchProducts(
+        search,
+        props.products,
+        activeProductNav
+    );
 
     return (
         <>
@@ -39,9 +58,14 @@ export default function Products(props: props): JSX.Element {
 
             <div className="flex justify-center">
                 <div className="grid grid-cols-5 gap-5">
-                    {filteredData.map((element: product) => (
-                        <ProductTab product={element} key={element.product} />
-                    ))}
+                    {filteredData.map(
+                        (element: product): JSX.Element => (
+                            <ProductTab
+                                product={element}
+                                key={element.product}
+                            />
+                        )
+                    )}
                 </div>
             </div>
         </>

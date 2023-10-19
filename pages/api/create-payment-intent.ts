@@ -1,12 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+// Packages
+import Stripe from 'stripe';
+
+// Utils
 import calculateCheckoutPricesFromServerSide from '@/utils/calculateCheckoutPricesFromServerSide';
 import {
     getIdOfElementsInCart,
     getIdsAndOptionsInCart,
 } from '@/utils/getIdsOfProductsInCart';
+
+// Types/Interfaces
 import { cart } from '@/interfaces/cart';
 import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
-import Stripe from 'stripe';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe: Stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 

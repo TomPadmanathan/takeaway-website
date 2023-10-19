@@ -1,5 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+// Types/Interfaces
 import { products } from '@/interfaces/products';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+// Assets
 import Black from '@/assets/img/black.png';
 
 export default function handler(

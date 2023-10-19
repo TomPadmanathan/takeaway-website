@@ -1,10 +1,13 @@
+// Utils
 import formatPrice from '@/utils/formatPrice';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import formatCart from '@/utils/formatCart';
-import { cart, modifiedCartItem } from '@/interfaces/cart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
+
+// Types/Interfaces
 import { config } from '@/interfaces/config';
+import { cart, modifiedCartItem } from '@/interfaces/cart';
 import { modifiedCart } from '@/interfaces/cart';
 
 interface props {

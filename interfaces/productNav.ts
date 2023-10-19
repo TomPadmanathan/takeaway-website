@@ -1,4 +1,4 @@
-export type productNavButtons =
+export type productNavButton =
     | 'popular'
     | 'chinese'
     | 'japanese'
@@ -7,6 +7,6 @@ export type productNavButtons =
     | 'thai';
 
 export type activeProductNav = [
-    activeProductNav: productNavButtons,
-    setActiveProductNav: React.Dispatch<React.SetStateAction<productNavButtons>>
+    activeProductNav: productNavButton,
+    setActiveProductNav: React.Dispatch<React.SetStateAction<productNavButton>>
 ];

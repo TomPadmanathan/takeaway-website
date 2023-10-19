@@ -1,14 +1,19 @@
+// Packages
 import path from 'path';
 import dotenv from 'dotenv';
 import sgMail from '@sendgrid/mail';
 import sequelize from '@/database/sequelize';
+
+// Database Models
 import Order from '@/database/models/Order';
 
 dotenv.config({
     path: path.resolve(__dirname, '../../.env'),
 });
 
-export default async function sendCustomerEmail(orderId: number) {
+export default async function sendCustomerEmail(
+    orderId: number
+): Promise<void> {
     const orderTypeCheck = await queryDatabase(orderId);
     if (!orderTypeCheck) {
         console.error('OrderId invalid');

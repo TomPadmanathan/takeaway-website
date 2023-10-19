@@ -1,13 +1,22 @@
+// React/Next
 import { ChangeEvent, useContext, useState } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+
+// Context
 import { AppContext } from '@/context/AppContext';
-import { NextRouter, Router, useRouter } from 'next/router';
+
+// Utiles
 import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
+
+// Components
 import SecondaryButton from '@/components/SecondaryButton';
 import PrimaryInput from '@/components/PrimaryInput';
+import ListItemsWithPrice from '@/components/ListItemsWithPrice';
+
+// Types/Interfaces
 import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
 import { ParsedUrlQueryInput } from 'querystring';
 import { config } from '@/interfaces/config';
-import ListItemsWithPrice from '@/components/ListItemsWithPrice';
 
 interface props {
     configData: config;

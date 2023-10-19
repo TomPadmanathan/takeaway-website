@@ -1,6 +1,11 @@
-import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
-import Order from '@/database/models/Order';
+// Packages
 import sequelize from '@/database/sequelize';
+
+// Database Models
+import Order from '@/database/models/Order';
+
+// Types/Interfaces
+import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
 
 export const config: NextConfig = {
     api: {

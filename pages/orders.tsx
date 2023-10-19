@@ -1,4 +1,8 @@
+// Packages
 import { NextRouter, useRouter } from 'next/router';
+
+// Database Models
+import Order from '@/database/models/Order';
 
 async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
     if (!router.query.payment_intent) return;
@@ -14,7 +18,7 @@ async function fetchOrderFromPaymentIntent(router: NextRouter): Promise<void> {
             }),
         }
     );
-    const data = await response.json();
+    const data: Order = await response.json();
 
     router.push({
         pathname: `orders/${data.orderId}`,

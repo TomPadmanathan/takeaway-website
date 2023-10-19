@@ -1,3 +1,4 @@
+// Types/Interfaces
 import { cart, cartItem } from '@/interfaces/cart';
 import { config } from '@/interfaces/config';
 
@@ -8,7 +9,7 @@ export default class CalculateCheckoutPrices {
     total: number;
     constructor(cart: cart, siteConfig: config) {
         this.subTotal = cart.reduce(
-            (accumulator: number, cartItem: cartItem) =>
+            (accumulator: number, cartItem: cartItem): number =>
                 accumulator + cartItem.price,
             0
         );

@@ -1,4 +1,7 @@
+// React/Next
 import { createContext, useContext, useState, useEffect } from 'react';
+
+// Types/Interfaces
 import { cart, setCart } from '@/interfaces/cart';
 
 interface IAppContext {
@@ -8,7 +11,7 @@ interface IAppContext {
 
 export const AppContext = createContext<IAppContext>({
     cart: [],
-    setCart: () => {},
+    setCart: (): void => {},
 });
 
 export function useCart(): IAppContext {
@@ -20,7 +23,9 @@ interface IAppProviderProps {
     children: React.ReactNode;
 }
 
-export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
+export const AppProvider: React.FC<IAppProviderProps> = ({
+    children,
+}): JSX.Element => {
     const [cart, setCart] = useState<cart>([]);
 
     // Get cart from storage

@@ -1,12 +1,20 @@
-import { orders, order } from '@/interfaces/orders';
-import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
-import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
-import ListItemsWithPrice from '@/components/ListItemsWithPrice';
-import convertCompactedProducts from '@/utils/convertCompactedProducts';
-import { config } from '@/interfaces/config';
+// React/Next
 import { useState, useEffect } from 'react';
 import { NextPageContext } from 'next';
+
+// Database Models
 import Order from '@/database/models/Order';
+
+// Utils
+import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
+import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
+import convertCompactedProducts from '@/utils/convertCompactedProducts';
+
+// Components
+import ListItemsWithPrice from '@/components/ListItemsWithPrice';
+
+// Types/Interfaces
+import { config } from '@/interfaces/config';
 
 interface props {
     order: Order;

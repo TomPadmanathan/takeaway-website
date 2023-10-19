@@ -1,15 +1,30 @@
-import addItemCart from '@/utils/addItemCart';
+// React/Next
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
+
+// Context
 import { AppContext } from '@/context/AppContext';
+
+// Utils
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
+
+// Components
 import QuantityCounter from '@/components/QuantityCounter';
-import SecondaryButton from './SecondaryButton';
-import { product } from '@/interfaces/products';
+import SecondaryButton from '@/components/SecondaryButton';
+
+// Type/Interfaces
+import { setCart, cart } from '@/interfaces/cart';
+import { products, product } from '@/interfaces/products';
 
 interface props {
     open: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
     product: product;
+}
+
+function addItemCart(data: products, setCart: setCart): void {
+    data.forEach((element: product) =>
+        setCart((prevCart: cart) => [...prevCart, element])
+    );
 }
 
 export default function AddCartModel(props: props): JSX.Element {

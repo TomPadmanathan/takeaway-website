@@ -1,5 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+// Types/Interfaces
 import { config } from '@/interfaces/config';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(
     request: NextApiRequest,
@@ -14,8 +15,7 @@ export default function handler(
         },
         delivery: {
             fee: 3,
-            // mins
-            estimatedTimeOffset: 45,
+            estimatedTimeOffset: 45, //mins
         },
     };
 
