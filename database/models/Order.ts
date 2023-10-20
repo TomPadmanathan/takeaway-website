@@ -4,17 +4,20 @@ import {
     Table,
     Column,
     PrimaryKey,
-    AutoIncrement,
+    Default,
+    BeforeValidate,
 } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
 
 @Table({
     timestamps: false,
 })
-@Table
 export default class Order extends Model<Order> {
+    @Default('pending')
     @Column
     status!: string;
 
+    @Default((): string => String(Date.now()))
     @Column
     timestamp!: string;
 
@@ -55,7 +58,12 @@ export default class Order extends Model<Order> {
     totalPayment!: number;
 
     @PrimaryKey
-    @AutoIncrement
+    @Default((): string => uuidv4())
     @Column
-    orderId!: number;
+    orderId!: string;
+
+    @BeforeValidate
+    static generateUserId(instance: Order) {
+        if (!instance.orderId) instance.orderId = uuidv4();
+    }
 }

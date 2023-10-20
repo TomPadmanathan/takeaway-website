@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize-typescript';
 
 // Database Models
 import Order from '@/database/models/Order';
+import User from '@/database/models/User';
 
 const sequelize: Sequelize = new Sequelize({
     database: process.env.dbName,
@@ -10,10 +11,7 @@ const sequelize: Sequelize = new Sequelize({
     password: process.env.dbPass,
     host: process.env.dbHost,
     dialect: 'mysql',
-    models: [Order],
-    logging: false,
+    models: [Order, User],
 });
-
-sequelize.addModels([Order]);
 
 export default sequelize;

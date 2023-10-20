@@ -94,8 +94,6 @@ async function createOrder(
     }
     await sequelize.sync();
     const newOrder: Order = Order.build({
-        status: 'pending',
-        timestamp: String(Date.now()),
         email: customer.email,
         name: customer.name,
         phoneNumber: customer.phone,

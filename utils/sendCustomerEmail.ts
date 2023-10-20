@@ -12,7 +12,7 @@ dotenv.config({
 });
 
 export default async function sendCustomerEmail(
-    orderId: number
+    orderId: string
 ): Promise<void> {
     const orderTypeCheck = await queryDatabase(orderId);
     if (!orderTypeCheck) {
@@ -76,7 +76,7 @@ export default async function sendCustomerEmail(
     }
 }
 
-async function queryDatabase(orderId: number): Promise<Order | void | null> {
+async function queryDatabase(orderId: string): Promise<Order | void | null> {
     await sequelize.sync();
 
     try {
