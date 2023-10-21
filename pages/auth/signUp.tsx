@@ -1,5 +1,9 @@
 // React/Next
 import { useEffect, useState } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+
+// Utils
+import isValidURL from '@/utils/isValidURL';
 
 // Components
 import PrimaryInput from '@/components/PrimaryInput';
@@ -22,6 +26,7 @@ interface Credentials {
 }
 
 export default function signUp(): JSX.Element {
+    const router: NextRouter = useRouter();
     const [credentials, setCredentials] = useState<Credentials>({
         phoneNumber: 0,
         email: '',
@@ -36,22 +41,40 @@ export default function signUp(): JSX.Element {
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
-        loginUser(credentials);
+        signUpUser(credentials);
     }
 
-    function loginUser(credentials: Credentials): void {
-        fetch(process.env.NEXT_PUBLIC_URL + '/api/auth/signUp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                credentials,
-            }),
-        });
-    }
+    async function signUpUser(credentials: Credentials): Promise<void> {
+        try {
+            const response: Response = await fetch(
+                process.env.NEXT_PUBLIC_URL + '/api/auth/signUp',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        credentials,
+                    }),
+                }
+            );
+            if (!response.ok) {
+                console.error('Sign up failed');
+                return;
+            }
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
 
-    useEffect((): void => {
-        console.log(credentials.postcode);
-    }, [credentials.postcode]);
+            if (
+                typeof router.query.url !== 'string' ||
+                !isValidURL(router.query.url)
+            ) {
+                router.push('/');
+                return;
+            }
+            router.push(router.query.url);
+        } catch {
+            console.error('Error creating user');
+        }
+    }
 
     return (
         <>

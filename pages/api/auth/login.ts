@@ -4,6 +4,8 @@ import sequelize from '@/database/sequelize';
 // Database Models
 import User from '@/database/models/User';
 
+import generateToken from '@/utils/JWT/generateToken';
+
 // Types/Interfaces
 import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
 
@@ -21,19 +23,22 @@ export default async function handler(
 
     try {
         await sequelize.sync();
-        const user = await User.findAll({
+        const user = await User.findOne({
             where: {
                 email: request.body.credentials.email,
                 password: request.body.credentials.password,
             },
         });
-        if (user.length === 0) {
+        if (!user) {
             response.status(404);
             response.send('User not found');
             return;
         }
-        response.send(user[0].dataValues);
+
+        const token = generateToken(user);
+        response.json({ token });
     } catch (error: unknown) {
         console.error('Sequlize error:', error);
+        response.status(500).send('Internal Server Error');
     }
 }

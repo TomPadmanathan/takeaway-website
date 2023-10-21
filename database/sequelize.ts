@@ -12,6 +12,7 @@ const sequelize: Sequelize = new Sequelize({
     host: process.env.dbHost,
     dialect: 'mysql',
     models: [Order, User],
+    logging: false,
 });
 
 export default sequelize;

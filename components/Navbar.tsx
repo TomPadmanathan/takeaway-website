@@ -1,7 +1,10 @@
 // React/Next
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+// Packages
+import jwt from 'jsonwebtoken';
 
 // Context
 import { AppContext } from '@/context/AppContext';
@@ -30,6 +33,15 @@ export default function Navbar(props: props): JSX.Element {
     const [search, setSearch] = props.search;
     const router: NextRouter = useRouter();
     const checkoutPrices = new CalculateCheckoutPrices(cart, props.configData);
+    const [token, setToken] = useState<string | null>(null);
+    let userId: string;
+    useEffect((): void => {
+        setToken(localStorage.getItem('token'));
+        if (!token) return;
+        const decodedToken: jwt.JwtPayload | null | string = jwt.decode(token);
+        if (!decodedToken || typeof decodedToken != 'object') return;
+        userId = decodedToken.userId;
+    });
 
     return (
         <>
@@ -58,8 +70,17 @@ export default function Navbar(props: props): JSX.Element {
                 </div>
 
                 <div className="flex">
-                    <button className="h-10 w-10 overflow-hidden border border-black">
-                        Profile
+                    <button
+                        className="h-10 w-32 overflow-hidden border border-black"
+                        onClick={
+                            token
+                                ? (): Promise<boolean> =>
+                                      router.push(`/user/${userId}`)
+                                : (): Promise<boolean> =>
+                                      router.push('/auth/login')
+                        }
+                    >
+                        {token ? 'Go to account' : 'Login'}
                     </button>
                     <button
                         onClick={(): void => setCartOpen(!cartOpen)}

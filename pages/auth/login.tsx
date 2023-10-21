@@ -1,5 +1,9 @@
 // React/Next
 import { useState } from 'react';
+import { NextRouter, useRouter } from 'next/router';
+
+// Utils
+import isValidURL from '@/utils/isValidURL';
 
 // Components
 import PrimaryInput from '@/components/PrimaryInput';
@@ -14,6 +18,7 @@ interface Credentials {
 }
 
 export default function Login(): JSX.Element {
+    const router: NextRouter = useRouter();
     const [credentials, setCredentials] = useState<Credentials>({
         email: '',
         password: '',
@@ -24,14 +29,36 @@ export default function Login(): JSX.Element {
         loginUser(credentials);
     }
 
-    function loginUser(credentials: Credentials): void {
-        fetch(process.env.NEXT_PUBLIC_URL + '/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                credentials,
-            }),
-        });
+    async function loginUser(credentials: Credentials): Promise<void> {
+        try {
+            const response: Response = await fetch(
+                process.env.NEXT_PUBLIC_URL + '/api/auth/login',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        credentials,
+                    }),
+                }
+            );
+            if (!response.ok) {
+                console.error('Login failed');
+                return;
+            }
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+
+            if (
+                typeof router.query.url !== 'string' ||
+                !isValidURL(router.query.url)
+            ) {
+                router.push('/');
+                return;
+            }
+            router.push(router.query.url);
+        } catch {
+            console.error('Error fetching JWT');
+        }
     }
 
     return (

@@ -4,6 +4,9 @@ import sequelize from '@/database/sequelize';
 // Database Models
 import User from '@/database/models/User';
 
+// Utils
+import generateToken from '@/utils/JWT/generateToken';
+
 // Types/Interfaces
 import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
 
@@ -36,9 +39,10 @@ export default async function handler(
             cityTown: credentials.cityTown,
         } as User);
 
-        await newUser.save().catch((error: string) => {
-            console.error('Error creating user:', error);
-        });
+        await newUser.save();
+        const user: User = newUser.dataValues;
+        const token = generateToken(user);
+        response.json({ token });
     } catch (error: unknown) {
         console.error('Sequlize error:', error);
     }
