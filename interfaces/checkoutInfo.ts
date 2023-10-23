@@ -16,5 +16,4 @@ export interface checkoutInfoUser {
     includeCutlery: boolean;
     userId: string;
     userType: 'user';
-    // userType: string;
 }

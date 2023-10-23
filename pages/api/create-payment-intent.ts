@@ -10,7 +10,7 @@ import {
 
 // Types/Interfaces
 import { cart } from '@/interfaces/cart';
-import { checkoutUserInfomation } from '@/interfaces/checkoutInfo';
+import { checkoutInfoUser, checkoutInfoGuest } from '@/interfaces/checkoutInfo';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe: Stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
@@ -28,23 +28,45 @@ export default async function handler(
     response: NextApiResponse
 ): Promise<void> {
     const cart: cart = request.body.cart;
-    const userData: checkoutUserInfomation = JSON.parse(request.body.userData);
+    let userData: checkoutInfoUser | checkoutInfoGuest = JSON.parse(
+        request.body.userData
+    );
+    let customer;
+    switch (userData.userType) {
+        case 'guest':
+            customer = await stripe.customers.create({
+                email: userData.email,
+                name: userData.forename + ' ' + userData.surname,
+                phone: userData.phoneNumber.toString(),
+                address: {
+                    city: userData.cityTown,
+                    line1: userData.addressLine1,
+                    line2: userData.addressLine2,
+                    postal_code: userData.postcode,
+                },
+                metadata: {
+                    orderNote: userData.orderNote,
+                    includeCutlery: userData.includeCutlery ? 1 : 0,
+                    userType: userData.userType,
+                },
+            });
+            break;
 
-    const customer = await stripe.customers.create({
-        email: userData.email,
-        name: userData.name,
-        phone: userData.phoneNumber.toString(),
-        address: {
-            city: userData.cityTown,
-            line1: userData.addressLine1,
-            line2: userData.addressLine2,
-            postal_code: userData.postcode,
-        },
-        metadata: {
-            orderNote: userData.orderNote,
-            includeCutlery: userData.includeCutlery ? 1 : 0,
-        },
-    });
+        case 'user':
+            customer = await stripe.customers.create({
+                metadata: {
+                    orderNote: userData.orderNote,
+                    includeCutlery: userData.includeCutlery ? 1 : 0,
+                    userId: userData.userId,
+                    userType: userData.userType,
+                },
+            });
+            break;
+
+        default:
+            console.error('Usertype not defined');
+            return;
+    }
 
     const paymentIntent = await stripe.paymentIntents.create({
         amount: await calculateOrderAmount(cart),
