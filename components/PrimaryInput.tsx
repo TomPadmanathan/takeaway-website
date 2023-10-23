@@ -20,6 +20,7 @@ interface props {
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
     addClass?: string;
     value?: string;
+    disabled?: boolean;
 }
 
 export default function PrimaryInput(props: props): JSX.Element {
@@ -38,6 +39,7 @@ export default function PrimaryInput(props: props): JSX.Element {
             required={props.required}
             onChange={props.onChange}
             onKeyPress={props.onKeyPress}
+            disabled={props.disabled}
         />
     );
 }

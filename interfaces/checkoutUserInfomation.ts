@@ -1,4 +1,4 @@
-export interface checkoutUserInfomation {
+export interface checkoutInfoGuest {
     includeCutlery: boolean;
     phoneNumber: number;
     email: string;
@@ -7,5 +7,6 @@ export interface checkoutUserInfomation {
     cityTown: string;
     postcode: string;
     orderNote: string;
-    name: string;
+    forename: string;
+    surname: string;
 }
