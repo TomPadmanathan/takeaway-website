@@ -9,4 +9,12 @@ export interface checkoutInfoGuest {
     orderNote: string;
     forename: string;
     surname: string;
+    userType: 'guest';
+}
+export interface checkoutInfoUser {
+    orderNote: string;
+    includeCutlery: boolean;
+    userId: string;
+    userType: 'user';
+    // userType: string;
 }

@@ -10,7 +10,7 @@ import {
 
 // Types/Interfaces
 import { cart } from '@/interfaces/cart';
-import { checkoutUserInfomation } from '@/interfaces/checkoutUserInfomation';
+import { checkoutUserInfomation } from '@/interfaces/checkoutInfo';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe: Stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);

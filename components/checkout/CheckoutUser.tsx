@@ -1,6 +1,6 @@
 // React/Next
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // Components
 import SecondaryButton from '@/components/SecondaryButton';
@@ -14,16 +14,10 @@ import { NextRouter } from 'next/router';
 import User from '@/database/models/User';
 import { ChangeEvent } from 'react';
 import { ParsedUrlQueryInput } from 'querystring';
+import { checkoutInfoUser } from '@/interfaces/checkoutInfo';
 
 interface props {
     user: User;
-}
-
-interface checkoutInfoUser {
-    orderNote: string;
-    includeCutlery: boolean;
-    userId: string;
-    userType: string;
 }
 
 function checkoutUserInfomationToQueryParams(
@@ -40,7 +34,7 @@ function checkoutUserInfomationToQueryParams(
 export default function CheckoutUser({ user }: props): JSX.Element {
     const router: NextRouter = useRouter();
 
-    const [checkoutInfo, setCheckoutInfo] = useState({
+    const [checkoutInfo, setCheckoutInfo] = useState<checkoutInfoUser>({
         orderNote: '',
         includeCutlery: false,
         userId: user.userId,
@@ -49,7 +43,9 @@ export default function CheckoutUser({ user }: props): JSX.Element {
 
     return (
         <>
-            <h2>Checkout as: {user.forename + ' ' + user.surname}</h2>
+            <h2 className="mb-10">
+                Checkout as: {user.forename + ' ' + user.surname}
+            </h2>
             <label htmlFor="phone-number">Your Info</label>
             <div className="mb-10">
                 <div className="mb-2 flex justify-between">

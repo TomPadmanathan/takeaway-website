@@ -11,24 +11,25 @@ import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
 
 // Types/Interfaces
 import { useRouter } from 'next/router';
-import { checkoutInfoGuest } from '@/interfaces/checkoutUserInfomation';
+import { checkoutInfoGuest } from '@/interfaces/checkoutInfo';
 import { ParsedUrlQueryInput } from 'querystring';
 import { ChangeEvent } from 'react';
 
 function checkoutUserInfomationToQueryParams(
-    info: checkoutInfoGuest
+    checkoutInfo: checkoutInfoGuest
 ): ParsedUrlQueryInput {
     return {
-        includeCutlery: info.includeCutlery.toString(),
-        phoneNumber: info.phoneNumber.toString(),
-        email: info.email,
-        addressLine1: info.addressLine1,
-        addressLine2: info.addressLine2,
-        cityTown: info.cityTown,
-        postcode: info.postcode,
-        orderNote: info.orderNote,
-        forename: info.forename,
-        surname: info.surname,
+        includeCutlery: checkoutInfo.includeCutlery.toString(),
+        phoneNumber: checkoutInfo.phoneNumber.toString(),
+        email: checkoutInfo.email,
+        addressLine1: checkoutInfo.addressLine1,
+        addressLine2: checkoutInfo.addressLine2,
+        cityTown: checkoutInfo.cityTown,
+        postcode: checkoutInfo.postcode,
+        orderNote: checkoutInfo.orderNote,
+        forename: checkoutInfo.forename,
+        surname: checkoutInfo.surname,
+        userType: checkoutInfo.userType,
     };
 }
 
@@ -46,6 +47,7 @@ export default function CheckoutGuest(): JSX.Element {
             orderNote: '',
             forename: '',
             surname: '',
+            userType: 'guest',
         });
     const [showGuest, setShowGuest] = useState<boolean>(true);
 
@@ -55,12 +57,12 @@ export default function CheckoutGuest(): JSX.Element {
                 <div className="flex h-full flex-col items-center justify-center">
                     <SecondaryButton
                         content="Continue as guest"
-                        onClick={() => setShowGuest(!showGuest)}
+                        onClick={(): void => setShowGuest(!showGuest)}
                         addClass="m-5"
                     />
                     <SecondaryButton
                         content="Login"
-                        onClick={() =>
+                        onClick={(): Promise<boolean> =>
                             router.push({
                                 pathname: '/auth/login',
                                 query: {
@@ -81,7 +83,7 @@ export default function CheckoutGuest(): JSX.Element {
                     <span>or</span>
                     <SecondaryButton
                         content="Login"
-                        onClick={() =>
+                        onClick={(): Promise<boolean> =>
                             router.push(
                                 '/auth/login?url=http://localhost:3000/checkout'
                             )
