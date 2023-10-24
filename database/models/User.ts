@@ -37,7 +37,6 @@ export default class User extends Model<User> {
     @Column
     surname!: string;
 
-    @Default('customer')
     @Column
     userType!: string;
 

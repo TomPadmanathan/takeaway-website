@@ -37,6 +37,7 @@ export default async function handler(
             addressLine2: credentials.addressLine2,
             postcode: credentials.postcode,
             cityTown: credentials.cityTown,
+            userType: 'user',
         } as User);
 
         await newUser.save();

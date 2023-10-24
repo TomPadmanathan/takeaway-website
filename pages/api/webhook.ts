@@ -8,6 +8,7 @@ import sequelize from '@/database/sequelize';
 
 // Database Models
 import Order from '@/database/models/Order';
+import User from '@/database/models/User';
 
 // Utils
 import sendCustomerEmail from '@/utils/sendCustomerEmail';
@@ -92,26 +93,61 @@ async function createOrder(
         console.error('Stripe total price is undefined');
         return;
     }
-    await sequelize.sync();
-    const newOrder: Order = Order.build({
-        email: customer.email,
-        name: customer.name,
-        phoneNumber: customer.phone,
-        cityTown: customer.address.city,
-        addressLine1: customer.address.line1,
-        addressLine2: customer.address.line2,
-        postCode: customer.address.postal_code,
-        orderNote: customer.metadata.orderNote,
-        stripeCustomerId: session.metadata.customerId,
-        stripePaymentId: session.id,
-        products: session.metadata.cart,
-        totalPayment: session.amount,
-    } as Order);
 
-    await newOrder
-        .save()
-        .then((order: Order) => sendCustomerEmail(order.orderId))
-        .catch((error: string) => {
-            console.error('Error inserting order:', error);
+    let newOrder: Order;
+
+    switch (customer.metadata.userType) {
+        case 'guest':
+            const name: string[] = customer.name.split(' ');
+
+            // Create a new User instance
+            const newUser: User = User.build({
+                email: customer.email,
+                forename: name[0],
+                surname: name[1],
+                phoneNumber: customer.phone,
+                cityTown: customer.address.city,
+                addressLine1: customer.address.line1,
+                addressLine2: customer.address.line2,
+                postcode: customer.address.postal_code,
+                userType: 'guest',
+            } as User);
+
+            // Save the new user
+            await newUser.save().catch((error: string) => {
+                console.error('Error creating user: ', error);
+            });
+
+            newOrder = Order.build({
+                userId: newUser.userId,
+                orderNote: customer.metadata.orderNote,
+                stripePaymentId: session.id,
+                products: session.metadata.cart,
+                totalPayment: session.amount,
+            } as Order);
+
+            break;
+
+        case 'user':
+            newOrder = Order.build({
+                userId: customer.metadata.userId,
+                orderNote: customer.metadata.orderNote,
+                stripePaymentId: session.id,
+                products: session.metadata.cart,
+                totalPayment: session.amount,
+            } as Order);
+
+            break;
+
+        default:
+            console.error('Usertype not defined');
+            return;
+    }
+
+    if (newOrder) {
+        await newOrder.save().catch((error: string) => {
+            console.error('Error creating order: ', error);
         });
+    }
+    await sequelize.sync();
 }
