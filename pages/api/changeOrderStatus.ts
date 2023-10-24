@@ -22,9 +22,9 @@ export default async function handler(
 ): Promise<void> {
     response.status(200);
 
-    await sequelize.sync();
-
     try {
+        await sequelize.sync();
+
         await Order.update(
             { status: request.body.status },
             {

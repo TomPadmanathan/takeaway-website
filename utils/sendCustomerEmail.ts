@@ -6,6 +6,7 @@ import sequelize from '@/database/sequelize';
 
 // Database Models
 import Order from '@/database/models/Order';
+import User from '@/database/models/User';
 
 dotenv.config({
     path: path.resolve(__dirname, '../../.env'),
@@ -14,12 +15,16 @@ dotenv.config({
 export default async function sendCustomerEmail(
     orderId: string
 ): Promise<void> {
-    const orderTypeCheck = await queryDatabase(orderId);
-    if (!orderTypeCheck) {
+    const order: Order | null | void = await queryOrder(orderId);
+    if (!order) {
         console.error('OrderId invalid');
         return;
     }
-    const order: Order = orderTypeCheck;
+    const user: User | void | null = await queryUser(order.userId);
+    if (!user) {
+        console.error('UserId invalid');
+        return;
+    }
 
     try {
         // Check if SENDGRID ENV's are defined in the environment
@@ -43,7 +48,7 @@ export default async function sendCustomerEmail(
         }
 
         const msg: msg = {
-            to: order.email,
+            to: user.email,
             from: process.env.SENDGRID_SENDING_EMAIL,
             subject: '',
             html: '',
@@ -76,7 +81,7 @@ export default async function sendCustomerEmail(
     }
 }
 
-async function queryDatabase(orderId: string): Promise<Order | void | null> {
+async function queryOrder(orderId: string): Promise<Order | void | null> {
     await sequelize.sync();
 
     try {
@@ -84,10 +89,25 @@ async function queryDatabase(orderId: string): Promise<Order | void | null> {
             where: {
                 orderId: orderId,
             },
+            attributes: ['orderId', 'status', 'userId'],
         });
         return order;
     } catch (error) {
         console.error('Sequlize error:', error);
     }
-    return;
+}
+async function queryUser(userId: string): Promise<User | void | null> {
+    await sequelize.sync();
+
+    try {
+        const user: User | null = await User.findOne({
+            where: {
+                userId: userId,
+            },
+            attributes: ['email'],
+        });
+        return user;
+    } catch (error) {
+        console.error('Sequlize error:', error);
+    }
 }

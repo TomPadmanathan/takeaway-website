@@ -145,9 +145,14 @@ async function createOrder(
     }
 
     if (newOrder) {
-        await newOrder.save().catch((error: string) => {
-            console.error('Error creating order: ', error);
-        });
+        await newOrder
+            .save()
+            .then(() => {
+                sendCustomerEmail(newOrder.orderId);
+            })
+            .catch((error: string) => {
+                console.error('Error creating order: ', error);
+            });
     }
     await sequelize.sync();
 }
