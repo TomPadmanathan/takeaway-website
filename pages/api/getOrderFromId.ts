@@ -3,6 +3,7 @@ import sequelize from '@/database/sequelize';
 
 // Database Models
 import Order from '@/database/models/Order';
+import User from '@/database/models/User';
 
 // Types/Interfaces
 import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
@@ -26,6 +27,7 @@ export default async function handler(
             where: {
                 orderId: request.body.orderId,
             },
+            include: User
         });
 
         if (order) response.send(order);

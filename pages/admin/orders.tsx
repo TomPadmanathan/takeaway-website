@@ -45,7 +45,7 @@ function findCorrectBtn(currentStatus: string): string {
 }
 
 async function changeOrderStatus(
-    orderId: number,
+    orderId: string,
     currentStatus: string
 ): Promise<void> {
     let newStatus;
@@ -124,10 +124,12 @@ export default function Orders(props: props): JSX.Element {
                                     )}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {order.name}
+                                    {order.user.forename +
+                                        ' ' +
+                                        order.user.surname}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {order.postCode}
+                                    {order.user.postcode}
                                 </td>
                                 <td className="border-collapse border p-10">
                                     {order.orderId}

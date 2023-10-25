@@ -99,39 +99,39 @@ export default function OrderId(props: props): JSX.Element {
                         </li>
                         <li>
                             <span className="text-slate-500">Email: </span>
-                            {order.email}
+                            {order.user.email}
                         </li>
                         <li>
                             <span className="text-slate-500">Name: </span>
-                            {order.name}
+                            {order.user.forename + ' ' + order.user.surname}
                         </li>
                         <li>
                             <span className="text-slate-500">
                                 Phone Number:{' '}
                             </span>
-                            {order.phoneNumber}
+                            {order.user.phoneNumber}
                         </li>
                         <li>
                             <span className="text-slate-500">City/Town: </span>
-                            {order.cityTown}
+                            {order.user.cityTown}
                         </li>
                         <li>
                             <span className="text-slate-500">
                                 Address Line 1:{' '}
                             </span>
-                            {order.addressLine1}
+                            {order.user.addressLine1}
                         </li>
-                        {order.addressLine2 ? (
+                        {order.user.addressLine2 ? (
                             <li>
                                 <span className="text-slate-500">
                                     Address Line 2:{' '}
                                 </span>
-                                {order.addressLine2}
+                                {order.user.addressLine2}
                             </li>
                         ) : null}
                         <li>
                             <span className="text-slate-500">Postcode: </span>
-                            {order.postCode}
+                            {order.user.postcode}
                         </li>
                         <li>
                             <span className="text-slate-500">Order Id: </span>

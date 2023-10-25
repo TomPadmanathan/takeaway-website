@@ -3,6 +3,7 @@ import sequelize from '@/database/sequelize';
 
 // Database Models
 import Order from '@/database/models/Order';
+import User from '@/database/models/User';
 
 // Types/Interfaces
 import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
@@ -22,9 +23,16 @@ export default async function handler(
     await sequelize.sync();
 
     try {
-        const order: Order[] = await Order.findAll();
+        const orders: Order[] | void = await Order.findAll({
+            include: [
+                {
+                    model: User,
+                    attributes: ['forename', 'surname', 'postcode'],
+                },
+            ],
+        });
 
-        response.send(order);
+        response.send(orders);
     } catch (error) {
         response.send('Sequlize error');
         console.error('Sequlize error:', error);
