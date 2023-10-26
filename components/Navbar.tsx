@@ -75,7 +75,7 @@ export default function Navbar(props: props): JSX.Element {
                         onClick={
                             token
                                 ? (): Promise<boolean> =>
-                                      router.push(`/user/${userId}`)
+                                      router.push(`/users/${userId}`)
                                 : (): Promise<boolean> =>
                                       router.push('/auth/login')
                         }

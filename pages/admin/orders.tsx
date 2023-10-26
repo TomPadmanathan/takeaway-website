@@ -132,7 +132,9 @@ export default function Orders(props: props): JSX.Element {
                                     {order.user.postcode}
                                 </td>
                                 <td className="border-collapse border p-10">
-                                    {order.orderId}
+                                    <a href={`/orders/${order.orderId}`}>
+                                        {order.orderId}
+                                    </a>
                                 </td>
                                 <td className="border-collapse border p-10">
                                     {findCorrectBtn(order.status) ? (

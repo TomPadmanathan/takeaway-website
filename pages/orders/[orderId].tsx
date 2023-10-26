@@ -34,7 +34,7 @@ export async function getServerSideProps(
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                orderId: context.query.id,
+                orderId: context.query.orderId,
             }),
         }
     );
@@ -137,14 +137,14 @@ export default function OrderId(props: props): JSX.Element {
                             <span className="text-slate-500">Order Id: </span>
                             {order.orderId}
                         </li>
-                        {order.orderNote === 'undefined' ? null : (
+                        {order.orderNote ? (
                             <li>
                                 <span className="text-slate-500">
                                     Order Note:
                                 </span>
                                 {order.orderNote}
                             </li>
-                        )}
+                        ) : null}
                     </ul>
                 </section>
                 <ListItemsWithPrice cart={products} config={props.configData} />

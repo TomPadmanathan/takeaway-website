@@ -15,7 +15,7 @@ import CheckoutGuest from '@/components/checkout/CheckoutGuest';
 import CheckoutUser from '@/components/checkout/CheckoutUser';
 
 // Utils
-import getUserFromToken from '@/utils/JWT/getUserFromToken';
+import fetchWithToken from '@/utils/JWT/fetchWithToken';
 
 // Types/Interfaces
 import { config } from '@/interfaces/config';
@@ -43,16 +43,28 @@ export async function getServerSideProps(): Promise<getServerSideProps> {
 export default function Home({ configData }: props): JSX.Element {
     const router: NextRouter = useRouter();
     const { cart } = useContext(AppContext);
-    const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<null | User>();
 
     useEffect((): void => {
         async function fetchData(): Promise<void> {
-            setToken(localStorage.getItem('token'));
-            setUser((await getUserFromToken([token, setToken])) as User);
+            const response: Response = await fetchWithToken(
+                process.env.NEXT_PUBLIC_URL + '/api/getUserFromToken',
+                {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+            const responseJson = await response.json();
+            if (responseJson.error) {
+                console.error(responseJson.error);
+                return;
+            }
+            setUser(responseJson.user);
         }
         fetchData();
-    }, [token]);
+    }, []);
+
+    useEffect(() => console.log(user), [user]);
 
     return (
         <>
