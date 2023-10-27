@@ -64,8 +64,6 @@ export default function Home({ configData }: props): JSX.Element {
         fetchData();
     }, []);
 
-    useEffect(() => console.log(user), [user]);
-
     return (
         <>
             <div className="mx-96 my-10 flex h-screen items-center justify-between">
