@@ -1,8 +1,8 @@
 # Takeaway Website (Work in Progress)
 
-This repository contains a work-in-progress takeaway website built using TypeScript, Next.js, MySQL Tailwind CSS. This web application is designed to provide users with a simple way to place orders from restuants.
+This repository contains a work-in-progress takeaway website built using TypeScript, Next.js, MySQL Tailwind CSS. This web application is designed to provide users with a simple way to place orders from a restuant.
 
-## View the Hosted Website
+## View a Live Build
 
 You can explore the current version of this project by visiting the following link, which is hosted on Vercel:
 
