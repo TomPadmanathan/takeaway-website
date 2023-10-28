@@ -9,6 +9,9 @@ import { Elements } from '@stripe/react-stripe-js';
 // Context
 import { AppContext } from '@/context/AppContext';
 
+// Utils
+import fetchWithToken from '@/utils/JWT/fetchWithToken';
+
 // Components
 import CheckoutForm from '@/components/CheckoutForm';
 
@@ -24,14 +27,17 @@ export default function App(): JSX.Element {
     const router: NextRouter = useRouter();
 
     const fetchData = useCallback(async (): Promise<void> => {
-        const response: Response = await fetch('/api/create-payment-intent', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                cart: cart,
-                userData: JSON.stringify(router.query),
-            }),
-        });
+        const response: Response = await fetchWithToken(
+            '/api/create-payment-intent',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cart: cart,
+                    checkoutData: JSON.stringify(router.query),
+                }),
+            }
+        );
         const data = await response.json();
         setClientSecret(data.clientSecret);
     }, [cart, router.query]);

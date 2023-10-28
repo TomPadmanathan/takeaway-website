@@ -26,8 +26,6 @@ function checkoutUserInfomationToQueryParams(
     return {
         orderNote: checkoutInfo.orderNote,
         includeCutlery: checkoutInfo.includeCutlery.toString(),
-        userId: checkoutInfo.userId,
-        userType: checkoutInfo.userType,
     };
 }
 
@@ -37,8 +35,6 @@ export default function CheckoutUser({ user }: props): JSX.Element {
     const [checkoutInfo, setCheckoutInfo] = useState<checkoutInfoUser>({
         orderNote: '',
         includeCutlery: false,
-        userId: user.userId,
-        userType: 'user',
     });
 
     return (

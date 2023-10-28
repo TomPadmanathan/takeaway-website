@@ -1,5 +1,6 @@
 // Packages
 import Stripe from 'stripe';
+import Jwt, { JwtPayload } from 'jsonwebtoken';
 
 // Utils
 import calculateCheckoutPricesFromServerSide from '@/utils/calculateCheckoutPricesFromServerSide';
@@ -28,26 +29,44 @@ export default async function handler(
     response: NextApiResponse
 ): Promise<void> {
     const cart: cart = request.body.cart;
-    let userData: checkoutInfoUser | checkoutInfoGuest = JSON.parse(
-        request.body.userData
+
+    const checkoutData: checkoutInfoGuest | checkoutInfoUser = JSON.parse(
+        request.body.checkoutData
     );
+
+    if (request.method !== 'POST') {
+        response.status(405).json({ error: 'Method not allowed' });
+        console.error('Method not allowed');
+        return;
+    }
+    const authorizationHeader = request.headers.authorization;
+    if (!authorizationHeader) {
+        checkoutData.userType = 'guest';
+    } else {
+        const token = authorizationHeader.replace('Bearer ', '');
+        const decodedToken: JwtPayload | null | string = Jwt.decode(token);
+        if (!decodedToken || typeof decodedToken != 'object') return;
+        checkoutData.userType = 'user';
+        checkoutData.userId = decodedToken.userId;
+    }
+
     let customer;
-    switch (userData.userType) {
+    switch (checkoutData.userType) {
         case 'guest':
             customer = await stripe.customers.create({
-                email: userData.email,
-                name: userData.forename + ' ' + userData.surname,
-                phone: userData.phoneNumber.toString(),
+                email: checkoutData.email,
+                name: checkoutData.forename + ' ' + checkoutData.surname,
+                phone: checkoutData.phoneNumber.toString(),
                 address: {
-                    city: userData.cityTown,
-                    line1: userData.addressLine1,
-                    line2: userData.addressLine2,
-                    postal_code: userData.postcode,
+                    city: checkoutData.cityTown,
+                    line1: checkoutData.addressLine1,
+                    line2: checkoutData.addressLine2,
+                    postal_code: checkoutData.postcode,
                 },
                 metadata: {
-                    orderNote: userData.orderNote,
-                    includeCutlery: userData.includeCutlery ? 1 : 0,
-                    userType: userData.userType,
+                    orderNote: checkoutData.orderNote,
+                    includeCutlery: checkoutData.includeCutlery ? 1 : 0,
+                    userType: checkoutData.userType,
                 },
             });
             break;
@@ -55,10 +74,10 @@ export default async function handler(
         case 'user':
             customer = await stripe.customers.create({
                 metadata: {
-                    orderNote: userData.orderNote,
-                    includeCutlery: userData.includeCutlery ? 1 : 0,
-                    userId: userData.userId,
-                    userType: userData.userType,
+                    orderNote: checkoutData.orderNote,
+                    includeCutlery: checkoutData.includeCutlery ? 1 : 0,
+                    userType: checkoutData.userType,
+                    userId: checkoutData.userId ? checkoutData.userId : null,
                 },
             });
             break;
@@ -68,15 +87,16 @@ export default async function handler(
             return;
     }
 
-    const paymentIntent = await stripe.paymentIntents.create({
-        amount: await calculateOrderAmount(cart),
-        currency: 'gbp',
-        payment_method_types: ['card'],
-        metadata: {
-            customerId: customer.id,
-            cart: JSON.stringify(getIdsAndOptionsInCart(cart)),
-        },
-    });
+    const paymentIntent: Stripe.Response<Stripe.PaymentIntent> =
+        await stripe.paymentIntents.create({
+            amount: await calculateOrderAmount(cart),
+            currency: 'gbp',
+            payment_method_types: ['card'],
+            metadata: {
+                customerId: customer.id,
+                cart: JSON.stringify(getIdsAndOptionsInCart(cart)),
+            },
+        });
 
     response.send({
         clientSecret: paymentIntent.client_secret,

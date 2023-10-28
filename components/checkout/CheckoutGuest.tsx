@@ -47,7 +47,6 @@ export default function CheckoutGuest(): JSX.Element {
             orderNote: '',
             forename: '',
             surname: '',
-            userType: 'guest',
         });
     const [showGuest, setShowGuest] = useState<boolean>(true);
 
@@ -66,7 +65,7 @@ export default function CheckoutGuest(): JSX.Element {
                             router.push({
                                 pathname: '/auth/login',
                                 query: {
-                                    url: 'http://localhost:3000/checkout',
+                                    url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
                                 },
                             })
                         }
@@ -84,9 +83,12 @@ export default function CheckoutGuest(): JSX.Element {
                     <SecondaryButton
                         content="Login"
                         onClick={(): Promise<boolean> =>
-                            router.push(
-                                '/auth/login?url=http://localhost:3000/checkout'
-                            )
+                            router.push({
+                                pathname: 'auth/login',
+                                query: {
+                                    url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
+                                },
+                            })
                         }
                         addClass="mx-5 mb-5 mt-2 px-20"
                     />
