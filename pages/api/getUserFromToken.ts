@@ -25,15 +25,16 @@ export default async function handler(
         console.error('Method not allowed');
         return;
     }
-    const authorizationHeader = request.headers.authorization;
+    const authorizationHeader: string | undefined =
+        request.headers.authorization;
     if (!authorizationHeader) {
         response
-            .status(404)
+            .status(400)
             .json({ error: 'No token provided in the request' });
         console.error('No token provided in the request.');
         return;
     }
-    const token = authorizationHeader.replace('Bearer ', '');
+    const token: string = authorizationHeader.replace('Bearer ', '');
     const decodedToken: JwtPayload | null | string = Jwt.decode(token);
     if (!decodedToken || typeof decodedToken != 'object') return;
     const userId: string = decodedToken.userId;

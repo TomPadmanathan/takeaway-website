@@ -31,8 +31,7 @@ export default async function handler(
             },
         });
         if (!user) {
-            response.status(404);
-            response.send('User not found');
+            response.status(404).json({ error: 'User not found' });
             return;
         }
         bcrypt.compare(
@@ -40,19 +39,19 @@ export default async function handler(
             user.password,
             (error: Error | undefined, result: boolean): void => {
                 if (error) {
-                    console.log('bcrypt error: ', error);
+                    console.error('bcrypt error: ', error);
                     return;
                 }
                 if (result) {
-                    const token = generateToken(user);
-                    response.json({ token });
+                    const token: string = generateToken(user);
+                    response.json({ token: token });
                     return;
                 }
-                console.error('Incorrect user/pass');
+                response.status(400).json({ error: 'Incorrect credentials' });
             }
         );
     } catch (error: unknown) {
         console.error('Sequlize error:', error);
-        response.status(500).send('Internal Server Error');
+        response.status(500).json({ error: 'Internal Server Error' });
     }
 }

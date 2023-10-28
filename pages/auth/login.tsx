@@ -1,5 +1,5 @@
 // React/Next
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 // Utils
@@ -12,6 +12,9 @@ import SecondaryButton from '@/components/SecondaryButton';
 // Types/Interfaces
 import { ChangeEvent } from 'react';
 
+// Packages
+import Jwt, { JwtPayload } from 'jsonwebtoken';
+
 interface Credentials {
     email: string;
     password: string;
@@ -23,6 +26,7 @@ export default function Login(): JSX.Element {
         email: '',
         password: '',
     });
+    const [token, setToken] = useState<string | undefined>();
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
@@ -41,12 +45,17 @@ export default function Login(): JSX.Element {
                     }),
                 }
             );
+            interface responseJson {
+                token?: string;
+                error?: string;
+            }
+            const responseJson: responseJson = await response.json();
             if (!response.ok) {
-                console.error('Login failed');
+                console.error(responseJson.error);
                 return;
             }
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
+            if (!responseJson.token) return;
+            localStorage.setItem('token', responseJson.token);
 
             if (
                 typeof router.query.url !== 'string' ||
@@ -60,35 +69,60 @@ export default function Login(): JSX.Element {
             console.error('Error fetching JWT');
         }
     }
+    useEffect((): void => {
+        const token: string | null = localStorage.getItem('token');
+        if (token) setToken(token);
+    });
 
-    return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <PrimaryInput
-                    type="email"
-                    placeholder="Email"
-                    onChange={(event: ChangeEvent<HTMLInputElement>): void => {
-                        const copy = {
-                            ...credentials,
-                        };
-                        copy.email = event.target.value;
-                        setCredentials(copy);
+    if (!token)
+        return (
+            <>
+                <form onSubmit={handleSubmit}>
+                    <PrimaryInput
+                        type="email"
+                        placeholder="Email"
+                        onChange={(
+                            event: ChangeEvent<HTMLInputElement>
+                        ): void => {
+                            const copy = {
+                                ...credentials,
+                            };
+                            copy.email = event.target.value;
+                            setCredentials(copy);
+                        }}
+                        required={true}
+                    />
+                    <PrimaryInput
+                        placeholder="Password"
+                        onChange={(
+                            event: ChangeEvent<HTMLInputElement>
+                        ): void => {
+                            const copy = {
+                                ...credentials,
+                            };
+                            copy.password = event.target.value;
+                            setCredentials(copy);
+                        }}
+                        required={true}
+                    />
+                    <SecondaryButton content="login" />
+                </form>
+            </>
+        );
+    else
+        return (
+            <>
+                <h1>You are already logged in.</h1>
+                <SecondaryButton
+                    content="Go to account"
+                    onClick={(): void => {
+                        const decodedToken: JwtPayload | null | string =
+                            Jwt.decode(token);
+                        if (!decodedToken || typeof decodedToken != 'object')
+                            return;
+                        router.push(`/users/${decodedToken.userId}`);
                     }}
-                    required={true}
                 />
-                <PrimaryInput
-                    placeholder="Password"
-                    onChange={(event: ChangeEvent<HTMLInputElement>): void => {
-                        const copy = {
-                            ...credentials,
-                        };
-                        copy.password = event.target.value;
-                        setCredentials(copy);
-                    }}
-                    required={true}
-                />
-                <SecondaryButton content="login" />
-            </form>
-        </>
-    );
+            </>
+        );
 }

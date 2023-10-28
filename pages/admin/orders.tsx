@@ -1,5 +1,5 @@
 // React/Next
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Database Models
 import Order from '@/database/models/Order';
@@ -9,29 +9,11 @@ import formatPrice from '@/utils/formatPrice';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
+import fetchWithToken from '@/utils/JWT/fetchWithToken';
 
 // Components
 import AdminNav from '@/components/AdminNav';
 import SecondaryButton from '@/components/SecondaryButton';
-
-interface props {
-    ordersData: Order[];
-}
-interface serverSideProps {
-    props: props;
-}
-
-export async function getServerSideProps(): Promise<serverSideProps> {
-    const ordersRes: Response = await fetch(
-        process.env.NEXT_PUBLIC_URL + '/api/orders'
-    );
-    const ordersData: Order[] = await ordersRes.json();
-    return {
-        props: {
-            ordersData,
-        },
-    };
-}
 
 const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];
 const btnHeadings: string[] = ['Accept', 'Dispatch', 'Delivered'];
@@ -56,7 +38,7 @@ async function changeOrderStatus(
         console.error('New status is undefined');
         return;
     }
-    await fetch('/api/changeOrderStatus', {
+    const response: Response = await fetchWithToken('/api/changeOrderStatus', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -64,20 +46,53 @@ async function changeOrderStatus(
             status: newStatus,
         }),
     });
+    const responseJson = await response.json();
+    if (responseJson.error) {
+        console.error(responseJson.error);
+        return;
+    }
 }
 
-export default function Orders(props: props): JSX.Element {
-    const [ordersData, setOrdersData] = useState<Order[]>(props.ordersData);
+export default function Orders(): JSX.Element {
+    const [ordersData, setOrdersData] = useState<Order[]>([]);
+
+    useEffect(() => {
+        function fetchFunction() {
+            fetchAndSetOrders();
+        }
+        fetchFunction();
+    });
 
     async function fetchOrdersData(): Promise<void> {
         // Change later to wait for response from change status then update
         setTimeout(async (): Promise<void> => {
-            const ordersRes: Response = await fetch(
-                process.env.NEXT_PUBLIC_URL + '/api/orders'
-            );
-            const ordersData: Order[] = await ordersRes.json();
-            setOrdersData(ordersData);
+            fetchAndSetOrders();
         }, 50);
+    }
+
+    async function fetchAndSetOrders(): Promise<void> {
+        const ordersRes: Response = await fetchWithToken(
+            process.env.NEXT_PUBLIC_URL + '/api/orders',
+            {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+        interface orderResJson {
+            error?: string;
+            orders?: Order[];
+        }
+        const ordersResJson: orderResJson = await ordersRes.json();
+        if (ordersResJson.error) {
+            console.error(ordersResJson.error);
+            return;
+        }
+        if (!ordersResJson.orders) {
+            console.error('orders not defined');
+            return;
+        }
+        setOrdersData(ordersResJson.orders);
+        return;
     }
 
     const tableHeadings: string[] = [

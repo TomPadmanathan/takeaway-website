@@ -32,6 +32,7 @@ export default async function handler(
         bcrypt.genSalt(10, (error: Error | undefined, salt: string): void => {
             if (error) {
                 console.error('Bcrypt Error: ', error);
+                response.status(500).json({ error: 'Bcrypt Error' });
                 return;
             }
             bcrypt.hash(
@@ -43,6 +44,7 @@ export default async function handler(
                 ): Promise<void> => {
                     if (error) {
                         console.error('Bcrypt Error: ', error);
+                        response.status(500).json({ error: 'Bcrypt Error' });
                         return;
                     }
                     const newUser: User = User.build({
@@ -58,14 +60,13 @@ export default async function handler(
                         userType: 'user',
                     } as User);
 
-                    await newUser
-                        .save()
-                        .catch((error: Error): void =>
-                            console.error('Sequlize error:', error)
-                        );
+                    await newUser.save().catch((error: Error): void => {
+                        console.error('Sequlize error: ', error);
+                        response.status(500).json({ error: 'Sequlize error' });
+                    });
                     const user: User = newUser.dataValues;
-                    const token = generateToken(user);
-                    response.json({ token });
+                    const token: string = generateToken(user);
+                    response.json({ token: token });
                 }
             );
         });
