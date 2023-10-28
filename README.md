@@ -54,10 +54,6 @@ Production Database currently unavalible
 
 I am committed to continuously improving this project. Here are some changes and features I plan to implement in the near future:
 
--   **Switch from Flatfile to Relational Database:** Migrate from a flatfile data storage system to a more robust relational database to improve data management and scalability.
-
--   **User Accounts:** Implementation of user accounts, allowing for a more personalized and seamless ordering experience.
-
 -   **Responsive Layout:** Making the website even more accessible and user-friendly on various devices by enhancing its responsiveness.
 
 -   **UI Revamp:** Revamping the user interface to provide a fresh and modern look.
@@ -96,7 +92,7 @@ Then enter your environment variables.
 npm run dev
 ```
 
-6. Open your browser and access the website at http://localhost:3000
+6. Open your browser and access the website at [localhost:3000](http://localhost:3000)
 
 ## Contribution Guidelines
 
