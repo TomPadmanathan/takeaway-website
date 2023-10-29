@@ -7,7 +7,7 @@ import User from '@/database/models/User';
 
 // Types/Interfaces
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent } from 'react';
 
 // Utils
 import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
@@ -23,8 +23,10 @@ export default function OrderId(): JSX.Element {
     // get user with token
     useEffect((): void => {
         async function fetchData(): Promise<void> {
+            if (!router.isReady) return;
             const response: Response = await fetchWithToken(
-                process.env.NEXT_PUBLIC_URL + '/api/getUserFromToken',
+                process.env.NEXT_PUBLIC_URL +
+                    `/api/getUserFromId?userId=${router.query.userId}`,
                 {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
@@ -38,7 +40,7 @@ export default function OrderId(): JSX.Element {
             setUser(responseJson.user);
         }
         fetchData();
-    }, []);
+    }, [router.isReady]);
 
     function updatePassword() {}
     function updateYourInfo() {}
