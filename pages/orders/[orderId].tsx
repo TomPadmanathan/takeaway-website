@@ -68,8 +68,10 @@ export default function OrderId(props: props): JSX.Element {
                 return;
             }
             setOrder(responseJson.order);
-            if (!order) return;
-            const result = await convertCompactedProducts(order.products);
+
+            const result = await convertCompactedProducts(
+                responseJson.order.products
+            );
             setProducts(result);
         }
         fetchOrder();
