@@ -1,5 +1,6 @@
 // Packages
 import { Sequelize } from 'sequelize-typescript';
+import mysql2 from 'mysql2';
 
 // Database Models
 import Order from '@/database/models/Order';
@@ -11,7 +12,7 @@ const sequelize: Sequelize = new Sequelize({
     password: process.env.dbPass,
     host: process.env.dbHost,
     dialect: 'mysql',
-    dialectModule: Sequelize,
+    dialectModule: mysql2,
     models: [Order, User],
     logging: false,
 });
