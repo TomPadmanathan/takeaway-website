@@ -11,6 +11,7 @@ const sequelize: Sequelize = new Sequelize({
     password: process.env.dbPass,
     host: process.env.dbHost,
     dialect: 'mysql',
+    dialectModule: Sequelize,
     models: [Order, User],
     logging: false,
 });
