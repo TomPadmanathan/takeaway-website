@@ -36,7 +36,7 @@ export default async function handler(
     const token: string = authorizationHeader.replace('Bearer ', '');
     const decodedToken: JwtPayload | null | string = Jwt.decode(token);
     if (!decodedToken || typeof decodedToken != 'object') return;
-    const userId: string = decodedToken.userId;
+    const requestUserId: string = decodedToken.userId;
 
     try {
         await sequelize.sync();
@@ -51,12 +51,41 @@ export default async function handler(
             response.status(404).json({ error: 'order not found' });
             return;
         }
-        if (userId !== order.userId) {
-            response.status(404).json({ error: 'Invalid permissions' });
-            return;
+        if (requestUserId !== order.userId) {
+            try {
+                await sequelize.sync();
+                const requestUser: User | null = await User.findOne({
+                    where: {
+                        userId: requestUserId,
+                    },
+                    attributes: {
+                        include: ['userType'],
+                    },
+                });
+                if (!requestUser) {
+                    response
+                        .status(404)
+                        .json({ error: 'requesting user not found' });
+                    return;
+                }
+                if (requestUser.userType != 'admin') {
+                    response
+                        .status(400)
+                        .json({ error: 'User has invalid permissions' });
+                    return;
+                }
+            } catch (error) {
+                console.error('Sequlize error:', error);
+                response.status(500).json({
+                    error: 'Database Error',
+                });
+            }
         }
         response.json({ order: order });
     } catch (error) {
         console.error('Sequlize error:', error);
+        response.status(500).json({
+            error: 'Database Error',
+        });
     }
 }

@@ -45,21 +45,21 @@ export default async function handler(
     if (requestingUserId != userId) {
         try {
             await sequelize.sync();
-            const user: User | null = await User.findOne({
+            const requestingUser: User | null = await User.findOne({
                 where: {
                     userId: requestingUserId,
                 },
                 attributes: {
-                    exclude: ['password'],
+                    include: ['userType'],
                 },
             });
 
-            if (!user) {
+            if (!requestingUser) {
                 console.error('Requesting user not found');
                 response.status(404);
                 return;
             }
-            if (user.userType != 'admin') {
+            if (requestingUser.userType != 'admin') {
                 response
                     .status(400)
                     .json({ error: 'User has invalid permissions' });
