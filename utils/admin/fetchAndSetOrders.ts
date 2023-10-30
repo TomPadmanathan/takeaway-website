@@ -23,11 +23,11 @@ export default async function fetchAndSetOrders(
             }
         );
     }
-    interface orderResJson {
+    interface ordersResJson {
         error?: string;
         orders?: Order[];
     }
-    const ordersResJson: orderResJson = await ordersRes.json();
+    const ordersResJson: ordersResJson = await ordersRes.json();
     if (ordersResJson.error) {
         console.error(ordersResJson.error);
         return;

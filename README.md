@@ -6,6 +6,12 @@ This repository contains a work-in-progress takeaway website built using TypeScr
 
 You can explore the current version of this project by visiting the following link, which is hosted on Vercel:
 
+> Please note:
+>
+> -   The production database is currently being hosted locally to expect a delay for all database actions.
+> -   This project is work in progress so expect some features to be incomplete.
+> -   Please do not enter any persanal data as this project is open to anyone to view.
+
 [Takeaway Website on Vercel](https://takeaway-website.vercel.app/)
 
 Feel free to browse the site and experience the features we've implemented so far.
@@ -18,11 +24,11 @@ This project has been launched in Stripe test mode meaning that the website will
 
 After creating an order you will be redirected to a customer order page where you can see your order details and status. You will also recieve an email after an order has been places aswell as emails upon order status change.
 
-To see a list of all orders and change the order status visit:
+To visit the admin dashboard login with these credentials and go to the link below:
+email: `padmanathantom@gmail.com`
+password: `mypass`
 
-Production Database currently unavalible
-
-[Takeaway Website Order Page](https://takeaway-website.vercel.app/admin/orders)
+[Takeaway Website Admin Page](https://takeaway-website.vercel.app/admin/orders)
 
 ## Features
 
