@@ -48,7 +48,7 @@ export default function OrderId(props: props): JSX.Element {
     useEffect((): void => {
         const token = localStorage.getItem('token');
         if (token) setToken(token);
-    });
+    }, []);
 
     useEffect((): void => {
         async function fetchOrder(): Promise<void> {
@@ -75,129 +75,128 @@ export default function OrderId(props: props): JSX.Element {
             setProducts(result);
         }
         fetchOrder();
-    }, []);
-
-    if (order)
-        return (
-            <>
-                <center className="mt-10 pb-10">
-                    <h2 className="text-4xl">Your order is:</h2>
-                    <h1 className="text-[80px]">
-                        {order.status.toUpperCase()}
-                    </h1>
-                    {order.status === 'delivered' ? null : (
-                        <>
-                            <h2>Estimated Delivery Time:</h2>
-                            <h2>
-                                {getTimeFromTimestamp(
-                                    parseInt(order.timestamp) +
-                                        props.configData.delivery
-                                            .estimatedTimeOffset *
-                                            60000
-                                )}
-                            </h2>
-                        </>
-                    )}
-                </center>
-                <div className="mx-96 flex justify-between">
-                    <section className="h-[35rem] w-[30rem] border-2 border-black p-10">
-                        <ul className="text-2xl leading-10">
-                            <li>
-                                <span className="text-slate-500">Date: </span>
-                                {getDateFromTimestamp(
-                                    parseInt(order.timestamp)
-                                )}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">Time: </span>
-                                {getTimeFromTimestamp(
-                                    parseInt(order.timestamp)
-                                )}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">Email: </span>
-                                {order.user.email}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">Name: </span>
-                                {order.user.forename + ' ' + order.user.surname}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">
-                                    Phone Number:{' '}
-                                </span>
-                                {order.user.phoneNumber}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">
-                                    City/Town:{' '}
-                                </span>
-                                {order.user.cityTown}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">
-                                    Address Line 1:{' '}
-                                </span>
-                                {order.user.addressLine1}
-                            </li>
-                            {order.user.addressLine2 ? (
+    });
+    if (token)
+        if (order)
+            return (
+                <>
+                    <center className="mt-10 pb-10">
+                        <h2 className="text-4xl">Your order is:</h2>
+                        <h1 className="text-[80px]">
+                            {order.status.toUpperCase()}
+                        </h1>
+                        {order.status === 'delivered' ? null : (
+                            <>
+                                <h2>Estimated Delivery Time:</h2>
+                                <h2>
+                                    {getTimeFromTimestamp(
+                                        parseInt(order.timestamp) +
+                                            props.configData.delivery
+                                                .estimatedTimeOffset *
+                                                60000
+                                    )}
+                                </h2>
+                            </>
+                        )}
+                    </center>
+                    <div className="mx-96 flex justify-between">
+                        <section className="h-[35rem] w-[30rem] border-2 border-black p-10">
+                            <ul className="text-2xl leading-10">
                                 <li>
                                     <span className="text-slate-500">
-                                        Address Line 2:{' '}
+                                        Date:{' '}
                                     </span>
-                                    {order.user.addressLine2}
+                                    {getDateFromTimestamp(
+                                        parseInt(order.timestamp)
+                                    )}
                                 </li>
-                            ) : null}
-                            <li>
-                                <span className="text-slate-500">
-                                    Postcode:{' '}
-                                </span>
-                                {order.user.postcode}
-                            </li>
-                            <li>
-                                <span className="text-slate-500">
-                                    Order Id:{' '}
-                                </span>
-                                {order.orderId}
-                            </li>
-                            {order.orderNote ? (
                                 <li>
                                     <span className="text-slate-500">
-                                        Order Note:
+                                        Time:{' '}
                                     </span>
-                                    {order.orderNote}
+                                    {getTimeFromTimestamp(
+                                        parseInt(order.timestamp)
+                                    )}
                                 </li>
-                            ) : null}
-                        </ul>
-                    </section>
-                    <ListItemsWithPrice
-                        cart={products}
-                        config={props.configData}
-                    />
-                </div>
-            </>
-        );
-
-    if (!token)
+                                <li>
+                                    <span className="text-slate-500">
+                                        Email:{' '}
+                                    </span>
+                                    {order.user.email}
+                                </li>
+                                <li>
+                                    <span className="text-slate-500">
+                                        Name:{' '}
+                                    </span>
+                                    {order.user.forename +
+                                        ' ' +
+                                        order.user.surname}
+                                </li>
+                                <li>
+                                    <span className="text-slate-500">
+                                        Phone Number:{' '}
+                                    </span>
+                                    {order.user.phoneNumber}
+                                </li>
+                                <li>
+                                    <span className="text-slate-500">
+                                        City/Town:{' '}
+                                    </span>
+                                    {order.user.cityTown}
+                                </li>
+                                <li>
+                                    <span className="text-slate-500">
+                                        Address Line 1:{' '}
+                                    </span>
+                                    {order.user.addressLine1}
+                                </li>
+                                {order.user.addressLine2 ? (
+                                    <li>
+                                        <span className="text-slate-500">
+                                            Address Line 2:{' '}
+                                        </span>
+                                        {order.user.addressLine2}
+                                    </li>
+                                ) : null}
+                                <li>
+                                    <span className="text-slate-500">
+                                        Postcode:{' '}
+                                    </span>
+                                    {order.user.postcode}
+                                </li>
+                                <li>
+                                    <span className="text-slate-500">
+                                        Order Id:{' '}
+                                    </span>
+                                    {order.orderId}
+                                </li>
+                                {order.orderNote ? (
+                                    <li>
+                                        <span className="text-slate-500">
+                                            Order Note:
+                                        </span>
+                                        {order.orderNote}
+                                    </li>
+                                ) : null}
+                            </ul>
+                        </section>
+                        <ListItemsWithPrice
+                            cart={products}
+                            config={props.configData}
+                        />
+                    </div>
+                </>
+            );
+        else
+            return (
+                <>
+                    <h1>Order not found or you have invalid permissions</h1>
+                </>
+            );
+    else
         return (
             <>
-                <h1>Please login to view this page.</h1>
-                <SecondaryButton
-                    content="Login"
-                    onClick={(): void => {
-                        router.push({
-                            pathname: '/auth/login',
-                            query: {
-                                url: `${process.env.NEXT_PUBLIC_URL}${router.asPath}`,
-                            },
-                        });
-                    }}
-                />
+                <h1>You are not logged in</h1>
             </>
         );
-    return (
-        <>
-            <h1>You are not logged in as the user who made this order.</h1>
-        </>
-    );
 }

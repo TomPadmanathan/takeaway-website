@@ -1,7 +1,7 @@
 // React/Next
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 
 // Packages
 import jwt from 'jsonwebtoken';
@@ -34,14 +34,15 @@ export default function Navbar(props: props): JSX.Element {
     const router: NextRouter = useRouter();
     const checkoutPrices = new CalculateCheckoutPrices(cart, props.configData);
     const [token, setToken] = useState<string | null>(null);
-    let userId: string;
+    const userId = useRef<string>();
+    // let userId: string;
     useEffect((): void => {
         setToken(localStorage.getItem('token'));
         if (!token) return;
         const decodedToken: jwt.JwtPayload | null | string = jwt.decode(token);
         if (!decodedToken || typeof decodedToken != 'object') return;
-        userId = decodedToken.userId;
-    });
+        userId.current = decodedToken.userId;
+    }, [token]);
 
     return (
         <>
@@ -75,7 +76,7 @@ export default function Navbar(props: props): JSX.Element {
                         onClick={
                             token
                                 ? (): Promise<boolean> =>
-                                      router.push(`/users/${userId}`)
+                                      router.push(`/users/${userId.current}`)
                                 : (): Promise<boolean> =>
                                       router.push('/auth/login')
                         }

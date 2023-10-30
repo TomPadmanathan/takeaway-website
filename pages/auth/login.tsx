@@ -72,7 +72,7 @@ export default function Login(): JSX.Element {
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
         if (token) setToken(token);
-    });
+    }, []);
 
     if (!token)
         return (

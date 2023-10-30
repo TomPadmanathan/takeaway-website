@@ -28,7 +28,7 @@ interface Credentials {
     cityTown: string;
 }
 
-export default function signUp(): JSX.Element {
+export default function SignUp(): JSX.Element {
     const router: NextRouter = useRouter();
     const [credentials, setCredentials] = useState<Credentials>({
         phoneNumber: 0,
@@ -51,7 +51,7 @@ export default function signUp(): JSX.Element {
     useEffect((): void => {
         const token = localStorage.getItem('token');
         if (token) setToken(token);
-    });
+    }, []);
 
     async function signUpUser(credentials: Credentials): Promise<void> {
         try {

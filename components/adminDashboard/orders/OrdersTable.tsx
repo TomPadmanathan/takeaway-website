@@ -22,7 +22,7 @@ export default function OrdersTable({ today }: props): JSX.Element {
             fetchAndSetOrders(setOrdersData, today);
         }
         fetchFunction();
-    }, []);
+    }, [today]);
 
     const tableHeadings: string[] = [
         'Time',

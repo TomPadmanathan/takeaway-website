@@ -83,7 +83,7 @@ export default async function handler(
 
         if (!user) {
             console.error('User not found');
-            response.status(404);
+            response.status(404).json({ error: 'User not found' });
             return;
         }
 
