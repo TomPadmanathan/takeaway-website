@@ -15,6 +15,7 @@ import User from '@/database/models/User';
 import { ChangeEvent } from 'react';
 import { ParsedUrlQueryInput } from 'querystring';
 import { checkoutInfoUser } from '@/interfaces/checkoutInfo';
+import { FormEvent } from 'react';
 
 interface props {
     user: User;
@@ -42,13 +43,13 @@ export default function CheckoutUser({ user }: props): JSX.Element {
             <h2 className="mb-10">
                 Checkout as: {user.forename + ' ' + user.surname}
             </h2>
-            <label htmlFor="phone-number">Your Info</label>
+            <label htmlFor="phoneNumber">Your Info</label>
             <div className="mb-10">
                 <div className="mb-2 flex justify-between">
                     <PrimaryInput
                         type="number"
                         placeholder="Phone Number"
-                        id="phone-number"
+                        id="phoneNumber"
                         required
                         inputMode="numeric"
                         addClass={removeArrowsFromInput}
@@ -58,6 +59,7 @@ export default function CheckoutUser({ user }: props): JSX.Element {
                     <PrimaryInput
                         value={user.email}
                         type="email"
+                        id="emailInput"
                         placeholder="Email"
                         required
                         disabled
@@ -67,12 +69,14 @@ export default function CheckoutUser({ user }: props): JSX.Element {
                     <PrimaryInput
                         value={user.forename}
                         type="text"
+                        id="forename"
                         placeholder="Forename"
                         required
                         disabled
                     />
                     <PrimaryInput
                         value={user.surname}
+                        id="surname"
                         type="text"
                         placeholder="Surname"
                         required
@@ -80,17 +84,18 @@ export default function CheckoutUser({ user }: props): JSX.Element {
                     />
                 </div>
             </div>
-            <label htmlFor="address-line-1">Address</label>
+            <label htmlFor="addressLine1">Address</label>
             <div className="mb-2 flex justify-between">
                 <PrimaryInput
                     value={user.addressLine1}
                     placeholder="Address line 1"
-                    id="address-line-1"
+                    id="addressLine1"
                     required
                     disabled
                 />
                 <PrimaryInput
                     value={user.addressLine2}
+                    id="addressLine2"
                     placeholder="Address line 2 (optional)"
                     disabled
                 />
@@ -100,26 +105,30 @@ export default function CheckoutUser({ user }: props): JSX.Element {
                     placeholder="City/Town"
                     value={user.cityTown}
                     disabled
+                    id="cityTown"
                 />
                 <PrimaryInput
                     placeholder="Postcode"
                     value={user.postcode}
+                    id="postcode"
                     disabled
                 />
             </div>
             <form
-                onSubmit={(): Promise<boolean> =>
+                onSubmit={(event: FormEvent): void => {
+                    event.preventDefault();
                     router.push({
                         pathname: '/checkout/new-checkout-session',
                         query: checkoutUserInfomationToQueryParams(
                             checkoutInfo
                         ),
-                    })
-                }
+                    });
+                }}
             >
-                <label htmlFor="">Order Info</label>
+                <label htmlFor="orderNote">Order Info</label>
                 <div className="flex justify-between">
                     <textarea
+                        id="orderNote"
                         placeholder="Leave us a note (optional)"
                         className="block h-10 resize-none border border-black"
                         onChange={(
@@ -130,10 +139,10 @@ export default function CheckoutUser({ user }: props): JSX.Element {
                             setCheckoutInfo(copy);
                         }}
                     />
-                    <label htmlFor="include-cutlery">Include Cutlery</label>
+                    <label htmlFor="includeCutlery">Include Cutlery</label>
                     <PrimaryInput
                         type="checkbox"
-                        id="include-cutlery"
+                        id="includeCutlery"
                         onChange={(
                             event: ChangeEvent<HTMLInputElement>
                         ): void => {

@@ -21,6 +21,7 @@ interface props {
     addClass?: string;
     value?: string;
     disabled?: boolean;
+    autoComplete?: boolean;
 }
 
 export default function PrimaryInput(props: props): JSX.Element {
@@ -40,6 +41,7 @@ export default function PrimaryInput(props: props): JSX.Element {
             onChange={props.onChange}
             onKeyPress={props.onKeyPress}
             disabled={props.disabled}
+            autoComplete={props.autoComplete ? 'on' : 'off'}
         />
     );
 }

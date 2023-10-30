@@ -94,22 +94,23 @@ export default function CheckoutGuest(): JSX.Element {
                     />
                 </div>
                 <form
-                    onSubmit={(): Promise<boolean> =>
+                    onSubmit={(event: React.FormEvent): void => {
+                        event.preventDefault();
                         router.push({
                             pathname: '/checkout/new-checkout-session',
                             query: checkoutUserInfomationToQueryParams(
                                 checkoutUserInfomation
                             ),
-                        })
-                    }
+                        });
+                    }}
                 >
-                    <label htmlFor="phone-number">Your Info</label>
+                    <label htmlFor="phoneNumber">Your Info</label>
                     <div className="mb-10">
                         <div className="mb-2 flex justify-between">
                             <PrimaryInput
                                 type="number"
                                 placeholder="Phone Number"
-                                id="phone-number"
+                                id="phoneNumber"
                                 required={true}
                                 inputMode="numeric"
                                 onKeyPress={(event: any): void => {
@@ -132,6 +133,8 @@ export default function CheckoutGuest(): JSX.Element {
                             <PrimaryInput
                                 type="email"
                                 placeholder="Email"
+                                id="email"
+                                autoComplete={false}
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
                                 ): void => {
@@ -147,6 +150,7 @@ export default function CheckoutGuest(): JSX.Element {
                         <div className="mb-2 flex justify-between">
                             <PrimaryInput
                                 type="text"
+                                id="forename"
                                 placeholder="Forename"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
@@ -160,6 +164,7 @@ export default function CheckoutGuest(): JSX.Element {
                             <PrimaryInput
                                 type="text"
                                 placeholder="Surname"
+                                id="surname"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
                                 ): void => {
@@ -171,11 +176,11 @@ export default function CheckoutGuest(): JSX.Element {
                             />
                         </div>
                     </div>
-                    <label htmlFor="address-line-1">Address</label>
+                    <label htmlFor="addressLine1">Address</label>
                     <div className="mb-2 flex justify-between">
                         <PrimaryInput
                             placeholder="Address line 1"
-                            id="address-line-1"
+                            id="addressLine1"
                             required={true}
                             onChange={(
                                 event: ChangeEvent<HTMLInputElement>
@@ -187,6 +192,7 @@ export default function CheckoutGuest(): JSX.Element {
                         />
                         <PrimaryInput
                             placeholder="Address line 2 (optional)"
+                            id="addressLine2"
                             onChange={(
                                 event: ChangeEvent<HTMLInputElement>
                             ): void => {
@@ -199,6 +205,7 @@ export default function CheckoutGuest(): JSX.Element {
                     <div className="mb-10 flex justify-between">
                         <PrimaryInput
                             placeholder="City/Town"
+                            id="cityTown"
                             onChange={(
                                 event: ChangeEvent<HTMLInputElement>
                             ): void => {
@@ -209,6 +216,7 @@ export default function CheckoutGuest(): JSX.Element {
                         />
                         <PrimaryInput
                             placeholder="Postcode"
+                            id="postcode"
                             value={checkoutUserInfomation.postcode}
                             onChange={(
                                 event: ChangeEvent<HTMLInputElement>
@@ -220,7 +228,7 @@ export default function CheckoutGuest(): JSX.Element {
                             }}
                         />
                     </div>
-                    <label htmlFor="">Order Info</label>
+                    <label htmlFor="orderNote">Order Info</label>
                     <div className="flex justify-between">
                         <textarea
                             placeholder="Leave us a note (optional)"
@@ -232,11 +240,12 @@ export default function CheckoutGuest(): JSX.Element {
                                 copy.orderNote = event.target.value;
                                 setCheckoutUserInfomation(copy);
                             }}
+                            id="orderNote"
                         />
-                        <label htmlFor="include-cutlery">Include Cutlery</label>
+                        <label htmlFor="includeCutlery">Include Cutlery</label>
                         <PrimaryInput
                             type="checkbox"
-                            id="include-cutlery"
+                            id="includeCutlery"
                             onChange={(
                                 event: ChangeEvent<HTMLInputElement>
                             ): void => {
