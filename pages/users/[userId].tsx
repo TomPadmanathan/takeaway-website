@@ -120,6 +120,12 @@ export default function UserId(): JSX.Element {
         return <SecondaryButton content="Update" type="submit" />;
     }
 
+    function logoutUser(): void {
+        // Remove token validitaty from backend later
+        localStorage.removeItem('token');
+        router.push('/');
+    }
+
     if (token)
         if (user && yourInfo && address)
             return (
@@ -294,6 +300,18 @@ export default function UserId(): JSX.Element {
                         />
                         <UpdateBtn />
                     </form>
+
+                    <SecondaryButton
+                        onClick={() => logoutUser()}
+                        content="Logout"
+                        addClass="absolute right-32 top-10"
+                    />
+
+                    <SecondaryButton
+                        onClick={(): Promise<boolean> => router.push('/')}
+                        content="Back"
+                        addClass="absolute right-10 top-10"
+                    />
                 </>
             );
         else return <h1>User not found</h1>;
