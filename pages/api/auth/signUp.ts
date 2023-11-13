@@ -28,6 +28,21 @@ export default async function handler(
 
         const credentials = request.body.credentials;
 
+        const emailCheck = await User.findAll({
+            where: {
+                email: credentials.email,
+            },
+            attributes: {
+                include: ['email'],
+            },
+        });
+        if (emailCheck.length) {
+            response.status(409).json({
+                error: 'Account with this email already exists',
+            });
+            return;
+        }
+
         // First param longer time hashing more sequre
         bcrypt.genSalt(10, (error: Error | undefined, salt: string): void => {
             if (error) {
@@ -47,6 +62,7 @@ export default async function handler(
                         response.status(500).json({ error: 'Bcrypt Error' });
                         return;
                     }
+
                     const newUser: User = User.build({
                         email: credentials.email,
                         password: hash,
