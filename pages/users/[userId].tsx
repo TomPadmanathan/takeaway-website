@@ -1,5 +1,5 @@
 // React/Next
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 // Database Models
@@ -20,6 +20,22 @@ export default function UserId(): JSX.Element {
     const [user, setUser] = useState<User | null>();
     const [token, setToken] = useState<string>('');
     const router: NextRouter = useRouter();
+
+    const [yourInfo, setYourInfo] = useState<any>();
+    const [address, setAddress] = useState<any>();
+
+    interface password {
+        currentPassword: string;
+        newPassword: string;
+        comfirmNewPassword: string;
+    }
+
+    const emptyPassword = {
+        currentPassword: '',
+        newPassword: '',
+        comfirmNewPassword: '',
+    };
+    const [password, setPassword] = useState<password>(emptyPassword);
 
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
@@ -48,16 +64,64 @@ export default function UserId(): JSX.Element {
         fetchData();
     }, [router.isReady, router.query.userId]);
 
-    function updatePassword() {}
-    function updateYourInfo() {}
-    function updateAddress() {}
+    useEffect((): void => {
+        setYourInfo(user);
+        setAddress(user);
+    }, [user]);
+
+    async function updatePassword(): Promise<void> {
+        if (password.newPassword != password.comfirmNewPassword) {
+            console.error('New passwords dont match');
+            return;
+        }
+        const response: Response = await fetchWithToken(
+            process.env.NEXT_PUBLIC_URL + `/api/user/updateUserPassword`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    currentPassword: password.currentPassword,
+                    newPassword: password.newPassword,
+                    userId: router.query,
+                }),
+            }
+        );
+        const responseJson = await response.json();
+        if (!response.ok) {
+            console.error(responseJson.error);
+            return;
+        }
+        setPassword(emptyPassword);
+    }
+
+    async function updateUserInfo(
+        updateType: 'yourInfo' | 'address'
+    ): Promise<void> {
+        const response: Response = await fetchWithToken(
+            process.env.NEXT_PUBLIC_URL + `/api/user/alterUser`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    newInfo: updateType === 'yourInfo' ? yourInfo : address,
+                    userId: router.query,
+                }),
+            }
+        );
+        const responseJson = await response.json();
+        if (!response.ok) {
+            console.error(responseJson.error);
+            return;
+        }
+        setUser(responseJson.user);
+    }
 
     function UpdateBtn(): JSX.Element {
         return <SecondaryButton content="Update" type="submit" />;
     }
 
     if (token)
-        if (user)
+        if (user && yourInfo && address)
             return (
                 <>
                     <label htmlFor="phone-number">Your Info</label>
@@ -65,7 +129,7 @@ export default function UserId(): JSX.Element {
                         <form
                             onSubmit={event => {
                                 event.preventDefault();
-                                updateYourInfo();
+                                updateUserInfo('yourInfo');
                             }}
                         >
                             <PrimaryInput
@@ -79,8 +143,12 @@ export default function UserId(): JSX.Element {
                                 }}
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.phoneNumber}
+                                ): void => {
+                                    const copy = { ...yourInfo };
+                                    copy.phoneNumber = event.target.value;
+                                    setYourInfo(copy);
+                                }}
+                                value={yourInfo.phoneNumber}
                                 addClass={removeArrowsFromInput}
                             />
                             <PrimaryInput
@@ -88,24 +156,36 @@ export default function UserId(): JSX.Element {
                                 placeholder="Email"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.email}
+                                ): void => {
+                                    const copy = { ...yourInfo };
+                                    copy.email = event.target.value;
+                                    setYourInfo(copy);
+                                }}
+                                value={yourInfo.email}
                             />
                             <PrimaryInput
                                 type="text"
                                 placeholder="Forename"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.forename}
+                                ): void => {
+                                    const copy = { ...yourInfo };
+                                    copy.forename = event.target.value;
+                                    setYourInfo(copy);
+                                }}
+                                value={yourInfo.forename}
                             />
                             <PrimaryInput
                                 type="text"
                                 placeholder="Surname"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.surname}
+                                ): void => {
+                                    const copy = { ...yourInfo };
+                                    copy.surname = event.target.value;
+                                    setYourInfo(copy);
+                                }}
+                                value={yourInfo.surname}
                             />
                             <UpdateBtn />
                         </form>
@@ -115,7 +195,7 @@ export default function UserId(): JSX.Element {
                         <form
                             onSubmit={event => {
                                 event.preventDefault();
-                                updateAddress();
+                                updateUserInfo('address');
                             }}
                         >
                             <PrimaryInput
@@ -124,29 +204,45 @@ export default function UserId(): JSX.Element {
                                 required={true}
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.addressLine1}
+                                ): void => {
+                                    const copy = { ...address };
+                                    copy.addressLine1 = event.target.value;
+                                    setAddress(copy);
+                                }}
+                                value={address.addressLine1}
                             />
                             <PrimaryInput
                                 placeholder="Address line 2 (optional)"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.addressLine2}
+                                ): void => {
+                                    const copy = { ...address };
+                                    copy.addressLine2 = event.target.value;
+                                    setAddress(copy);
+                                }}
+                                value={address.addressLine2}
                             />
                             <PrimaryInput
                                 placeholder="City/Town"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.cityTown}
+                                ): void => {
+                                    const copy = { ...address };
+                                    copy.cityTown = event.target.value;
+                                    setAddress(copy);
+                                }}
+                                value={address.cityTown}
                             />
                             <PrimaryInput
                                 placeholder="Postcode"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
-                                ): void => {}}
-                                value={user.postcode}
+                                ): void => {
+                                    const copy = { ...address };
+                                    copy.postcode = event.target.value;
+                                    setAddress(copy);
+                                }}
+                                value={address.postcode}
                             />
                             <UpdateBtn />
                         </form>
@@ -154,19 +250,47 @@ export default function UserId(): JSX.Element {
 
                     <label htmlFor="password">Security</label>
                     <form
-                        onSubmit={event => {
+                        onSubmit={(event: FormEvent<HTMLFormElement>): void => {
                             event.preventDefault();
                             updatePassword();
                         }}
                     >
                         <PrimaryInput
                             type="text"
-                            placeholder="New Password"
+                            placeholder="Current Password"
                             id="password"
+                            onChange={(
+                                event: ChangeEvent<HTMLInputElement>
+                            ): void => {
+                                const copy = { ...password };
+                                copy.currentPassword = event.target.value;
+                                setPassword(copy);
+                            }}
+                            value={password.currentPassword}
+                        />
+                        <PrimaryInput
+                            type="text"
+                            placeholder="New Password"
+                            onChange={(
+                                event: ChangeEvent<HTMLInputElement>
+                            ): void => {
+                                const copy = { ...password };
+                                copy.newPassword = event.target.value;
+                                setPassword(copy);
+                            }}
+                            value={password.newPassword}
                         />
                         <PrimaryInput
                             type="text"
                             placeholder="Comfirm New Password"
+                            onChange={(
+                                event: ChangeEvent<HTMLInputElement>
+                            ): void => {
+                                const copy = { ...password };
+                                copy.comfirmNewPassword = event.target.value;
+                                setPassword(copy);
+                            }}
+                            value={password.comfirmNewPassword}
                         />
                         <UpdateBtn />
                     </form>
