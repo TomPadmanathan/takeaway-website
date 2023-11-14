@@ -8,7 +8,7 @@ import TopNav from '@/components/nav/TopNav';
 import BottomNav from '@/components/nav/BottomNav';
 
 // Assets
-import Black from '@/assets/img/black.png';
+import Logo from '@/assets/img/logo.png';
 import Star from '@/assets/img/star.png';
 
 export default function Navbar(): JSX.Element {
@@ -19,11 +19,11 @@ export default function Navbar(): JSX.Element {
             <TopNav />
             <BottomNav />
 
-            <section className="bg-lightblue">
-                <center className="px-64 pb-0 pt-20">
+            <section className="bg-lightblue px-64 pb-0">
+                <center>
                     <Image
-                        src={Black}
-                        className="border-black mb-10 h-52 w-52 border"
+                        src={Logo}
+                        className="border-black w-72 border py-10"
                         alt={'site-icon'}
                     />
                     <button
@@ -51,17 +51,73 @@ export default function Navbar(): JSX.Element {
                 </center>
             </section>
 
-            <section className="m-10">
+            <section className="m-10 mb-20">
                 <center>
-                    <h2 className="mb-10">
+                    <h2 className="mb-10 text-xl">
                         What do our customers think about us?
                     </h2>
+                </center>
+
+                {/* Link to backend review db */}
+                <section className="mb-10 flex justify-center">
+                    <div className="block justify-center text-center">
+                        <h2 className="mb-4 text-5xl text-grey">4.6</h2>
+                        <div className="mb-4 flex">
+                            <Image src={Star} className="w-4" alt={'star'} />
+                            <Image src={Star} className="w-4" alt={'star'} />
+                            <Image src={Star} className="w-4" alt={'star'} />
+                            <Image src={Star} className="w-4" alt={'star'} />
+                            <Image src={Star} className="w-4" alt={'star'} />
+                        </div>
+                        <h2 className="text-grey">20 reviews</h2>
+                    </div>
+                    <div>
+                        <div className="ml-10 flex items-center">
+                            <h3 className="text-grey">5</h3>
+                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-yellow"></div>
+                        </div>
+                        <div className="ml-10 flex items-center">
+                            <h3 className="text-grey">4</h3>
+                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
+                        </div>
+                        <div className="ml-10 flex items-center">
+                            <h3 className="text-grey">3</h3>
+                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
+                        </div>
+                        <div className="ml-10 flex items-center">
+                            <h3 className="text-grey">2</h3>
+                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
+                        </div>
+                        <div className="ml-10 flex items-center">
+                            <h3 className="text-grey">1</h3>
+                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
+                        </div>
+                    </div>
+                </section>
+                <center className="mb-10">
+                    <button
+                        className="m-0 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                        onClick={(): Promise<boolean> =>
+                            router.push('/reviews')
+                        }
+                    >
+                        See more reviews
+                    </button>
                 </center>
 
                 {/* Link reviews to db later */}
                 <div className=" flex justify-evenly">
                     <Review />
                     <Review />
+                </div>
+            </section>
+
+            <section className="flex h-[500px] justify-around bg-lightblue px-20">
+                <div>
+                    <h2 className="text-3xl">Need to get in contact?</h2>
+                </div>
+                <div className="h-96 w-64 rounded-xl border-4 border-pink bg-white">
+                    <p>phone</p>
                 </div>
             </section>
         </div>
@@ -78,7 +134,7 @@ function Review(): JSX.Element {
                 <Image src={Star} className="w-6" alt={'star'} />
                 <Image src={Star} className="w-6" alt={'star'} />
                 <Image src={Star} className="w-6" alt={'star'} />
-                <span className="pl-2 text-lightgrey">2 months ago</span>
+                <span className="pl-2 text-grey">2 months ago</span>
             </span>
             <h2 className="text-lg text-pink">Verified customer</h2>
 

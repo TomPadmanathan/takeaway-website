@@ -19,7 +19,12 @@ module.exports = {
             white: '#ffffff',
             lightpink: '#F678A7',
             pink: '#E64072',
-            lightgrey: '#9F9F9F',
+            grey: '#9F9F9F',
+            lightgrey: '#D1D1D1',
+            yellow: '#F3C811',
+        },
+        aspectRatio: {
+            '4/3': '4 / 3',
         },
     },
     plugins: [],

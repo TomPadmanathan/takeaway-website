@@ -7,7 +7,7 @@ import { NextRouter, useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
 
 // Assets
-import Black from '@/assets/img/black.png';
+import Logo from '@/assets/img/logo.png';
 
 export default function TopNav(): JSX.Element {
     const router: NextRouter = useRouter();
@@ -31,23 +31,23 @@ export default function TopNav(): JSX.Element {
 
     return (
         <>
-            <nav className="mx-32 my-8 flex items-center justify-between">
+            <nav className="mx-32 my-4 flex items-center justify-between">
                 <button
-                    className="m-0 h-10 rounded border-[3px] border-blue px-10 font-bold text-pink"
+                    className="m-0 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
                     onClick={(): Promise<boolean> => router.push('/order')}
                 >
                     Order Now
                 </button>
                 <Image
-                    src={Black}
-                    className="border-black h-24 w-24 border hover:cursor-pointer"
+                    src={Logo}
+                    className="border-black aspect-square w-40 border hover:cursor-pointer"
                     alt={'site-icon'}
                     onClick={(): Promise<boolean> => router.push('/')}
                 />
 
                 {token ? (
                     <button
-                        className="m-0 h-10 rounded border-[3px] border-blue px-10 font-bold text-pink"
+                        className="m-0 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
                         onClick={(): Promise<boolean> =>
                             router.push('/users/' + userId)
                         }
