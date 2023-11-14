@@ -1,0 +1,71 @@
+// React/Next
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { NextRouter, useRouter } from 'next/router';
+
+// Packages
+import jwt from 'jsonwebtoken';
+
+// Assets
+import Black from '@/assets/img/black.png';
+
+export default function TopNav(): JSX.Element {
+    const router: NextRouter = useRouter();
+
+    const [token, setToken] = useState<string | null>();
+    const [userId, setUserId] = useState<string>();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        setToken(token);
+        interface decodedToken {
+            userId: string;
+            iat: number;
+            exp: number;
+        }
+        const decodedToken: any = jwt.decode(token);
+        const userId = decodedToken.userId;
+        setUserId(userId);
+    }, [token]);
+
+    return (
+        <>
+            <nav className="mx-32 my-8 flex items-center justify-between">
+                <button
+                    className="m-0 h-10 rounded border-[3px] border-blue px-10 font-bold text-pink"
+                    onClick={(): Promise<boolean> => router.push('/order')}
+                >
+                    Order Now
+                </button>
+                <Image
+                    src={Black}
+                    className="border-black h-24 w-24 border hover:cursor-pointer"
+                    alt={'site-icon'}
+                    onClick={(): Promise<boolean> => router.push('/')}
+                />
+
+                {token ? (
+                    <button
+                        className="m-0 h-10 rounded border-[3px] border-blue px-10 font-bold text-pink"
+                        onClick={(): Promise<boolean> =>
+                            router.push('/users/' + userId)
+                        }
+                    >
+                        Go to Account
+                    </button>
+                ) : (
+                    <button
+                        className="m-0 h-10 rounded border-[3px] border-blue px-10 font-bold text-pink"
+                        onClick={(): Promise<boolean> =>
+                            router.push('/auth/login')
+                        }
+                    >
+                        Login or Register
+                    </button>
+                )}
+            </nav>
+            <div className="h-[2px] w-screen bg-lightgrey"></div>
+        </>
+    );
+}

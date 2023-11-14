@@ -1,7 +1,15 @@
 // React/Next
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
-import { useContext, useEffect, useState, useRef } from 'react';
+
+// Components
+import Products from '@/components/Products';
+import Cart from '@/components/Cart';
+
+// Types/Interfaces
+import { products } from '@/interfaces/products';
+import { config } from '@/interfaces/config';
 
 // Packages
 import jwt from 'jsonwebtoken';
@@ -13,29 +21,69 @@ import { AppContext } from '@/context/AppContext';
 import formatPrice from '@/utils/formatPrice';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 
-// Components
-import Cart from '@/components/Cart';
-
-// Types/Interfaces
-import { config } from '@/interfaces/config';
-
 // Assets
 import Black from '@/assets/img/black.png';
 
 interface props {
-    search: [string, React.Dispatch<React.SetStateAction<string>>];
+    productsData: products;
     configData: config;
 }
 
-export default function Navbar(props: props): JSX.Element {
-    const { cart } = useContext(AppContext);
+interface getServerSideProps {
+    props: props;
+}
+
+export async function getServerSideProps(): Promise<getServerSideProps> {
+    const productsRes: Response = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/products'
+    );
+    const productsData: products = await productsRes.json();
+
+    const configRes: Response = await fetch(
+        process.env.NEXT_PUBLIC_URL + '/api/config'
+    );
+    const configData: config = await configRes.json();
+    return {
+        props: {
+            productsData,
+            configData,
+        },
+    };
+}
+
+export default function Home({ productsData, configData }: props): JSX.Element {
+    const [search, setSearch] = useState<string>('');
     const [cartOpen, setCartOpen] = useState<boolean>(false);
+
+    return (
+        <>
+            <Navbar
+                search={[search, setSearch]}
+                configData={configData}
+                cartOpen={[cartOpen, setCartOpen]}
+            />
+            <main>
+                <Products search={search} products={productsData} />
+            </main>
+        </>
+    );
+}
+
+interface navProps {
+    search: [string, React.Dispatch<React.SetStateAction<string>>];
+    cartOpen: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    configData: config;
+}
+
+function Navbar(props: navProps): JSX.Element {
+    const { cart } = useContext(AppContext);
+    const [cartOpen, setCartOpen] = props.cartOpen;
     const [search, setSearch] = props.search;
     const router: NextRouter = useRouter();
     const checkoutPrices = new CalculateCheckoutPrices(cart, props.configData);
     const [token, setToken] = useState<string | null>(null);
     const userId = useRef<string>();
-    // let userId: string;
+
     useEffect((): void => {
         setToken(localStorage.getItem('token'));
         if (!token) return;
@@ -49,7 +97,7 @@ export default function Navbar(props: props): JSX.Element {
             <nav className="mx-96 my-16 flex justify-between">
                 <Image
                     src={Black}
-                    className="h-20 w-40 border border-black hover:cursor-pointer"
+                    className="border-black h-20 w-40 border hover:cursor-pointer"
                     alt={'site-icon'}
                     onClick={(): void => {
                         router.push('/');
@@ -62,7 +110,7 @@ export default function Navbar(props: props): JSX.Element {
                     <input
                         placeholder="Search"
                         type="text"
-                        className="h-10 w-96 border border-black"
+                        className="border-black h-10 w-96 border"
                         value={search}
                         onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
@@ -72,7 +120,7 @@ export default function Navbar(props: props): JSX.Element {
 
                 <div className="flex">
                     <button
-                        className="h-10 w-32 overflow-hidden border border-black"
+                        className="border-black h-10 w-32 overflow-hidden border"
                         onClick={
                             token
                                 ? (): Promise<boolean> =>
@@ -85,7 +133,7 @@ export default function Navbar(props: props): JSX.Element {
                     </button>
                     <button
                         onClick={(): void => setCartOpen(!cartOpen)}
-                        className="h-10 w-10 overflow-hidden border border-black"
+                        className="border-black h-10 w-10 overflow-hidden border"
                     >
                         Cart
                     </button>

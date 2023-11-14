@@ -13,6 +13,14 @@ module.exports = {
                     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
             },
         },
+        colors: {
+            blue: '#62AEC5',
+            lightblue: '#ADD2E4',
+            white: '#ffffff',
+            lightpink: '#F678A7',
+            pink: '#E64072',
+            lightgrey: '#9F9F9F',
+        },
     },
     plugins: [],
     'tailwind-class-sorter.classRegex': {
