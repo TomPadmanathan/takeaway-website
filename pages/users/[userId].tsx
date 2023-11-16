@@ -133,7 +133,7 @@ export default function UserId(): JSX.Element {
                     <label htmlFor="phone-number">Your Info</label>
                     <div className="mb-10">
                         <form
-                            onSubmit={event => {
+                            onSubmit={(event: FormEvent<HTMLFormElement>) => {
                                 event.preventDefault();
                                 updateUserInfo('yourInfo');
                             }}

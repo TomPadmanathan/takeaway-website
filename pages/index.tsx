@@ -1,7 +1,11 @@
 // React/Next
-import React from 'react';
+import React, { useState, useEffect, FormEventHandler } from 'react';
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
+
+// Types/Interfaces
+import User from '@/database/models/User';
+import { FormEvent } from 'react';
 
 // Components
 import TopNav from '@/components/nav/TopNav';
@@ -10,6 +14,9 @@ import BottomNav from '@/components/nav/BottomNav';
 // Assets
 import Logo from '@/assets/img/logo.png';
 import Star from '@/assets/img/star.png';
+
+// Utils
+import fetchWithToken from '@/utils/JWT/fetchWithToken';
 
 export default function Navbar(): JSX.Element {
     const router: NextRouter = useRouter();
@@ -112,14 +119,7 @@ export default function Navbar(): JSX.Element {
                 </div>
             </section>
 
-            <section className="flex h-[500px] justify-around bg-lightblue px-20">
-                <div>
-                    <h2 className="text-3xl">Need to get in contact?</h2>
-                </div>
-                <div className="h-96 w-64 rounded-xl border-4 border-pink bg-white">
-                    <p>phone</p>
-                </div>
-            </section>
+            <CateringService />
         </div>
     );
 }
@@ -144,5 +144,123 @@ function Review(): JSX.Element {
                 respect.
             </p>
         </div>
+    );
+}
+
+interface children {
+    children: JSX.Element | string;
+}
+
+function HighlightText({ children }: children): JSX.Element {
+    return <span className="text-pink">{children}</span>;
+}
+
+function CateringService(): JSX.Element {
+    return (
+        <section
+            className="flex h-[700px] items-center justify-around bg-lightblue px-20"
+            id="catering"
+        >
+            <section>
+                <h2 className="pb-2 text-6xl text-white">
+                    Our Catering Service?
+                </h2>
+                <p className="w-[580px] text-xl">
+                    We have provided catering for over
+                    <HighlightText> 20 years </HighlightText> and have catered
+                    for over
+                    <HighlightText> 400 events</HighlightText>. If you wish to
+                    book our services for an event or get more infomation please
+                    complete our form and someone from our team will be in touch
+                    shortly.
+                </p>
+            </section>
+
+            <CateringServiceForm />
+        </section>
+    );
+}
+
+function CateringServiceForm(): JSX.Element {
+    const router: NextRouter = useRouter();
+    const [user, setUser] = useState<null | User>();
+    const [formState, setFormState] = useState<0 | 1 | 2>(0);
+
+    useEffect((): void => {
+        async function fetchData(): Promise<void> {
+            const response: Response = await fetchWithToken(
+                process.env.NEXT_PUBLIC_URL + '/api/getUserFromToken',
+                {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+            const responseJson = await response.json();
+            if (responseJson.error) {
+                console.error(responseJson.error);
+                return;
+            }
+            setUser(responseJson.user);
+        }
+        fetchData();
+    }, []);
+
+    function handleFormSubmit(event: FormEvent<HTMLFormElement>): void {
+        event.preventDefault();
+
+        if (formState < 2) {
+            setFormState(prevFormState => (prevFormState + 1) as 0 | 1 | 2);
+            return;
+        }
+    }
+    return (
+        <section className="relative h-[550px] w-[450px] rounded-xl bg-white shadow-2xl">
+            {user ? (
+                <form
+                    onSubmit={(event: FormEvent<HTMLFormElement>) =>
+                        handleFormSubmit(event)
+                    }
+                    className="flex justify-center"
+                >
+                    {formState === 0 ? (
+                        <>
+                            <h2 className="pt-20 text-xl">
+                                Continue as:
+                                {' ' + user.forename + ' ' + user.surname}?
+                            </h2>
+                        </>
+                    ) : formState === 1 ? (
+                        <h1>formstate 1</h1>
+                    ) : formState === 2 ? (
+                        <h1>Formstate2</h1>
+                    ) : null}
+                    <button
+                        className="absolute bottom-10 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                        type="submit"
+                    >
+                        Next
+                    </button>
+                </form>
+            ) : (
+                <>
+                    <h2>Please login to continue</h2>
+                    <button
+                        className="h-14 rounded-lg border-[3px] border-white bg-blue px-10 text-lg font-bold text-white"
+                        onClick={(): Promise<boolean> =>
+                            router.push({
+                                pathname: '/auth/login',
+                                query: {
+                                    url:
+                                        process.env.NEXT_PUBLIC_URL +
+                                        '#catering',
+                                },
+                            })
+                        }
+                    >
+                        Login
+                    </button>
+                </>
+            )}
+        </section>
     );
 }

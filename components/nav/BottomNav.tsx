@@ -13,6 +13,14 @@ export default function BottomNav(): JSX.Element {
                         <button className="mx-7">Home</button>
                         <button className="mx-7">Menu</button>
                         <button className="mx-7">Reviews</button>
+                        <button
+                            className="mx-7"
+                            onClick={(): Promise<boolean> =>
+                                router.push('/#catering')
+                            }
+                        >
+                            Catering
+                        </button>
                     </li>
                 </ul>
             </div>
