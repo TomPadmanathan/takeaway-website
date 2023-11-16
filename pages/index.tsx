@@ -1,11 +1,11 @@
 // React/Next
-import React, { useState, useEffect, FormEventHandler } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
 
 // Types/Interfaces
 import User from '@/database/models/User';
-import { FormEvent } from 'react';
+import { FormEvent, ChangeEvent } from 'react';
 
 // Components
 import TopNav from '@/components/nav/TopNav';
@@ -186,6 +186,20 @@ function CateringServiceForm(): JSX.Element {
     const [user, setUser] = useState<null | User>();
     const [formState, setFormState] = useState<0 | 1 | 2>(0);
 
+    const [eventTypeOther, setEventTypeOther] = useState<boolean>(false);
+    const [dietRequirements, setDietRequirements] = useState<boolean>(false);
+    interface eventData {
+        eventType: string;
+        estimatedDate: string;
+        dietaryRequirements: string;
+        estimatedAttendes: number;
+    }
+    const [eventData, setEventData] = useState<eventData>({
+        eventType: '',
+        estimatedDate: '',
+        dietaryRequirements: '',
+        estimatedAttendes: 0,
+    });
     useEffect((): void => {
         async function fetchData(): Promise<void> {
             const response: Response = await fetchWithToken(
@@ -213,6 +227,8 @@ function CateringServiceForm(): JSX.Element {
             return;
         }
     }
+
+    useEffect(() => console.log(eventData), [eventData]);
     return (
         <section className="relative h-[550px] w-[450px] rounded-xl bg-white shadow-2xl">
             {user ? (
@@ -223,22 +239,205 @@ function CateringServiceForm(): JSX.Element {
                     className="flex justify-center"
                 >
                     {formState === 0 ? (
-                        <>
-                            <h2 className="pt-20 text-xl">
-                                Continue as:
-                                {' ' + user.forename + ' ' + user.surname}?
-                            </h2>
-                        </>
+                        <h2 className="pt-20 text-xl">
+                            Continue as:
+                            <HighlightText>
+                                {' ' + user.forename + ' ' + user.surname}
+                            </HighlightText>
+                            ?
+                        </h2>
                     ) : formState === 1 ? (
-                        <h1>formstate 1</h1>
+                        <center className="w-full">
+                            <h2 className="pt-20 text-xl">
+                                Your Event Details
+                            </h2>
+                            <section className="mt-10 flex justify-around">
+                                <section>
+                                    <label
+                                        htmlFor="event-type"
+                                        className="block"
+                                    >
+                                        Event Type
+                                    </label>
+                                    <select
+                                        id="event-type"
+                                        onChange={(
+                                            event: ChangeEvent<HTMLSelectElement>
+                                        ): void => {
+                                            if (event.target.value === 'Other')
+                                                setEventTypeOther(true);
+                                            else {
+                                                setEventTypeOther(false);
+                                                const copy = { ...eventData };
+                                                copy.eventType =
+                                                    event.target.value;
+                                                setEventData(copy);
+                                            }
+                                        }}
+                                        required
+                                    >
+                                        <option>Wedding</option>
+                                        <option>Funeral</option>
+                                        <option>Party</option>
+                                        <option>Office Event</option>
+                                        <option>Birthday</option>
+                                        <option>Other</option>
+                                    </select>
+                                    {eventTypeOther ? (
+                                        <input
+                                            type="text"
+                                            placeholder="Please specify"
+                                            className="mt-2 block w-40 rounded-sm pl-1 outline outline-1 outline-grey"
+                                            onChange={(
+                                                event: ChangeEvent<HTMLInputElement>
+                                            ): void => {
+                                                const copy = { ...eventData };
+                                                copy.eventType =
+                                                    event.target.value;
+                                                setEventData(copy);
+                                            }}
+                                            required
+                                        />
+                                    ) : null}
+                                </section>
+                                <section>
+                                    <label
+                                        htmlFor="estimated-date"
+                                        className="block"
+                                    >
+                                        Estimated Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        onChange={(
+                                            event: ChangeEvent<HTMLInputElement>
+                                        ): void => {
+                                            const copy = { ...eventData };
+                                            const dateString =
+                                                event.target.value;
+                                            if (!dateString) {
+                                                copy.estimatedDate = '';
+                                                setEventData(copy);
+                                                return;
+                                            }
+                                            const selectedDate = new Date(
+                                                dateString
+                                            ).getTime();
+
+                                            copy.estimatedDate =
+                                                String(selectedDate);
+                                            setEventData(copy);
+                                        }}
+                                        required
+                                    />
+                                </section>
+                            </section>
+
+                            <section className="mt-20 flex justify-around">
+                                <section>
+                                    <label
+                                        htmlFor="diet-requirements"
+                                        className="block"
+                                    >
+                                        Dietary Requirements
+                                    </label>
+                                    <select
+                                        id="diet-requirements"
+                                        onChange={(
+                                            event: ChangeEvent<HTMLSelectElement>
+                                        ): void => {
+                                            if (event.target.value === 'Other')
+                                                setDietRequirements(true);
+                                            else {
+                                                setDietRequirements(false);
+
+                                                const copy = { ...eventData };
+                                                copy.dietaryRequirements =
+                                                    event.target.value;
+                                                setEventData(copy);
+                                            }
+                                        }}
+                                        required
+                                    >
+                                        <option>None</option>
+                                        <option>Vegan</option>
+                                        <option>Vegetarian</option>
+                                        <option>Halal</option>
+                                        <option>Kosher</option>
+                                        <option>Low Fat</option>
+                                        <option>Gluten Free</option>
+                                        <option>Dariy Free</option>
+                                        <option>Egg Free</option>
+                                        <option>Nut Free</option>
+                                        <option>Other</option>
+                                    </select>
+                                    {dietRequirements ? (
+                                        <input
+                                            type="text"
+                                            placeholder="Please specify"
+                                            className="mt-2 block w-40 rounded-sm pl-1 outline outline-1 outline-grey"
+                                            onChange={(
+                                                event: ChangeEvent<HTMLInputElement>
+                                            ): void => {
+                                                const copy = { ...eventData };
+                                                copy.dietaryRequirements =
+                                                    event.target.value;
+                                                setEventData(copy);
+                                            }}
+                                            required
+                                        />
+                                    ) : null}
+                                </section>
+                                <section>
+                                    <label
+                                        htmlFor="estimated-attendes"
+                                        className="block"
+                                    >
+                                        Estimated Attendes
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="estimated-attendes"
+                                        className="mt-2 block w-24 rounded-sm pl-1 outline outline-1 outline-grey"
+                                        min={0}
+                                        onChange={(
+                                            event: ChangeEvent<HTMLInputElement>
+                                        ) => {
+                                            const copy = { ...eventData };
+                                            copy.estimatedAttendes = Number(
+                                                event.target.value
+                                            );
+                                            setEventData(copy);
+                                        }}
+                                        required
+                                    />
+                                </section>
+                            </section>
+                        </center>
                     ) : formState === 2 ? (
                         <h1>Formstate2</h1>
                     ) : null}
+                    {formState ? (
+                        <button
+                            className="absolute bottom-20 left-20 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                            type="button"
+                            onClick={() =>
+                                setFormState(
+                                    prevFormState =>
+                                        (prevFormState - 1) as 0 | 1 | 2
+                                )
+                            }
+                        >
+                            Back
+                        </button>
+                    ) : null}
                     <button
-                        className="absolute bottom-10 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                        className={`absolute bottom-20 ${
+                            formState ? 'right-20' : null
+                        } h-10 rounded border-[3px] border-grey px-10 font-bold text-pink`}
                         type="submit"
                     >
-                        Next
+                        {formState === 2 ? 'Submit' : 'Next'}
                     </button>
                 </form>
             ) : (
