@@ -11,21 +11,17 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 
+// Types/interfaces
+import { Optional } from 'sequelize';
+import { NullishPropertiesOf } from 'sequelize/types/utils';
+
 // Models
 import User from '@/database/models/User';
-
-// Types/Interfaces
-import type { Optional } from 'sequelize';
-import { NullishPropertiesOf } from 'sequelize/types/utils';
 
 @Table({
     timestamps: false,
 })
-export default class Order extends Model<Order> {
-    @Default('pending')
-    @Column
-    status!: string;
-
+export default class Catering extends Model<Catering> {
     @Default((): string => String(Date.now()))
     @Column
     timestamp!: string;
@@ -35,26 +31,26 @@ export default class Order extends Model<Order> {
     userId!: string;
 
     @Column
-    orderNote!: string;
+    eventType!: string;
 
     @Column
-    stripePaymentId!: string;
+    estimatedDate!: string;
 
     @Column
-    products!: string;
+    dietaryRequirements!: string;
 
     @Column
-    totalPayment!: number;
+    estimatedAttendes!: number;
 
     @PrimaryKey
     @Default((): string => uuidv4())
     @Column
-    orderId!: string;
+    cateringId!: string;
 
     @BelongsTo(() => User, {
-        foreignKey: 'userId', // Name of the foreign key field in the Order model
-        targetKey: 'userId', // Name of the primary key field in the User model
-        as: 'user', // Alias for the association
+        foreignKey: 'userId',
+        targetKey: 'userId',
+        as: 'user',
     })
     user!: User;
 
@@ -62,12 +58,15 @@ export default class Order extends Model<Order> {
         values?: Record<string, any> | null,
         options?: { isNewRecord?: boolean }
     ) {
-        super(values as Optional<Order, NullishPropertiesOf<Order>>, options);
+        super(
+            values as Optional<Catering, NullishPropertiesOf<Catering>>,
+            options
+        );
         this.user = new User();
     }
 
     @BeforeValidate
-    static generateOrderId(instance: Order) {
-        if (!instance.orderId) instance.orderId = uuidv4();
+    static generateCateringId(instance: Catering) {
+        if (!instance.cateringId) instance.cateringId = uuidv4();
     }
 }

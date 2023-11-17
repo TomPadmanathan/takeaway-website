@@ -1,5 +1,5 @@
 // React/Next
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
 
@@ -17,6 +17,7 @@ import Star from '@/assets/img/star.png';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
+import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 
 export default function Navbar(): JSX.Element {
     const router: NextRouter = useRouter();
@@ -184,7 +185,10 @@ function CateringService(): JSX.Element {
 function CateringServiceForm(): JSX.Element {
     const router: NextRouter = useRouter();
     const [user, setUser] = useState<null | User>();
-    const [formState, setFormState] = useState<0 | 1 | 2>(0);
+    const [formState, setFormState] = useState<0 | 1 | 2 | 3>(0);
+
+    const [error, setError] = useState<string>('');
+    const [status, setStatus] = useState<boolean | null>(null);
 
     const [eventTypeOther, setEventTypeOther] = useState<boolean>(false);
     const [dietRequirements, setDietRequirements] = useState<boolean>(false);
@@ -195,9 +199,9 @@ function CateringServiceForm(): JSX.Element {
         estimatedAttendes: number;
     }
     const [eventData, setEventData] = useState<eventData>({
-        eventType: '',
+        eventType: 'Wedding',
         estimatedDate: '',
-        dietaryRequirements: '',
+        dietaryRequirements: 'None',
         estimatedAttendes: 0,
     });
     useEffect((): void => {
@@ -219,16 +223,41 @@ function CateringServiceForm(): JSX.Element {
         fetchData();
     }, []);
 
-    function handleFormSubmit(event: FormEvent<HTMLFormElement>): void {
+    async function handleFormSubmit(
+        event: FormEvent<HTMLFormElement>
+    ): Promise<void> {
         event.preventDefault();
 
-        if (formState < 2) {
-            setFormState(prevFormState => (prevFormState + 1) as 0 | 1 | 2);
-            return;
+        if (formState < 3) {
+            setFormState(prevFormState => (prevFormState + 1) as 0 | 1 | 2 | 3);
+        }
+
+        if (formState === 2) {
+            const response: Response = await fetchWithToken(
+                process.env.NEXT_PUBLIC_URL +
+                    '/api/catering/createCateringRequest',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        eventData,
+                    }),
+                }
+            );
+            interface responseJson {
+                error?: string;
+            }
+
+            const responseJson: responseJson = await response.json();
+            if (!response.ok) {
+                setError(responseJson.error as string);
+                setStatus(false);
+                return;
+            }
+            setStatus(true);
         }
     }
 
-    useEffect(() => console.log(eventData), [eventData]);
     return (
         <section className="relative h-[550px] w-[450px] rounded-xl bg-white shadow-2xl">
             {user ? (
@@ -415,30 +444,165 @@ function CateringServiceForm(): JSX.Element {
                             </section>
                         </center>
                     ) : formState === 2 ? (
-                        <h1>Formstate2</h1>
+                        <center className="w-full">
+                            <h2 className="pt-20 text-xl">Summary</h2>
+                            <section className="mt-8 flex justify-around">
+                                <section>
+                                    <label
+                                        htmlFor="event-type"
+                                        className="block"
+                                    >
+                                        Event Type
+                                    </label>
+
+                                    <div
+                                        id="event-type"
+                                        className=" bg-lightergrey"
+                                    >
+                                        {eventData.eventType}
+                                    </div>
+                                </section>
+                                <section>
+                                    <label
+                                        htmlFor="estimated-date"
+                                        className="block"
+                                    >
+                                        Estimated Date
+                                    </label>
+                                    <div className=" bg-lightergrey">
+                                        {getDateFromTimestamp(
+                                            +eventData.estimatedDate
+                                        )}
+                                    </div>
+                                </section>
+                            </section>
+
+                            <section className="mt-14 flex justify-around">
+                                <section>
+                                    <label
+                                        htmlFor="diet-requirements"
+                                        className="block"
+                                    >
+                                        Dietary Requirements
+                                    </label>
+                                    <div
+                                        id="diet-requirements"
+                                        className=" bg-lightergrey"
+                                    >
+                                        {eventData.dietaryRequirements}
+                                    </div>
+                                </section>
+                                <section>
+                                    <label
+                                        htmlFor="estimated-attendes"
+                                        className="block"
+                                    >
+                                        Estimated Attendes
+                                    </label>
+
+                                    <div
+                                        id="estimated-attendes"
+                                        className=" bg-lightergrey"
+                                    >
+                                        {eventData.estimatedAttendes}
+                                    </div>
+                                </section>
+                            </section>
+                            <section className="mt-14 flex justify-around">
+                                <section>
+                                    <label
+                                        htmlFor="phone-number"
+                                        className="block"
+                                    >
+                                        Phone Number
+                                    </label>
+                                    <div
+                                        id="phone-number"
+                                        className=" bg-lightergrey"
+                                    >
+                                        {user.phoneNumber}
+                                    </div>
+                                </section>
+                                <section>
+                                    <label htmlFor="email" className="block">
+                                        Email
+                                    </label>
+
+                                    <div
+                                        id="email"
+                                        className=" bg-lightergrey px-2"
+                                    >
+                                        {user.email}
+                                    </div>
+                                </section>
+                            </section>
+                        </center>
+                    ) : formState === 3 ? (
+                        <>
+                            {status === null ? (
+                                'loading'
+                            ) : status ? (
+                                <center>
+                                    <HighlightText>
+                                        <h2 className="mb-6 pt-20 text-xl">
+                                            Success
+                                        </h2>
+                                    </HighlightText>
+
+                                    <p>
+                                        Your catering request has been submitted
+                                        successfully. A member from out team
+                                        will be in contact shortly.
+                                    </p>
+                                </center>
+                            ) : (
+                                <center>
+                                    <h2 className="mb-6 pt-20 text-xl">
+                                        Something went wrong
+                                    </h2>
+                                    <HighlightText>
+                                        <p>{error}</p>
+                                    </HighlightText>
+
+                                    <p>
+                                        Please try again later. If the problem
+                                        persists please contact the resturant
+                                        using the contact details in the footer.
+                                    </p>
+                                </center>
+                            )}
+                        </>
                     ) : null}
-                    {formState ? (
-                        <button
-                            className="absolute bottom-20 left-20 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
-                            type="button"
-                            onClick={() =>
-                                setFormState(
-                                    prevFormState =>
-                                        (prevFormState - 1) as 0 | 1 | 2
-                                )
-                            }
-                        >
-                            Back
-                        </button>
+                    {formState !== 3 ? (
+                        <>
+                            {formState ? (
+                                <button
+                                    className="absolute bottom-20 left-20 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                                    type="button"
+                                    onClick={() =>
+                                        setFormState(
+                                            prevFormState =>
+                                                (prevFormState - 1) as
+                                                    | 0
+                                                    | 1
+                                                    | 2
+                                                    | 3
+                                        )
+                                    }
+                                >
+                                    Back
+                                </button>
+                            ) : null}
+                            <button
+                                className={`absolute bottom-20 ${
+                                    formState ? 'right-20' : null
+                                } h-10 rounded border-[3px] border-grey px-10 font-bold text-pink`}
+                                type="submit"
+                            >
+                                {formState === 2 ? 'Submit' : 'Next'}
+                            </button>
+                        </>
                     ) : null}
-                    <button
-                        className={`absolute bottom-20 ${
-                            formState ? 'right-20' : null
-                        } h-10 rounded border-[3px] border-grey px-10 font-bold text-pink`}
-                        type="submit"
-                    >
-                        {formState === 2 ? 'Submit' : 'Next'}
-                    </button>
                 </form>
             ) : (
                 <>

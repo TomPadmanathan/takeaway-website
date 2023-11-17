@@ -21,6 +21,7 @@ module.exports = {
             pink: '#E64072',
             grey: '#9F9F9F',
             lightgrey: '#D1D1D1',
+            lightergrey: '#E9E9ED',
             yellow: '#F3C811',
         },
         aspectRatio: {
