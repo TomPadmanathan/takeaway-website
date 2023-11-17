@@ -14,6 +14,7 @@ import BottomNav from '@/components/nav/BottomNav';
 // Assets
 import Logo from '@/assets/img/logo.png';
 import Star from '@/assets/img/star.png';
+import Spinner from '@/assets/gif/spinner.gif';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
@@ -258,8 +259,12 @@ function CateringServiceForm(): JSX.Element {
         }
     }
 
+    const formContainerHeight = 550;
+
     return (
-        <section className="relative h-[550px] w-[450px] rounded-xl bg-white shadow-2xl">
+        <section
+            className={`relative h-[${formContainerHeight}px] w-[450px] rounded-xl bg-white shadow-2xl`}
+        >
             {user ? (
                 <form
                     onSubmit={(event: FormEvent<HTMLFormElement>) =>
@@ -540,7 +545,15 @@ function CateringServiceForm(): JSX.Element {
                     ) : formState === 3 ? (
                         <>
                             {status === null ? (
-                                'loading'
+                                <div
+                                    className={`flex items-center h-[${formContainerHeight}px]`}
+                                >
+                                    <Image
+                                        src={Spinner}
+                                        alt="loading-spinner"
+                                        className="h-24 w-24"
+                                    />
+                                </div>
                             ) : status ? (
                                 <center>
                                     <HighlightText>
