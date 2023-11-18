@@ -22,10 +22,12 @@ module.exports = {
             grey: '#9F9F9F',
             lightgrey: '#D1D1D1',
             lightergrey: '#E9E9ED',
+            darkgrey: '#111111',
             yellow: '#F3C811',
         },
         aspectRatio: {
             '4/3': '4 / 3',
+            '1/1': '1 / 1',
         },
     },
     plugins: [],
