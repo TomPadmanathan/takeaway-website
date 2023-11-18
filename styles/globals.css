@@ -11,4 +11,9 @@
         background-color: #fff;
         overflow-x: none tailwind;
     }
+    .bg-image {
+        background-image: url('../assets/img/foodBackground.jpg');
+        background-size: cover;
+        image-rendering: optimizeQuality;
+    }
 }

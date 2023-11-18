@@ -30,7 +30,7 @@ export default function Navbar(): JSX.Element {
             <TopNav />
             <BottomNav />
 
-            <section className="bg-lightblue px-64 pb-0">
+            <section className="bg-image px-64 pb-0">
                 <center>
                     <Image
                         src={Logo}
@@ -175,8 +175,8 @@ function Footer(): JSX.Element {
                     alt="logo"
                     className="aspect-4/3 w-40 invert filter"
                 />
-                {footerItems.map((titleGroup: string[][]) => (
-                    <ul>
+                {footerItems.map((titleGroup: string[][], index: number) => (
+                    <ul key={index}>
                         {titleGroup.map((title: string[]) => (
                             <li
                                 onClick={() => router.push(title[1])}
