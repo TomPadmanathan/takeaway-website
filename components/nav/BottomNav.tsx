@@ -9,7 +9,7 @@ export default function BottomNav(): JSX.Element {
 
     useEffect(() => {
         function handleScroll() {
-            const navOffSet: number = 175 - navbar.current.clientHeight;
+            const navOffSet: number = 180 - navbar.current.clientHeight;
             if (window.scrollY >= navOffSet) setSticky(true);
             else setSticky(false);
         }

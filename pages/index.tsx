@@ -26,7 +26,7 @@ export default function Navbar(): JSX.Element {
     const router: NextRouter = useRouter();
 
     return (
-        <div className="overflow-hidden">
+        <>
             <TopNav />
             <BottomNav />
 
@@ -34,7 +34,7 @@ export default function Navbar(): JSX.Element {
                 <center>
                     <Image
                         src={Logo}
-                        className="border-black w-72 border py-10"
+                        className="border-black w-72 border py-16 invert filter"
                         alt={'site-icon'}
                     />
                     <button
@@ -126,7 +126,7 @@ export default function Navbar(): JSX.Element {
 
             <CateringService />
             <Footer />
-        </div>
+        </>
     );
 }
 
