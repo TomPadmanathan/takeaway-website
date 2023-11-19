@@ -5,7 +5,6 @@ import { NextRouter, useRouter } from 'next/router';
 export default function BottomNav(): JSX.Element {
     const router: NextRouter = useRouter();
     const [sticky, setSticky] = useState<boolean>(false);
-    const [navHeight, setNavHeight] = useState<number>();
     const navbar = useRef<any>();
 
     useEffect(() => {
@@ -22,8 +21,6 @@ export default function BottomNav(): JSX.Element {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
-    useEffect((): void => setNavHeight(navbar.current.clientHeight), []);
 
     const navButtons: string[][] = [
         ['Home', '/'],
@@ -63,11 +60,7 @@ export default function BottomNav(): JSX.Element {
                     <button className="mx-7">Cart</button>
                 </div>
             </nav>
-            <div
-                className={`${
-                    router.asPath === '/' ? null : `mb-[${navHeight}px]`
-                } `}
-            />
+            <div className={`${router.asPath === '/' ? null : `mb-[72px]`} `} />
         </>
     );
 }
