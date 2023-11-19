@@ -1,33 +1,19 @@
 // Components
-import BottomNav from '@/components/nav/BottomNav';
-import Footer from '@/components/Footer';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
+import Page from '@/components/page/Page';
 
 export default function PrivacyPolicy(): JSX.Element {
     return (
         <>
             <BottomNav />
-            <Page>
-                <div className="mx-10 h-screen bg-white">
-                    <h1>Privacy Policy1</h1>
-                    <h1>Privacy Policy2</h1>
-                    <h1>Privacy Policy3</h1>
-                    <h1>Privacy Policy4</h1>
-                    <h1>Privacy Policy5</h1>
-                    <h1>Privacy Policy6</h1>
-                    <h1>Privacy Policy7</h1>
-                    <h1>Privacy Policy</h1>
-                    <h1>Privacy Policy</h1>
-                    <h1>Privacy Policy</h1>
-                </div>
+            <Page title={'Privacy Policy'}>
+                <>
+                    <h1>test</h1>
+                    <h1>test</h1>
+                </>
             </Page>
             <Footer />
         </>
     );
-}
-
-interface children {
-    children: JSX.Element;
-}
-function Page({ children }: children) {
-    return <section className="h-screen bg-lightblue">{children}</section>;
 }

@@ -11,9 +11,9 @@ import { FormEvent, ChangeEvent } from 'react';
 import jwt from 'jsonwebtoken';
 
 // Components
-import TopNav from '@/components/nav/TopNav';
-import BottomNav from '@/components/nav/BottomNav';
-import Footer from '@/components/Footer';
+import TopNav from '@/components/page/nav/TopNav';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
 
 // Assets
 import Logo from '@/assets/img/logo.png';
