@@ -5,7 +5,7 @@ interface props {
 
 export default function Page({ children, title }: props): JSX.Element {
     return (
-        <div className="bg-lightpink bg-gradient-to-r from-pink to-lightpink">
+        <div className="bg-gradient-to-r from-pink to-lightpink">
             <div className="flex h-64 items-center justify-center">
                 <h1 className="text-5xl text-white">{title}</h1>
             </div>

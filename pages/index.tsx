@@ -166,7 +166,7 @@ function HighlightText({ children }: children): JSX.Element {
 function CateringService(): JSX.Element {
     return (
         <section
-            className="flex h-[700px] items-center justify-around bg-lightblue px-20"
+            className="flex h-[700px] items-center justify-around bg-gradient-to-r from-blue to-lightblue px-20"
             id="catering"
         >
             <section>
@@ -175,7 +175,7 @@ function CateringService(): JSX.Element {
                 </h2>
                 <p className="w-[580px] text-xl">
                     We have provided catering for over
-                    <HighlightText> 20 years </HighlightText> and have catered
+                    <HighlightText> 20 years</HighlightText> and have catered
                     for over
                     <HighlightText> 400 events</HighlightText>. If you wish to
                     book our services for an event or get more infomation please
