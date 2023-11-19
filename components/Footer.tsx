@@ -1,0 +1,83 @@
+// React/Next
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { NextRouter, useRouter } from 'next/router';
+// Packages
+import jwt from 'jsonwebtoken';
+
+// Assets
+import Logo from '@/assets/img/logo.png';
+
+export default function Footer(): JSX.Element {
+    const router: NextRouter = useRouter();
+
+    const [token, setToken] = useState<string | null>();
+    const [userId, setUserId] = useState<string>();
+
+    useEffect((): void => {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        setToken(token);
+        interface decodedToken {
+            userId: string;
+            iat: number;
+            exp: number;
+        }
+        const decodedToken: any = jwt.decode(token);
+        const userId: string = decodedToken.userId;
+        setUserId(userId);
+    }, [token]);
+
+    const footerItems: string[][][] = [
+        [
+            ['call us', `tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`],
+            ['email us', `mailto:${process.env.NEXT_PUBLIC_EMAIL}`],
+            ['leave us a review', '/review/'],
+        ],
+        [
+            ['order now', '/order/'],
+            ['menu', '/menu/'],
+            ['catering', '/#catering'],
+        ],
+        [
+            ['my account', `/users/${userId}`],
+            ['my orders', `/users/${userId}/orders/`],
+        ],
+    ];
+
+    return (
+        <footer className="bg-darkgrey px-96">
+            <div className="flex h-60 items-center justify-between">
+                <Image
+                    src={Logo}
+                    alt="logo"
+                    className="aspect-4/3 w-40 invert filter"
+                />
+                {footerItems.map((titleGroup: string[][], index: number) => (
+                    <ul key={index}>
+                        {titleGroup.map((title: string[]) => (
+                            <li
+                                onClick={() => router.push(title[1])}
+                                className="cursor-pointer text-white"
+                                key={title[0]}
+                            >
+                                {title[0].toUpperCase()}
+                            </li>
+                        ))}
+                    </ul>
+                ))}
+            </div>
+            <div className="h-0.5 bg-white" />
+            <div className="flex h-20 items-center justify-center text-sm">
+                <h2
+                    className="cursor-pointer text-white"
+                    onClick={(): Promise<boolean> =>
+                        router.push('/privacy-policy')
+                    }
+                >
+                    Privacy Policy
+                </h2>
+            </div>
+        </footer>
+    );
+}

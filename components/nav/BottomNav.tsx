@@ -5,11 +5,13 @@ import { NextRouter, useRouter } from 'next/router';
 export default function BottomNav(): JSX.Element {
     const router: NextRouter = useRouter();
     const [sticky, setSticky] = useState<boolean>(false);
+    const [navHeight, setNavHeight] = useState<number>();
     const navbar = useRef<any>();
 
     useEffect(() => {
         function handleScroll() {
             const navOffSet: number = 180 - navbar.current.clientHeight;
+
             if (window.scrollY >= navOffSet) setSticky(true);
             else setSticky(false);
         }
@@ -21,6 +23,8 @@ export default function BottomNav(): JSX.Element {
         };
     }, []);
 
+    useEffect((): void => setNavHeight(navbar.current.clientHeight), []);
+
     const navButtons: string[][] = [
         ['Home', '/'],
         ['Menu', '/menu'],
@@ -29,30 +33,41 @@ export default function BottomNav(): JSX.Element {
     ];
 
     return (
-        <nav
-            className={`${
-                sticky ? 'fixed top-0 z-10 shadow-xl' : null
-            } w-full bg-white`}
-            ref={navbar}
-        >
-            <div className="mx-72 my-6 flex justify-between">
-                <div>
-                    <ul className="flex w-80 justify-between">
-                        {navButtons.map((navButton: string[]) => (
-                            <li
-                                onClick={(): Promise<boolean> =>
-                                    router.push(navButton[1])
-                                }
-                                key={navButton[0]}
-                                className="cursor-pointer"
-                            >
-                                {navButton[0]}
-                            </li>
-                        ))}
-                    </ul>
+        <>
+            <nav
+                className={
+                    router.asPath === '/'
+                        ? `${
+                              sticky ? 'fixed top-0 z-10 shadow' : null
+                          } w-full bg-white`
+                        : `fixed z-10 w-full bg-white shadow`
+                }
+                ref={navbar}
+            >
+                <div className="mx-72 my-6 flex justify-between">
+                    <div>
+                        <ul className="flex w-80 justify-between">
+                            {navButtons.map((navButton: string[]) => (
+                                <li
+                                    onClick={(): Promise<boolean> =>
+                                        router.push(navButton[1])
+                                    }
+                                    key={navButton[0]}
+                                    className="cursor-pointer"
+                                >
+                                    {navButton[0]}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <button className="mx-7">Cart</button>
                 </div>
-                <button className="mx-7">Cart</button>
-            </div>
-        </nav>
+            </nav>
+            <div
+                className={`${
+                    router.asPath === '/' ? null : `mb-[${navHeight}px]`
+                } `}
+            />
+        </>
     );
 }
