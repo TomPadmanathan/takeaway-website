@@ -6,11 +6,15 @@ export default function BottomNav(): JSX.Element {
     const router: NextRouter = useRouter();
     const [sticky, setSticky] = useState<boolean>(false);
     const navbar = useRef<any>();
+    const routerQuery: boolean = router.asPath === '/';
+    const [navHeight, setNavHeight] = useState<number | null>();
 
     useEffect(() => {
-        function handleScroll() {
-            const navOffSet: number = 180 - navbar.current.clientHeight;
-
+        function handleScroll(): void {
+            if (!navbar.current) return;
+            const topNavHeight: number = 180;
+            const navOffSet: number =
+                topNavHeight - navbar.current.clientHeight;
             if (window.scrollY >= navOffSet) setSticky(true);
             else setSticky(false);
         }
@@ -20,7 +24,12 @@ export default function BottomNav(): JSX.Element {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [navbar.current]);
+
+    useEffect((): void => {
+        if (!navbar.current) return;
+        setNavHeight(navbar.current.clientHeight);
+    }, [navbar.current]);
 
     const navButtons: string[][] = [
         ['Home', '/'],
@@ -33,7 +42,7 @@ export default function BottomNav(): JSX.Element {
         <>
             <nav
                 className={
-                    router.asPath === '/'
+                    routerQuery
                         ? `${
                               sticky ? 'fixed top-0 z-10 shadow' : null
                           } w-full bg-white`
@@ -60,7 +69,7 @@ export default function BottomNav(): JSX.Element {
                     <button className="mx-7">Cart</button>
                 </div>
             </nav>
-            <div className={`${router.asPath === '/' ? null : `mb-[72px]`} `} />
+            <div className={`${routerQuery ? null : `mb-[${navHeight}px]`} `} />
         </>
     );
 }
