@@ -10,7 +10,7 @@ export default function Page({
     subTitle,
 }: props): JSX.Element {
     return (
-        <div className="bg-gradient-to-r from-pink to-lightpink">
+        <div className="bg-gradient-to-br from-pink to-lightpink">
             <div className="flex h-64 items-center justify-center text-white">
                 <div className="block text-center">
                     <h1 className="pb-2 text-5xl">{title}</h1>
