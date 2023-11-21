@@ -166,14 +166,14 @@ function HighlightText({ children }: children): JSX.Element {
 function CateringService(): JSX.Element {
     return (
         <section
-            className="flex h-[700px] items-center justify-around bg-gradient-to-r from-blue to-lightblue px-20"
+            className="flex h-[700px] items-center justify-around bg-gradient-to-r from-blue to-lightblue px-20 xl:h-auto xl:flex-col xl:py-12 xl:text-center sm:px-10 3xs:px-5"
             id="catering"
         >
-            <section>
-                <h2 className="pb-2 text-6xl text-white">
+            <section className="xl:pb-10">
+                <h2 className="pb-2 text-6xl text-white sm:text-5xl">
                     Our Catering Service?
                 </h2>
-                <p className="w-[580px] text-xl">
+                <p className="w-[580px] text-xl sm:w-fit sm:text-lg">
                     We have provided catering for over
                     <HighlightText> 20 years</HighlightText> and have catered
                     for over
@@ -266,7 +266,7 @@ function CateringServiceForm(): JSX.Element {
     }
 
     return (
-        <section className="relative h-[540px] w-[450px] rounded-xl bg-white shadow-2xl">
+        <section className="relative h-[540px] w-[450px] rounded-xl bg-white shadow-2xl xs:w-[400px] 2xs:h-[600px] 2xs:w-[300px] 3xs:w-[250px]">
             {user ? (
                 <form
                     onSubmit={(event: FormEvent<HTMLFormElement>) =>
@@ -287,7 +287,7 @@ function CateringServiceForm(): JSX.Element {
                             <h2 className="pt-20 text-xl">
                                 Your Event Details
                             </h2>
-                            <section className="mt-10 flex justify-around">
+                            <section className="mt-10 flex justify-around px-10">
                                 <section>
                                     <label
                                         htmlFor="event-type"
@@ -590,7 +590,7 @@ function CateringServiceForm(): JSX.Element {
                         <>
                             {formState ? (
                                 <button
-                                    className="absolute bottom-20 left-20 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                                    className="absolute bottom-20 left-20 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink xs:bottom-8 xs:left-1/2 xs:-translate-x-1/2 xs:transform"
                                     type="button"
                                     onClick={() =>
                                         setFormState(
@@ -607,7 +607,7 @@ function CateringServiceForm(): JSX.Element {
                                 </button>
                             ) : null}
                             <button
-                                className={`absolute bottom-20 ${
+                                className={`absolute bottom-20 xs:bottom-20 xs:left-1/2 xs:-translate-x-1/2 xs:transform ${
                                     formState ? 'right-20' : null
                                 } h-10 rounded border-[3px] border-grey px-10 font-bold text-pink`}
                                 type="submit"
