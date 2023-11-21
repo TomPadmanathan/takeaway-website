@@ -29,6 +29,12 @@ module.exports = {
             '4/3': '4 / 3',
             '1/1': '1 / 1',
         },
+        screens: {
+            '2xl': { max: '1535px' },
+            xl: { max: '1280px' },
+            l: { max: '1120px' },
+            m: { max: '960px' },
+        },
     },
     plugins: [],
     'tailwind-class-sorter.classRegex': {

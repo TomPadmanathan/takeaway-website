@@ -46,19 +46,19 @@ export default function Footer(): JSX.Element {
     ];
 
     return (
-        <footer className="bg-darkgrey px-96">
-            <div className="flex h-60 items-center justify-between">
+        <footer className=" bg-darkgrey px-96  2xl:px-64 xl:px-40 l:px-20">
+            <div className="flex h-60 items-center justify-between m:block m:h-auto">
                 <Image
                     src={Logo}
                     alt="logo"
-                    className="aspect-4/3 w-40 invert filter"
+                    className="aspect-4/3 w-40 invert filter 2xl:hidden"
                 />
                 {footerItems.map((titleGroup: string[][], index: number) => (
-                    <ul key={index}>
+                    <ul key={index} className="w-64 2xl:py-10 m:w-full">
                         {titleGroup.map((title: string[]) => (
                             <li
                                 onClick={() => router.push(title[1])}
-                                className="cursor-pointer text-white"
+                                className="cursor-pointer text-center text-white"
                                 key={title[0]}
                             >
                                 {title[0].toUpperCase()}
