@@ -73,10 +73,10 @@ export default function Navbar(): JSX.Element {
                 </center>
 
                 {/* Link to backend review db */}
-                <section className="mb-10 flex justify-center">
-                    <div className="block justify-center text-center">
+                <section className="mb-10 flex justify-center sm:flex-col">
+                    <section className="block justify-center text-center">
                         <h2 className="mb-4 text-5xl text-grey">4.6</h2>
-                        <div className="mb-4 flex">
+                        <div className="mb-4 flex justify-center">
                             <Image src={Star} className="w-4" alt={'star'} />
                             <Image src={Star} className="w-4" alt={'star'} />
                             <Image src={Star} className="w-4" alt={'star'} />
@@ -84,29 +84,31 @@ export default function Navbar(): JSX.Element {
                             <Image src={Star} className="w-4" alt={'star'} />
                         </div>
                         <h2 className="text-grey">20 reviews</h2>
-                    </div>
-                    <div>
-                        <div className="ml-10 flex items-center">
-                            <h3 className="text-grey">5</h3>
-                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-yellow"></div>
+                    </section>
+                    <section className="ml-10 flex justify-center sm:ml-0 sm:mt-2">
+                        <div className="flex-col">
+                            <div className="flex items-center">
+                                <h3 className="text-grey">5</h3>
+                                <div className="ml-2 h-2.5 w-96 rounded-xl bg-yellow 2xs:w-80 3xs:w-64"></div>
+                            </div>
+                            <div className="flex items-center">
+                                <h3 className="text-grey">4</h3>
+                                <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey 2xs:w-80 3xs:w-64"></div>
+                            </div>
+                            <div className="flex items-center">
+                                <h3 className="text-grey">3</h3>
+                                <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey 2xs:w-80 3xs:w-64"></div>
+                            </div>
+                            <div className="flex items-center">
+                                <h3 className="text-grey">2</h3>
+                                <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey 2xs:w-80 3xs:w-64"></div>
+                            </div>
+                            <div className="flex items-center">
+                                <h3 className="text-grey">1</h3>
+                                <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey 2xs:w-80 3xs:w-64"></div>
+                            </div>
                         </div>
-                        <div className="ml-10 flex items-center">
-                            <h3 className="text-grey">4</h3>
-                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
-                        </div>
-                        <div className="ml-10 flex items-center">
-                            <h3 className="text-grey">3</h3>
-                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
-                        </div>
-                        <div className="ml-10 flex items-center">
-                            <h3 className="text-grey">2</h3>
-                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
-                        </div>
-                        <div className="ml-10 flex items-center">
-                            <h3 className="text-grey">1</h3>
-                            <div className="ml-2 h-2.5 w-96 rounded-xl bg-lightgrey"></div>
-                        </div>
-                    </div>
+                    </section>
                 </section>
                 <center className="mb-10">
                     <button
@@ -120,9 +122,13 @@ export default function Navbar(): JSX.Element {
                 </center>
 
                 {/* Link reviews to db later */}
-                <div className=" flex justify-evenly">
-                    <Review />
-                    <Review />
+                <div className="flex justify-evenly m:flex-col">
+                    <div className="flex w-full justify-center pb-10">
+                        <Review />
+                    </div>
+                    <div className="flex w-full justify-center">
+                        <Review />
+                    </div>
                 </div>
             </section>
 
