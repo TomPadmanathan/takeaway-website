@@ -4,7 +4,7 @@ import { NextRouter, useRouter } from 'next/router';
 
 export default function BottomNav(): JSX.Element {
     const router: NextRouter = useRouter();
-    const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
     const navButtons: string[][] = [
         ['Home', '/'],
@@ -13,6 +13,10 @@ export default function BottomNav(): JSX.Element {
         ['Catering', '/#catering'],
         ['Cart', '/'],
     ];
+
+    const transition: string = 'transition ease transform duration-200';
+    const genericHamburgerLine: string =
+        'h-1 w-6 my-1 rounded-full bg-black ' + transition;
 
     return (
         <>
@@ -47,14 +51,37 @@ export default function BottomNav(): JSX.Element {
                         </button>
                     </div>
                 </div>
-                <div className="hidden sm:block">
-                    <button onClick={() => setMenuOpen(!isMenuOpen)}>
-                        {isMenuOpen ? 'Close' : 'Menu'}
+                <div className="mr-10 hidden w-full sm:flex sm:justify-end">
+                    <button
+                        className="group flex h-12 w-12 flex-col items-center justify-center rounded"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                    >
+                        <div
+                            className={`${genericHamburgerLine} ${
+                                menuOpen
+                                    ? 'translate-y-3 rotate-45 opacity-50 group-hover:opacity-100'
+                                    : 'opacity-50 group-hover:opacity-100'
+                            }`}
+                        />
+                        <div
+                            className={`${genericHamburgerLine} ${
+                                menuOpen
+                                    ? 'opacity-0'
+                                    : 'opacity-50 group-hover:opacity-100'
+                            }`}
+                        />
+                        <div
+                            className={`${genericHamburgerLine} ${
+                                menuOpen
+                                    ? '-translate-y-3 -rotate-45 opacity-50 group-hover:opacity-100'
+                                    : 'opacity-50 group-hover:opacity-100'
+                            }`}
+                        />
                     </button>
                 </div>
             </nav>
-            {isMenuOpen && (
-                <div className="">
+            {menuOpen && (
+                <div>
                     <ul className="flex flex-col items-center">
                         {navButtons.map((navButton: string[]) => (
                             <li
@@ -62,7 +89,7 @@ export default function BottomNav(): JSX.Element {
                                     router.push(navButton[1])
                                 }
                                 key={navButton[0]}
-                                className="mb-2 cursor-pointer"
+                                className={`mb-2 cursor-pointer opacity-50 transition hover:text-black hover:opacity-100 ${transition}`}
                             >
                                 {navButton[0]}
                             </li>

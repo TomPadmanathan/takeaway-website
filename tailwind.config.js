@@ -24,6 +24,7 @@ module.exports = {
             lightergrey: '#E9E9ED',
             darkgrey: '#111111',
             yellow: '#F3C811',
+            black: '#000000',
         },
         aspectRatio: {
             '4/3': '4 / 3',
