@@ -40,12 +40,7 @@ export default function LandingSection(): JSX.Element {
                     className="border-black w-72 border py-16 invert filter "
                     alt={'site-icon'}
                 />
-                {/* <button
-                    className="hidden h-14 rounded-lg border-[3px] border-white bg-blue px-10 text-lg font-bold text-white sm:block"
-                    onClick={(): Promise<boolean> => router.push('/order')}
-                >
-                    Order Now
-                </button> */}
+
                 <div className="hidden sm:block">
                     <button
                         className="mx-5 h-10 w-52 rounded border-[3px] border-blue bg-white px-10 font-bold text-pink sm:mb-5 sm:px-5"
