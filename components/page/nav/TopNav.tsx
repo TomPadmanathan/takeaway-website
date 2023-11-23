@@ -31,9 +31,9 @@ export default function TopNav(): JSX.Element {
 
     return (
         <>
-            <nav className="mx-32 my-4 flex items-center justify-between">
+            <nav className="mx-32 my-4 flex items-center justify-between m:mx-0 m:justify-around sm:hidden">
                 <button
-                    className="m-0 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                    className="m-0 h-10 w-52 rounded border-[3px] border-grey px-10 font-bold text-pink sm:px-5"
                     onClick={(): Promise<boolean> => router.push('/order')}
                 >
                     Order Now
@@ -47,7 +47,7 @@ export default function TopNav(): JSX.Element {
 
                 {token ? (
                     <button
-                        className="m-0 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
+                        className="m-0 h-10 w-60 rounded border-[3px] border-grey px-10 font-bold text-pink m:px-5"
                         onClick={(): Promise<boolean> =>
                             router.push('/users/' + userId)
                         }
@@ -56,7 +56,7 @@ export default function TopNav(): JSX.Element {
                     </button>
                 ) : (
                     <button
-                        className="m-0 h-10 rounded border-[3px] border-blue px-10 font-bold text-pink"
+                        className="m-0 h-10 w-60 rounded border-[3px] border-blue px-10 font-bold text-pink m:px-5"
                         onClick={(): Promise<boolean> =>
                             router.push('/auth/login')
                         }
