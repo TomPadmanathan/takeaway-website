@@ -37,7 +37,7 @@ export default function LandingSection(): JSX.Element {
             <center>
                 <Image
                     src={Logo}
-                    className="border-black w-72 border py-16 invert filter "
+                    className="w-72 py-16 invert filter"
                     alt={'site-icon'}
                 />
 

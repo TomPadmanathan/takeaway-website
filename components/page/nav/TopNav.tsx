@@ -43,7 +43,7 @@ export default function TopNav(): JSX.Element {
                 </button>
                 <Image
                     src={Logo}
-                    className="border-black aspect-square w-40 border hover:cursor-pointer"
+                    className="aspect-square w-40 hover:cursor-pointer"
                     alt={'site-icon'}
                     onClick={(): Promise<boolean> => router.push('/')}
                 />
