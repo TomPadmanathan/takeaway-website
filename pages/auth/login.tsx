@@ -8,6 +8,7 @@ import isValidURL from '@/utils/isValidURL';
 // Components
 import PrimaryInput from '@/components/PrimaryInput';
 import SecondaryButton from '@/components/SecondaryButton';
+import HighlightText from '@/components/HighlightText';
 
 // Types/Interfaces
 import { ChangeEvent } from 'react';
@@ -77,36 +78,59 @@ export default function Login(): JSX.Element {
     if (!token)
         return (
             <>
-                <form onSubmit={handleSubmit}>
-                    <PrimaryInput
-                        type="email"
-                        placeholder="Email"
-                        onChange={(
-                            event: ChangeEvent<HTMLInputElement>
-                        ): void => {
-                            const copy = {
-                                ...credentials,
-                            };
-                            copy.email = event.target.value;
-                            setCredentials(copy);
-                        }}
-                        required={true}
-                    />
-                    <PrimaryInput
-                        placeholder="Password"
-                        onChange={(
-                            event: ChangeEvent<HTMLInputElement>
-                        ): void => {
-                            const copy = {
-                                ...credentials,
-                            };
-                            copy.password = event.target.value;
-                            setCredentials(copy);
-                        }}
-                        required={true}
-                    />
-                    <SecondaryButton content="login" />
-                </form>
+                <div className="flex h-screen items-center justify-center">
+                    <form className="rounded-lg border" onSubmit={handleSubmit}>
+                        <h1 className="border-b p-2 text-center text-xl">
+                            Login
+                        </h1>
+                        <div className="p-3">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                id="email"
+                                type="text"
+                                placeholder="Enter your email"
+                                className="block rounded border border-black p-2"
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...credentials,
+                                    };
+                                    copy.email = event.target.value;
+                                    setCredentials(copy);
+                                }}
+                            />
+                            <label htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                type="text"
+                                placeholder="Enter you password"
+                                className="my-2 block rounded border border-black p-2"
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...credentials,
+                                    };
+                                    copy.password = event.target.value;
+                                    setCredentials(copy);
+                                }}
+                            />
+                            <button className="mt-2 w-full rounded border py-1">
+                                Submit
+                            </button>
+                            <h3
+                                className="cursor-pointer"
+                                onClick={(): Promise<boolean> =>
+                                    router.push('/auth/signUp')
+                                }
+                            >
+                                Not a user?{' '}
+                                <HighlightText>Signup now</HighlightText>
+                            </h3>
+                        </div>
+                    </form>
+                </div>
             </>
         );
     else
