@@ -472,24 +472,26 @@ function CateringServiceForm(): JSX.Element {
                     ) : null}
                 </form>
             ) : (
-                <>
-                    <h2>Please login to continue</h2>
-                    <button
-                        className="h-14 rounded-lg border-[3px] border-white bg-blue px-10 text-lg font-bold text-white"
-                        onClick={(): Promise<boolean> =>
-                            router.push({
-                                pathname: '/auth/login',
-                                query: {
-                                    url:
-                                        process.env.NEXT_PUBLIC_URL +
-                                        '#catering',
-                                },
-                            })
-                        }
-                    >
-                        Login
-                    </button>
-                </>
+                <div className="flex h-full items-center justify-center">
+                    <div>
+                        <h2>Please login to continue</h2>
+                        <button
+                            className="mt-2 h-14 w-full rounded-lg border-[3px] border-white bg-blue px-10 text-lg font-bold text-white"
+                            onClick={(): Promise<boolean> =>
+                                router.push({
+                                    pathname: '/auth/login',
+                                    query: {
+                                        url:
+                                            process.env.NEXT_PUBLIC_URL +
+                                            '#catering',
+                                    },
+                                })
+                            }
+                        >
+                            Login
+                        </button>
+                    </div>
+                </div>
             )}
         </section>
     );
