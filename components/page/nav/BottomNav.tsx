@@ -20,7 +20,7 @@ export default function BottomNav(): JSX.Element {
 
     return (
         <>
-            <nav className="flex h-20 items-center justify-around sm:justify-between">
+            <nav className="flex h-20 items-center justify-around bg-white shadow-md sm:justify-between">
                 <div className="flex w-full justify-around sm:hidden">
                     <ul className="flex w-80 justify-between">
                         {navButtons.map(

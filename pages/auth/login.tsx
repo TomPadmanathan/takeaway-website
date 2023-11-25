@@ -6,15 +6,21 @@ import { NextRouter, useRouter } from 'next/router';
 import isValidURL from '@/utils/isValidURL';
 
 // Components
-import PrimaryInput from '@/components/PrimaryInput';
 import SecondaryButton from '@/components/SecondaryButton';
 import HighlightText from '@/components/HighlightText';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
 
 // Types/Interfaces
 import { ChangeEvent } from 'react';
 
 // Packages
 import Jwt, { JwtPayload } from 'jsonwebtoken';
+import { IconContext } from 'react-icons';
+
+// Assets
+import { HiMail, HiLockClosed, HiEye, HiEyeOff } from 'react-icons/hi';
+import tailwindConfig from '@/tailwind.config';
 
 interface Credentials {
     email: string;
@@ -22,12 +28,14 @@ interface Credentials {
 }
 
 export default function Login(): JSX.Element {
+    const tailwindColors: any = tailwindConfig?.theme?.colors;
     const router: NextRouter = useRouter();
     const [credentials, setCredentials] = useState<Credentials>({
         email: '',
         password: '',
     });
     const [token, setToken] = useState<string | undefined>();
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
@@ -75,62 +83,106 @@ export default function Login(): JSX.Element {
         if (token) setToken(token);
     }, []);
 
+    const inputContainer: string =
+        'my-4 flex items-center rounded-sm bg-lightergrey';
+    const inputfield: string =
+        'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
+
     if (!token)
         return (
             <>
-                <div className="flex h-screen items-center justify-center">
-                    <form className="rounded-lg border" onSubmit={handleSubmit}>
-                        <h1 className="border-b p-2 text-center text-xl">
-                            Login
-                        </h1>
-                        <div className="p-3">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                id="email"
-                                type="text"
-                                placeholder="Enter your email"
-                                className="block rounded border border-black p-2"
-                                onChange={(
-                                    event: ChangeEvent<HTMLInputElement>
-                                ): void => {
-                                    const copy = {
-                                        ...credentials,
-                                    };
-                                    copy.email = event.target.value;
-                                    setCredentials(copy);
-                                }}
-                            />
-                            <label htmlFor="password">Password</label>
-                            <input
-                                id="password"
-                                type="text"
-                                placeholder="Enter you password"
-                                className="my-2 block rounded border border-black p-2"
-                                onChange={(
-                                    event: ChangeEvent<HTMLInputElement>
-                                ): void => {
-                                    const copy = {
-                                        ...credentials,
-                                    };
-                                    copy.password = event.target.value;
-                                    setCredentials(copy);
-                                }}
-                            />
-                            <button className="mt-2 w-full rounded border py-1">
-                                Submit
-                            </button>
-                            <h3
-                                className="cursor-pointer"
-                                onClick={(): Promise<boolean> =>
-                                    router.push('/auth/signUp')
-                                }
-                            >
-                                Not a user?{' '}
-                                <HighlightText>Signup now</HighlightText>
-                            </h3>
-                        </div>
-                    </form>
-                </div>
+                <IconContext.Provider
+                    value={{
+                        color: tailwindColors.grey,
+                        size: '22px',
+                    }}
+                >
+                    <BottomNav />
+                    <div className="flex h-screen items-center justify-center">
+                        <form
+                            className="h-[400px] w-[500px] rounded-sm bg-white p-10 shadow-lg"
+                            onSubmit={handleSubmit}
+                        >
+                            <h1 className="bg- p-2 text-center text-2xl text-grey">
+                                USER LOGIN
+                            </h1>
+                            <div className="p-3">
+                                <div className={inputContainer}>
+                                    <HiMail className="ml-4" />
+                                    <input
+                                        type="text"
+                                        placeholder="Email"
+                                        className={inputfield}
+                                        onChange={(
+                                            event: ChangeEvent<HTMLInputElement>
+                                        ): void => {
+                                            const copy = {
+                                                ...credentials,
+                                            };
+                                            copy.email = event.target.value;
+                                            setCredentials(copy);
+                                        }}
+                                    />
+                                </div>
+                                <div className={inputContainer}>
+                                    <HiLockClosed className="ml-4" />
+
+                                    <input
+                                        type={
+                                            passwordVisible
+                                                ? 'text'
+                                                : 'password'
+                                        }
+                                        placeholder="Password"
+                                        className={inputfield}
+                                        onChange={(
+                                            event: ChangeEvent<HTMLInputElement>
+                                        ): void => {
+                                            const copy = {
+                                                ...credentials,
+                                            };
+                                            copy.password = event.target.value;
+                                            setCredentials(copy);
+                                        }}
+                                    />
+
+                                    {passwordVisible ? (
+                                        <HiEyeOff
+                                            className="mr-4 cursor-pointer"
+                                            onClick={() =>
+                                                setPasswordVisible(
+                                                    !passwordVisible
+                                                )
+                                            }
+                                        />
+                                    ) : (
+                                        <HiEye
+                                            className="mr-4 cursor-pointer"
+                                            onClick={() =>
+                                                setPasswordVisible(
+                                                    !passwordVisible
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </div>
+                                <button className="mb-2 h-14 w-full rounded-sm border bg-grey py-1 tracking-wider text-white">
+                                    LOGIN
+                                </button>
+                                <h3
+                                    className="cursor-pointer text-grey"
+                                    onClick={(): Promise<boolean> =>
+                                        router.push('/auth/signUp')
+                                    }
+                                >
+                                    Not a user?{' '}
+                                    <HighlightText>Signup now</HighlightText>
+                                </h3>
+                            </div>
+                        </form>
+                    </div>
+                    <Footer />
+                </IconContext.Provider>
             </>
         );
     else

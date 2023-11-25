@@ -32,7 +32,7 @@ export default function TopNav(): JSX.Element {
     return (
         <>
             <nav
-                className="mx-32 my-4 flex items-center justify-between m:mx-0 m:justify-around sm:hidden"
+                className="flex items-center justify-between bg-white px-32 py-4 m:mx-0 m:justify-around sm:hidden"
                 id="topnav"
             >
                 <button

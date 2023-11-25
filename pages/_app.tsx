@@ -9,7 +9,7 @@ import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
     return (
-        <main className="overflow-hidden">
+        <main className="overflow-hidden bg-lightergrey">
             <AppProvider>
                 <Component {...pageProps} />
             </AppProvider>
