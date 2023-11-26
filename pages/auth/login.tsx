@@ -111,7 +111,7 @@ export default function Login(): JSX.Element {
                             className="h-[400px] w-[500px] rounded-sm bg-white p-10 shadow-lg"
                             onSubmit={handleSubmit}
                         >
-                            <h1 className="bg- p-2 text-center text-2xl text-grey">
+                            <h1 className="pt-2 text-center text-2xl text-grey">
                                 USER LOGIN
                             </h1>
                             <div className="p-3">
