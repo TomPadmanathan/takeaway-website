@@ -37,8 +37,12 @@ export default function Login(): JSX.Element {
     const [token, setToken] = useState<string | undefined>();
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+
     function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
+        setLoading(true);
         loginUser(credentials);
     }
 
@@ -54,15 +58,19 @@ export default function Login(): JSX.Element {
                     }),
                 }
             );
+
             interface responseJson {
                 token?: string;
                 error?: string;
             }
             const responseJson: responseJson = await response.json();
+            setLoading(false);
             if (!response.ok) {
-                console.error(responseJson.error);
+                setError(responseJson.error as string);
                 return;
             }
+
+            // Redirect User
             if (!responseJson.token) return;
             localStorage.setItem('token', responseJson.token);
 
@@ -98,7 +106,7 @@ export default function Login(): JSX.Element {
                     }}
                 >
                     <BottomNav />
-                    <div className="flex h-screen items-center justify-center">
+                    <div className="mt-[-60px] flex h-screen items-center justify-center">
                         <form
                             className="h-[400px] w-[500px] rounded-sm bg-white p-10 shadow-lg"
                             onSubmit={handleSubmit}
@@ -107,10 +115,15 @@ export default function Login(): JSX.Element {
                                 USER LOGIN
                             </h1>
                             <div className="p-3">
+                                <p className="mb-[-10px] text-center text-red">
+                                    <HighlightText color="red">
+                                        {error}
+                                    </HighlightText>
+                                </p>
                                 <div className={inputContainer}>
                                     <HiMail className="ml-4" />
                                     <input
-                                        type="text"
+                                        type="email"
                                         placeholder="Email"
                                         className={inputfield}
                                         onChange={(
@@ -122,6 +135,7 @@ export default function Login(): JSX.Element {
                                             copy.email = event.target.value;
                                             setCredentials(copy);
                                         }}
+                                        required
                                     />
                                 </div>
                                 <div className={inputContainer}>
@@ -144,6 +158,7 @@ export default function Login(): JSX.Element {
                                             copy.password = event.target.value;
                                             setCredentials(copy);
                                         }}
+                                        required
                                     />
 
                                     {passwordVisible ? (
@@ -166,8 +181,8 @@ export default function Login(): JSX.Element {
                                         />
                                     )}
                                 </div>
-                                <button className="mb-2 h-14 w-full rounded-sm border bg-grey py-1 tracking-wider text-white">
-                                    LOGIN
+                                <button className="mb-2 flex h-14 w-full items-center justify-center rounded-sm border bg-grey py-1 tracking-wider text-white">
+                                    {loading ? 'LOADING' : 'LOGIN'}
                                 </button>
                                 <h3
                                     className="cursor-pointer text-grey"
