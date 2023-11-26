@@ -15,7 +15,6 @@ import Footer from '@/components/page/Footer';
 import { ChangeEvent } from 'react';
 
 // Packages
-import Jwt, { JwtPayload } from 'jsonwebtoken';
 import { IconContext } from 'react-icons';
 
 // Assets
@@ -34,7 +33,6 @@ export default function Login(): JSX.Element {
         email: '',
         password: '',
     });
-    const [token, setToken] = useState<string | undefined>();
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 
     const [error, setError] = useState<string>('');
@@ -88,7 +86,7 @@ export default function Login(): JSX.Element {
     }
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
-        if (token) setToken(token);
+        if (token) router.push('/');
     }, []);
 
     const inputContainer: string =
@@ -96,114 +94,95 @@ export default function Login(): JSX.Element {
     const inputfield: string =
         'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
 
-    if (!token)
-        return (
-            <IconContext.Provider
-                value={{
-                    color: tailwindColors.grey,
-                    size: '22px',
-                }}
-            >
-                <BottomNav />
-                <div className="mx-10 mt-[-60px] flex h-screen items-center justify-center 2xs:mx-5">
-                    <form
-                        className="h-[400px] w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
-                        onSubmit={handleSubmit}
-                    >
-                        <h1 className="pt-2 text-center text-2xl text-grey">
-                            USER LOGIN
-                        </h1>
-                        <div className="p-3">
-                            <p className="mb-[-10px] text-center text-red">
-                                <HighlightText color="red">
-                                    {error}
-                                </HighlightText>
-                            </p>
-                            <div className={inputContainer}>
-                                <HiMail className="ml-4" />
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    className={inputfield}
-                                    onChange={(
-                                        event: ChangeEvent<HTMLInputElement>
-                                    ): void => {
-                                        const copy = {
-                                            ...credentials,
-                                        };
-                                        copy.email = event.target.value;
-                                        setCredentials(copy);
-                                    }}
-                                    required
-                                />
-                            </div>
-                            <div className={inputContainer}>
-                                <HiLockClosed className="ml-4" />
-
-                                <input
-                                    type={passwordVisible ? 'text' : 'password'}
-                                    placeholder="Password"
-                                    className={inputfield}
-                                    onChange={(
-                                        event: ChangeEvent<HTMLInputElement>
-                                    ): void => {
-                                        const copy = {
-                                            ...credentials,
-                                        };
-                                        copy.password = event.target.value;
-                                        setCredentials(copy);
-                                    }}
-                                    required
-                                />
-
-                                {passwordVisible ? (
-                                    <HiEyeOff
-                                        className="mr-4 cursor-pointer"
-                                        onClick={() =>
-                                            setPasswordVisible(!passwordVisible)
-                                        }
-                                    />
-                                ) : (
-                                    <HiEye
-                                        className="mr-4 cursor-pointer"
-                                        onClick={() =>
-                                            setPasswordVisible(!passwordVisible)
-                                        }
-                                    />
-                                )}
-                            </div>
-                            <button className="mb-2 flex h-14 w-full items-center justify-center rounded-sm border bg-grey py-1 tracking-wider text-white">
-                                {loading ? 'LOADING' : 'LOGIN'}
-                            </button>
-                            <h3
-                                className="cursor-pointer text-grey"
-                                onClick={(): Promise<boolean> =>
-                                    router.push('/auth/signUp')
-                                }
-                            >
-                                Not a user?{' '}
-                                <HighlightText>Signup now</HighlightText>
-                            </h3>
+    return (
+        <IconContext.Provider
+            value={{
+                color: tailwindColors.grey,
+                size: '22px',
+            }}
+        >
+            <BottomNav />
+            <div className="mx-10 mt-[-60px] flex h-screen items-center justify-center 2xs:mx-5">
+                <form
+                    className="h-[400px] w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
+                    onSubmit={handleSubmit}
+                >
+                    <h1 className="pt-2 text-center text-2xl text-grey">
+                        USER LOGIN
+                    </h1>
+                    <div className="p-3">
+                        <p className="mb-[-10px] text-center text-red">
+                            <HighlightText color="red">{error}</HighlightText>
+                        </p>
+                        <div className={inputContainer}>
+                            <HiMail className="ml-4" />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className={inputfield}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...credentials,
+                                    };
+                                    copy.email = event.target.value;
+                                    setCredentials(copy);
+                                }}
+                                required
+                            />
                         </div>
-                    </form>
-                </div>
-                <Footer />
-            </IconContext.Provider>
-        );
-    else
-        return (
-            <>
-                <h1>You are already logged in.</h1>
-                <SecondaryButton
-                    content="Go to account"
-                    onClick={(): void => {
-                        const decodedToken: JwtPayload | null | string =
-                            Jwt.decode(token);
-                        if (!decodedToken || typeof decodedToken != 'object')
-                            return;
-                        router.push(`/users/${decodedToken.userId}`);
-                    }}
-                />
-            </>
-        );
+                        <div className={inputContainer}>
+                            <HiLockClosed className="ml-4" />
+
+                            <input
+                                type={passwordVisible ? 'text' : 'password'}
+                                placeholder="Password"
+                                className={inputfield}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...credentials,
+                                    };
+                                    copy.password = event.target.value;
+                                    setCredentials(copy);
+                                }}
+                                required
+                            />
+
+                            {passwordVisible ? (
+                                <HiEyeOff
+                                    className="mr-4 cursor-pointer"
+                                    onClick={() =>
+                                        setPasswordVisible(!passwordVisible)
+                                    }
+                                />
+                            ) : (
+                                <HiEye
+                                    className="mr-4 cursor-pointer"
+                                    onClick={() =>
+                                        setPasswordVisible(!passwordVisible)
+                                    }
+                                />
+                            )}
+                        </div>
+                        <button className="mb-2 flex h-14 w-full items-center justify-center rounded-sm border bg-grey py-1 tracking-wider text-white">
+                            {loading ? 'LOADING' : 'LOGIN'}
+                        </button>
+                        <h3
+                            className="cursor-pointer text-grey"
+                            onClick={(): Promise<boolean> =>
+                                router.push('/auth/signUp')
+                            }
+                        >
+                            Not a user?{' '}
+                            <HighlightText>Signup now</HighlightText>
+                        </h3>
+                    </div>
+                </form>
+            </div>
+            <Footer />
+        </IconContext.Provider>
+    );
 }
