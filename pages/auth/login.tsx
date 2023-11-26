@@ -99,7 +99,7 @@ export default function Login(): JSX.Element {
             <BottomNav />
             <div className="mx-10 mt-[-60px] flex h-screen items-center justify-center 2xs:mx-5">
                 <form
-                    className="h-[400px] w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
+                    className="w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
                     onSubmit={handleSubmit}
                 >
                     <h1 className="pt-2 text-center text-2xl text-grey">
