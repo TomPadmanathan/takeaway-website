@@ -4,9 +4,9 @@ import { NextRouter, useRouter } from 'next/router';
 
 // Utils
 import isValidURL from '@/utils/isValidURL';
+import getUrlFromQueryParams from '@/utils/getUrlFromQueryParams';
 
 // Components
-import SecondaryButton from '@/components/SecondaryButton';
 import HighlightText from '@/components/HighlightText';
 import BottomNav from '@/components/page/nav/BottomNav';
 import Footer from '@/components/page/Footer';
@@ -72,16 +72,11 @@ export default function Login(): JSX.Element {
             if (!responseJson.token) return;
             localStorage.setItem('token', responseJson.token);
 
-            if (
-                typeof router.query.url !== 'string' ||
-                !isValidURL(router.query.url)
-            ) {
-                router.push('/');
-                return;
-            }
-            router.push(router.query.url);
+            const URL = getUrlFromQueryParams(router);
+            if (!URL) router.push('/');
+            else router.push(URL);
         } catch {
-            console.error('Error fetching JWT');
+            setError('Error fetching JWT');
         }
     }
     useEffect((): void => {
@@ -172,9 +167,11 @@ export default function Login(): JSX.Element {
                         </button>
                         <h3
                             className="cursor-pointer text-grey"
-                            onClick={(): Promise<boolean> =>
-                                router.push('/auth/signUp')
-                            }
+                            onClick={(): void => {
+                                const URL = getUrlFromQueryParams(router);
+                                if (!URL) router.push('/auth/sign-up');
+                                else router.push('/auth/sign-up?url=' + URL);
+                            }}
                         >
                             Not a user?{' '}
                             <HighlightText>Signup now</HighlightText>
