@@ -116,9 +116,10 @@ export default function SignUp(): JSX.Element {
             }}
         >
             <BottomNav />
-            <div className="w- mx-10 mt-[-60px] flex h-screen items-center justify-center 2xs:mx-5">
+
+            <div className="mx-10 my-10 flex min-h-full items-center justify-center 2xs:mx-5">
                 <form
-                    className=" w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
+                    className="w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
                     onSubmit={handleSubmit}
                 >
                     <h1 className="pt-2 text-center text-2xl text-grey">
@@ -328,6 +329,7 @@ export default function SignUp(): JSX.Element {
                     </div>
                 </form>
             </div>
+
             <Footer />
         </IconContext.Provider>
     );
