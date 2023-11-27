@@ -88,7 +88,7 @@ export default function Home({ productsData, configData }: props): JSX.Element {
             <div className="bg-white">
                 <BottomNav />
                 <div className="mx-[25px] min-h-[900px] l:mx-10 3xs:mx-5">
-                    <div className="mb-32 mt-20 px-[140px] m:px-0">
+                    <div className="mb-32 mt-20 px-[140px] m:px-0 sm:mb-10">
                         <div className="my-4 flex h-full items-center justify-between l:block">
                             <div className={inputContainer + ' my-2'}>
                                 <HiSearch className="ml-4" />
@@ -255,7 +255,7 @@ function AddCartModel(props: AddCartModel): JSX.Element {
                     open ? 'flex' : 'hidden'
                 }`}
             >
-                <div className="relative flex h-96 w-[40rem] items-center justify-center bg-white text-grey shadow-lg">
+                <div className="relative mx-5 flex h-[380px] w-[40rem] items-center justify-center bg-white text-grey shadow-lg sm:h-[450px]">
                     <button
                         onClick={(): void => setOpen(false)}
                         className="absolute right-2 top-2"
@@ -267,10 +267,10 @@ function AddCartModel(props: AddCartModel): JSX.Element {
                             {capitaliseFirstCharWords(props.product.product)}
                         </h2>
 
-                        <div className="mx-2 mb-20 flex items-center">
+                        <div className="mx-2 mb-20 flex place-items-center items-center sm:grid">
                             <div
                                 className={`${
-                                    props.product.options ? 'mx-2' : ''
+                                    props.product.options ? 'mx-2 sm:mb-2' : ''
                                 }`}
                             >
                                 <button
@@ -295,7 +295,7 @@ function AddCartModel(props: AddCartModel): JSX.Element {
                             {props.product.options &&
                                 props.product.options.map(
                                     (subArray: any, index: number) => (
-                                        <div className="mx-2 bg-lightergrey pr-3">
+                                        <div className="mx-2 bg-lightergrey pr-3 sm:mb-2">
                                             <select
                                                 key={subArray}
                                                 onChange={(
