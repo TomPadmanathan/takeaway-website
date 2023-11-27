@@ -1,5 +1,5 @@
 // React/Next
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 // Context
@@ -17,6 +17,11 @@ import SecondaryButton from '@/components/SecondaryButton';
 
 // Types/Interfaces
 import { config } from '@/interfaces/config';
+import { Dispatch, SetStateAction } from 'react';
+
+// Assets
+import { HiX } from 'react-icons/hi';
+
 import {
     modifiedCartItem,
     modifiedCart,
@@ -26,57 +31,71 @@ import {
 } from '@/interfaces/cart';
 
 interface props {
-    isVisible: boolean;
+    cartOpen: [
+        cartOpen: boolean,
+        setCartOpen: Dispatch<SetStateAction<boolean>>
+    ];
     configData: config;
-}
-
-function deleteItemCart(index: number, cart: cart, setCart: setCart): void {
-    const updatedCart = cart.filter(
-        (element: cartItem, secondIndex: number) => secondIndex !== index
-    );
-    setCart(updatedCart);
-    if (updatedCart.length === 0) localStorage.removeItem('cart');
 }
 
 export default function Cart(props: props): JSX.Element {
     const { cart, setCart } = useContext(AppContext);
+    const [cartOpen, setCartOpen] = props.cartOpen;
     const modifiedCart: modifiedCart = formatCart(cart);
 
     const router: NextRouter = useRouter();
     const prices = new CalculateCheckoutPrices(cart, props.configData);
 
+    function deleteItemCart(index: number, cart: cart, setCart: setCart): void {
+        const updatedCart = cart.filter(
+            (element: cartItem, secondIndex: number) => secondIndex !== index
+        );
+        setCart(updatedCart);
+        if (updatedCart.length === 0) localStorage.removeItem('cart');
+    }
+
+    useEffect(() => console.log(cartOpen), [cartOpen]);
+
     return (
         <>
-            <div
-                className={`z-1 absolute right-5 top-5 w-[30rem] rounded border-2 border-black bg-white p-5 transition-all duration-500 ${
-                    props.isVisible ? null : 'pointer-events-none opacity-0'
+            <section
+                className={`z-1 fixed bottom-0 right-0 top-0 w-[30rem] border-l-2 border-black bg-white p-5 transition-all duration-500 ${
+                    cartOpen ? 'translate-x-0' : ' translate-x-[500px]'
                 }`}
             >
+                <button
+                    onClick={(): void => setCartOpen(false)}
+                    className="absolute right-2 top-2"
+                >
+                    <HiX />
+                </button>
                 <h2 className="text-center text-3xl">Cart</h2>
                 <ul className="py-5">
                     {modifiedCart.map(
                         (element: modifiedCartItem, index: number) => (
                             <li
                                 key={index}
-                                className="mb-10 flex justify-between "
+                                className="mb-10 flex items-center justify-between"
                             >
-                                <SecondaryButton
+                                <button
                                     onClick={(): void =>
                                         deleteItemCart(index, cart, setCart)
                                     }
-                                    content="Delete"
-                                />
+                                    className="mx-3 h-16 rounded-sm bg-lightergrey p-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                                >
+                                    Delete
+                                </button>
 
-                                <span className="mr-4">
+                                <p className="mr-4">
                                     {element.quantity + ' x'}
-                                </span>
+                                </p>
 
                                 <div className="flex flex-col items-center">
-                                    <span>
+                                    <p>
                                         {capitaliseFirstCharWords(
                                             element.product
                                         )}
-                                    </span>
+                                    </p>
                                     <ul className="ml-10 list-disc">
                                         {element.options &&
                                         Array.isArray(element.options)
@@ -122,20 +141,20 @@ export default function Cart(props: props): JSX.Element {
                         )
                     )}
                 </ul>
-                <span className="block text-end">
+                <p className="block text-end">
                     Sub-Total: £{formatPrice(prices.subTotal)}
-                </span>
+                </p>
                 {prices.lowOrderFee ? (
-                    <span className="block text-end">
+                    <p className="block text-end">
                         Low Order Fee: £{formatPrice(prices.lowOrderFee)}
-                    </span>
+                    </p>
                 ) : null}
-                <span className="block text-end">
+                <p className="block text-end">
                     Delivery Fee: £{formatPrice(prices.deliveryFee)}
-                </span>
-                <span className="block text-end">
+                </p>
+                <p className="block text-end">
                     Total: £{formatPrice(prices.total)}
-                </span>
+                </p>
 
                 <button
                     className="h-10 border border-black p-2"
@@ -145,7 +164,7 @@ export default function Cart(props: props): JSX.Element {
                 >
                     CheckOut
                 </button>
-            </div>
+            </section>
         </>
     );
 }

@@ -2,9 +2,13 @@
 import React, { useState } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
+// Components
+import Cart from '@/components/Cart';
+
 export default function BottomNav(): JSX.Element {
     const router: NextRouter = useRouter();
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
+    const [cartOpen, setCartOpen] = useState<boolean>(false);
 
     const navButtons: string[][] = [
         ['Home', '/'],
@@ -44,8 +48,11 @@ export default function BottomNav(): JSX.Element {
                         </ul>
                         <div>
                             <button
-                                onClick={(): Promise<boolean> =>
-                                    router.push(navButtons[-1][1])
+                                onClick={(): void =>
+                                    // router.push(
+                                    //     navButtons[navButtons.length - 1][1]
+                                    // )
+                                    setCartOpen(!cartOpen)
                                 }
                             >
                                 {navButtons[navButtons.length - 1][0]}
@@ -99,6 +106,20 @@ export default function BottomNav(): JSX.Element {
                     </div>
                 )}
             </nav>
+            {/* Cart Overlay */}
+            <Cart
+                cartOpen={[cartOpen, setCartOpen]}
+                configData={{
+                    lowOrder: {
+                        maxFee: 5,
+                        feeLimit: 15,
+                    },
+                    delivery: {
+                        fee: 3,
+                        estimatedTimeOffset: 45, //mins
+                    },
+                }}
+            />
         </>
     );
 }

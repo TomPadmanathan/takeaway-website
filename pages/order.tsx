@@ -110,7 +110,7 @@ export default function Home({ productsData, configData }: props): JSX.Element {
                                                 setActiveProductNav(button)
                                             }
                                             key={button}
-                                            className={`mx-3 h-16 rounded-sm p-3 text-grey ${
+                                            className={`mx-3 h-16 rounded-sm p-3 text-grey transition-all hover:bg-lightgrey hover:text-white ${
                                                 activeProductNav == button
                                                     ? 'bg-lightgrey text-white'
                                                     : 'bg-lightergrey'
