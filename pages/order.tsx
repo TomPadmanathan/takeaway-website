@@ -74,7 +74,7 @@ export default function Home({ productsData, configData }: props): JSX.Element {
     ];
 
     const inputContainer: string =
-        'my-4 flex items-center rounded-sm bg-lightergrey overflow-hidden';
+        'flex items-center rounded-sm bg-lightergrey overflow-hidden';
     const inputfield: string =
         'h-14 bg-lightergrey pl-2 focus:outline-none w-80';
 
@@ -87,47 +87,74 @@ export default function Home({ productsData, configData }: props): JSX.Element {
         >
             <div className="bg-white">
                 <BottomNav />
-                <div className="mx-[100px] h-[900px] px-[150px]">
-                    <div className="mb-32 flex h-40 items-center justify-between">
-                        <div className={inputContainer}>
-                            <HiSearch className="ml-4" />
-                            <input
-                                placeholder="Search"
-                                type="text"
-                                className={inputfield}
-                                value={search}
-                                onChange={(
-                                    event: React.ChangeEvent<HTMLInputElement>
-                                ): void => setSearch(event.target.value)}
-                            ></input>
+                <div className="mx-[25px] min-h-[900px] l:mx-10 3xs:mx-5">
+                    <div className="mb-32 mt-20 px-[140px] m:px-0">
+                        <div className="my-4 flex h-full items-center justify-between l:block">
+                            <div className={inputContainer + ' my-2'}>
+                                <HiSearch className="ml-4" />
+                                <input
+                                    placeholder="Search"
+                                    type="text"
+                                    className={inputfield}
+                                    value={search}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ): void => setSearch(event.target.value)}
+                                ></input>
+                            </div>
+                            {search ? null : (
+                                <div className="3xl:hidden">
+                                    {productNavButtons.map((button: any) => (
+                                        <button
+                                            onClick={(): void =>
+                                                setActiveProductNav(button)
+                                            }
+                                            key={button}
+                                            className={`mx-3 h-16 rounded-sm p-3 text-grey ${
+                                                activeProductNav == button
+                                                    ? 'bg-lightgrey text-white'
+                                                    : 'bg-lightergrey'
+                                            }`}
+                                        >
+                                            {capitaliseFirstChar(button)}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                            <div className="flex items-center justify-center l:mb-10 l:w-full">
+                                <p className="w-40">
+                                    {cart.length}{' '}
+                                    {cart.length == 1 ? 'item' : 'items'} - £
+                                    {formatPrice(checkoutPrices.subTotal)}
+                                </p>
+                            </div>
                         </div>
+
                         {search ? null : (
-                            <div>
-                                {productNavButtons.map((button: any) => (
-                                    <button
-                                        onClick={(): void =>
-                                            setActiveProductNav(button)
-                                        }
-                                        key={button}
-                                        className={`mx-3 h-16 rounded-sm p-3 text-grey ${
-                                            activeProductNav == button
-                                                ? 'bg-lightgrey text-white'
-                                                : 'bg-lightergrey'
-                                        }`}
-                                    >
-                                        {capitaliseFirstChar(button)}
-                                    </button>
-                                ))}
+                            <div className="hidden w-full justify-center 3xl:flex">
+                                <div className="flex-col text-center">
+                                    {productNavButtons.map((button: any) => (
+                                        <button
+                                            onClick={(): void =>
+                                                setActiveProductNav(button)
+                                            }
+                                            key={button}
+                                            className={`mx-3 mb-5 h-16 rounded-sm p-3 text-grey ${
+                                                activeProductNav == button
+                                                    ? 'bg-lightgrey text-white'
+                                                    : 'bg-lightergrey'
+                                            }`}
+                                        >
+                                            {capitaliseFirstChar(button)}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         )}
-                        <p className="flex w-40 items-center">
-                            {cart.length} {cart.length == 1 ? 'item' : 'items'}{' '}
-                            - £{formatPrice(checkoutPrices.subTotal)}
-                        </p>
                     </div>
 
                     <div className="flex justify-center">
-                        <div className="grid grid-cols-5 gap-5">
+                        <div className="mb-20 grid grid-cols-5 gap-10 3xl:grid-cols-4 xl:grid-cols-3 m:grid-cols-2 sm:grid-cols-1">
                             {filteredData.map(
                                 (element: product): JSX.Element => (
                                     <ProductTab
