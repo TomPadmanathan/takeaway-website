@@ -15,7 +15,7 @@ export default function BottomNav(): JSX.Element {
         ['Menu', '/menu'],
         ['Reviews', '/reviews'],
         ['Catering', '/#catering'],
-        ['Cart', '/'],
+        ['Cart'],
     ];
 
     const transition: string = 'transition ease transform duration-200';
@@ -86,17 +86,21 @@ export default function BottomNav(): JSX.Element {
                 {menuOpen && (
                     <div className="hidden sm:block">
                         <ul className="flex flex-col items-center">
-                            {navButtons.map((navButton: string[]) => (
-                                <li
-                                    onClick={(): Promise<boolean> =>
-                                        router.push(navButton[1])
-                                    }
-                                    key={navButton[0]}
-                                    className={`mb-2 cursor-pointer opacity-50 transition hover:text-black hover:opacity-100 ${transition}`}
-                                >
-                                    {navButton[0]}
-                                </li>
-                            ))}
+                            {navButtons.map(
+                                (navButton: string[], index: number) => (
+                                    <li
+                                        onClick={(): void => {
+                                            if (navButtons.length - 1 === index)
+                                                setCartOpen(!cartOpen);
+                                            else router.push(navButton[1]);
+                                        }}
+                                        key={navButton[0]}
+                                        className={`mb-2 cursor-pointer opacity-50 transition hover:text-black hover:opacity-100 ${transition}`}
+                                    >
+                                        {navButton[0]}
+                                    </li>
+                                )
+                            )}
                         </ul>
                     </div>
                 )}
