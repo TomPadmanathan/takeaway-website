@@ -56,7 +56,6 @@ export async function getServerSideProps(): Promise<getServerSideProps> {
 export default function Home({ productsData, configData }: props): JSX.Element {
     const tailwindColors: any = tailwindConfig?.theme?.colors;
     const [search, setSearch] = useState<string>('');
-    const [cartOpen, setCartOpen] = useState<boolean>(false);
     const { cart } = useContext(AppContext);
     const checkoutPrices = new CalculateCheckoutPrices(cart, configData);
     const [activeProductNav, setActiveProductNav] =
