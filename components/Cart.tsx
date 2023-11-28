@@ -14,6 +14,7 @@ import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 
 // Components
 import SecondaryButton from '@/components/SecondaryButton';
+import HighlightText from '@/components/HighlightText';
 
 // Types/Interfaces
 import { config } from '@/interfaces/config';
@@ -54,12 +55,10 @@ export default function Cart(props: props): JSX.Element {
         if (updatedCart.length === 0) localStorage.removeItem('cart');
     }
 
-    useEffect(() => console.log(cartOpen), [cartOpen]);
-
     return (
         <>
             <section
-                className={`z-1 fixed bottom-0 right-0 top-0 w-[30rem] border-l-2 border-black bg-white p-5 transition-all duration-500 ${
+                className={`fixed bottom-0 right-0 top-0 w-[30rem] bg-white p-5 shadow-xl transition-all duration-500 ${
                     cartOpen ? 'translate-x-0' : ' translate-x-[500px]'
                 }`}
             >
@@ -75,23 +74,23 @@ export default function Cart(props: props): JSX.Element {
                         (element: modifiedCartItem, index: number) => (
                             <li
                                 key={index}
-                                className="mb-10 flex items-center justify-between"
+                                className="mb-2 flex items-center justify-between overflow-hidden rounded bg-lightergrey p-5"
                             >
                                 <button
                                     onClick={(): void =>
                                         deleteItemCart(index, cart, setCart)
                                     }
-                                    className="mx-3 h-16 rounded-sm bg-lightergrey p-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                                    className="mr-2 h-16 rounded-sm bg-white p-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
                                 >
                                     Delete
                                 </button>
 
-                                <p className="mr-4">
+                                <p className="w-10 text-grey">
                                     {element.quantity + ' x'}
                                 </p>
 
-                                <div className="flex flex-col items-center">
-                                    <p>
+                                <div className="flex w-[190px] flex-col items-center">
+                                    <p className="text-center text-grey2">
                                         {capitaliseFirstCharWords(
                                             element.product
                                         )}
@@ -123,7 +122,10 @@ export default function Cart(props: props): JSX.Element {
                                                           );
                                                       } else {
                                                           return (
-                                                              <li key={index}>
+                                                              <li
+                                                                  key={index}
+                                                                  className="text-grey"
+                                                              >
                                                                   {capitaliseFirstChar(
                                                                       option
                                                                   )}{' '}
@@ -135,35 +137,53 @@ export default function Cart(props: props): JSX.Element {
                                             : null}
                                     </ul>
                                 </div>
-
-                                <span>£{formatPrice(element.totalPrice)}</span>
+                                <div className="w-16 text-center">
+                                    <HighlightText>
+                                        {'£' + formatPrice(element.totalPrice)}
+                                    </HighlightText>
+                                </div>
                             </li>
                         )
                     )}
                 </ul>
-                <p className="block text-end">
-                    Sub-Total: £{formatPrice(prices.subTotal)}
-                </p>
-                {prices.lowOrderFee ? (
-                    <p className="block text-end">
-                        Low Order Fee: £{formatPrice(prices.lowOrderFee)}
-                    </p>
-                ) : null}
-                <p className="block text-end">
-                    Delivery Fee: £{formatPrice(prices.deliveryFee)}
-                </p>
-                <p className="block text-end">
-                    Total: £{formatPrice(prices.total)}
-                </p>
-
-                <button
-                    className="h-10 border border-black p-2"
-                    onClick={(): void => {
-                        prices.subTotal ? router.push('/checkout') : null;
-                    }}
-                >
-                    CheckOut
-                </button>
+                <div className="flex justify-between">
+                    <button
+                        className="mx-3 h-16 rounded-sm bg-lightergrey p-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                        onClick={(): void => {
+                            prices.subTotal ? router.push('/checkout') : null;
+                        }}
+                    >
+                        CheckOut
+                    </button>
+                    <div className="text-grey2">
+                        <p className="block text-end">
+                            Sub-Total:
+                            <HighlightText>
+                                {' £' + formatPrice(prices.subTotal)}
+                            </HighlightText>
+                        </p>
+                        {prices.lowOrderFee ? (
+                            <p className="block text-end">
+                                Low Order Fee:
+                                <HighlightText>
+                                    {' £' + formatPrice(prices.lowOrderFee)}
+                                </HighlightText>
+                            </p>
+                        ) : null}
+                        <p className="block text-end">
+                            Delivery Fee:
+                            <HighlightText>
+                                {' £' + formatPrice(prices.deliveryFee)}
+                            </HighlightText>
+                        </p>
+                        <p className="block text-end">
+                            Total:
+                            <HighlightText>
+                                {' £' + formatPrice(prices.total)}
+                            </HighlightText>
+                        </p>
+                    </div>
+                </div>
             </section>
         </>
     );

@@ -24,7 +24,7 @@ export default function BottomNav(): JSX.Element {
 
     return (
         <>
-            <nav className="bg-white shadow-md">
+            <nav className="z-1 bg-white shadow-md">
                 <div className="flex h-20 items-center justify-around sm:justify-between">
                     <div className="flex w-full justify-around sm:hidden">
                         <ul className="flex w-80 justify-between">
@@ -48,12 +48,7 @@ export default function BottomNav(): JSX.Element {
                         </ul>
                         <div>
                             <button
-                                onClick={(): void =>
-                                    // router.push(
-                                    //     navButtons[navButtons.length - 1][1]
-                                    // )
-                                    setCartOpen(!cartOpen)
-                                }
+                                onClick={(): void => setCartOpen(!cartOpen)}
                             >
                                 {navButtons[navButtons.length - 1][0]}
                             </button>
