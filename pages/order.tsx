@@ -187,14 +187,14 @@ function ProductTab(props: productTabProps): JSX.Element {
                     className="aspect-[4/3] w-72 border border-black"
                     alt={props.product.product + ' image'}
                 />
-                <h2 className="text-xl">
+                <h2 className="text-xl text-grey2">
                     {capitaliseFirstCharWords(props.product.product)}
                 </h2>
-                <p>£{formatPrice(props.product.price)}</p>
+                <p className="text-pink">£{formatPrice(props.product.price)}</p>
                 <div className="flex justify-center">
                     <button
                         onClick={() => setOpen(true)}
-                        className="h-10 w-32 rounded-sm bg-white"
+                        className="h-10 w-28 rounded-sm bg-white transition-all hover:bg-lightgrey hover:text-white"
                     >
                         Add to cart
                     </button>
@@ -337,7 +337,7 @@ function AddCartModel(props: AddCartModel): JSX.Element {
 
                         <button
                             onClick={(): void => handleAddItemCart()}
-                            className="h-10 w-32 rounded-sm bg-lightergrey"
+                            className="h-10 w-32 rounded-sm bg-lightergrey transition-all hover:bg-lightgrey hover:text-white"
                         >
                             Add to cart
                         </button>
