@@ -191,7 +191,7 @@ function ProductTab(props: productTabProps): JSX.Element {
                     {capitaliseFirstCharWords(props.product.product)}
                 </h2>
                 <HighlightText>
-                    {'£ ' + formatPrice(props.product.price)}
+                    {'£' + formatPrice(props.product.price)}
                 </HighlightText>
                 <div className="flex justify-center">
                     <button
