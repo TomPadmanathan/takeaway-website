@@ -57,7 +57,7 @@ export default function Cart(props: props): JSX.Element {
     return (
         <>
             <section
-                className={`fixed bottom-0 right-0 top-0 w-[30rem] overflow-auto bg-white p-5 shadow-xl transition-all duration-500 ${
+                className={`fixed bottom-0 right-0 top-0 w-[480px] overflow-auto bg-white p-5 shadow-xl transition-all duration-500 2xs:w-full 2xs:p-3 3xs:p-2 ${
                     cartOpen ? 'translate-x-0' : ' translate-x-[500px]'
                 }`}
             >
@@ -82,7 +82,7 @@ export default function Cart(props: props): JSX.Element {
                                         onClick={(): void =>
                                             deleteItemCart(index, cart, setCart)
                                         }
-                                        className="mr-2 h-16 rounded-sm bg-white p-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                                        className="mr-2 h-16 rounded-sm bg-white px-3 text-grey transition-all hover:bg-lightgrey hover:text-white 3xs:h-12 3xs:px-2"
                                     >
                                         Delete
                                     </button>
