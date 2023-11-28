@@ -2,17 +2,15 @@
 import { useContext, useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
-// Packages
-import Jwt, { JwtPayload } from 'jsonwebtoken';
-
 // Context
 import { AppContext } from '@/context/AppContext';
 
 // Components
-import SecondaryButton from '@/components/SecondaryButton';
 import ListItemsWithPrice from '@/components/ListItemsWithPrice';
 import CheckoutGuest from '@/components/checkout/CheckoutGuest';
 import CheckoutUser from '@/components/checkout/CheckoutUser';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
@@ -66,18 +64,21 @@ export default function Home({ configData }: props): JSX.Element {
 
     return (
         <>
-            <div className="mx-96 my-10 flex h-screen items-center justify-between">
+            <BottomNav />
+            <div className="relative mx-96 my-10 flex h-[85vh] items-center justify-between">
                 <ListItemsWithPrice cart={cart} config={configData} />
-                <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
+                <section className="h-[720px] w-[480px] border-2 border-black p-10">
                     {user ? <CheckoutUser user={user} /> : <CheckoutGuest />}
                 </section>
             </div>
 
-            <SecondaryButton
+            <button
                 onClick={(): Promise<boolean> => router.push('/')}
-                content="Back"
-                addClass="absolute right-10 top-10"
-            />
+                className="absolute right-10 top-32 mr-2 h-16 rounded-sm bg-white px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+            >
+                Go Back
+            </button>
+            <Footer />
         </>
     );
 }

@@ -172,7 +172,7 @@ export default function Cart(props: props): JSX.Element {
                     <div className="absolute bottom-0 w-full">
                         <div className="flex items-center justify-between">
                             <button
-                                className="mx-3 h-16 rounded-sm bg-lightergrey p-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                                className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
                                 onClick={(): void => {
                                     prices.subTotal
                                         ? router.push('/checkout')
