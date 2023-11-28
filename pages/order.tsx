@@ -25,6 +25,7 @@ import capitaliseFirstCharWords from '@/utils/capitaliseFirstCharWords';
 // Assets
 import { HiSearch, HiX } from 'react-icons/hi';
 import tailwindConfig from '@/tailwind.config';
+import HighlightText from '@/components/HighlightText';
 
 interface props {
     productsData: products;
@@ -189,7 +190,9 @@ function ProductTab(props: productTabProps): JSX.Element {
                 <h2 className="text-xl text-grey2">
                     {capitaliseFirstCharWords(props.product.product)}
                 </h2>
-                <p className="text-pink">£{formatPrice(props.product.price)}</p>
+                <HighlightText>
+                    {'£ ' + formatPrice(props.product.price)}
+                </HighlightText>
                 <div className="flex justify-center">
                     <button
                         onClick={() => setOpen(true)}

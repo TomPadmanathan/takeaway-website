@@ -5,6 +5,9 @@ import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 import formatCart from '@/utils/formatCart';
 import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 
+// Componets
+import HighlightText from './HighlightText';
+
 // Types/Interfaces
 import { config } from '@/interfaces/config';
 import { cart, modifiedCartItem } from '@/interfaces/cart';
@@ -21,7 +24,7 @@ export default function ListItemsWithPrice(props: props): JSX.Element {
 
     return (
         <section className="mb-10 w-[30rem] border-2 border-black p-10">
-            <ul className="py-5">
+            {/* <ul className="py-5">
                 {modifiedCart.map(
                     (element: modifiedCartItem, index: number) => (
                         <li key={index} className="mb-10 flex justify-between ">
@@ -69,6 +72,76 @@ export default function ListItemsWithPrice(props: props): JSX.Element {
                             </div>
 
                             <span>£{formatPrice(element.totalPrice)}</span>
+                        </li>
+                    )
+                )}
+            </ul> */}
+            <ul className="py-5">
+                {modifiedCart.map(
+                    (element: modifiedCartItem, index: number) => (
+                        <li
+                            key={index}
+                            className="mb-2 flex items-center justify-between overflow-hidden rounded bg-lightergrey p-5"
+                        >
+                            <button
+                                onClick={(): void =>
+                                    deleteItemCart(index, cart, setCart)
+                                }
+                                className="mr-2 h-16 rounded-sm bg-white px-3 text-grey transition-all hover:bg-lightgrey hover:text-white 3xs:h-12 3xs:px-2"
+                            >
+                                Delete
+                            </button>
+
+                            <p className="w-10 text-grey">
+                                {element.quantity + ' x'}
+                            </p>
+
+                            <div className="flex w-[190px] flex-col items-center">
+                                <p className="text-center text-grey2">
+                                    {capitaliseFirstCharWords(element.product)}
+                                </p>
+                                <ul className="ml-10 list-disc">
+                                    {element.options &&
+                                    Array.isArray(element.options)
+                                        ? element.options.map(
+                                              (
+                                                  option: string[],
+                                                  index: number
+                                              ) => {
+                                                  if (Array.isArray(option)) {
+                                                      return (
+                                                          <li key={index}>
+                                                              {option
+                                                                  .map(item =>
+                                                                      capitaliseFirstChar(
+                                                                          item
+                                                                      )
+                                                                  )
+                                                                  .join(', ')}
+                                                          </li>
+                                                      );
+                                                  } else {
+                                                      return (
+                                                          <li
+                                                              key={index}
+                                                              className="text-grey"
+                                                          >
+                                                              {capitaliseFirstChar(
+                                                                  option
+                                                              )}{' '}
+                                                          </li>
+                                                      );
+                                                  }
+                                              }
+                                          )
+                                        : null}
+                                </ul>
+                            </div>
+                            <div className="w-16 text-center">
+                                <HighlightText>
+                                    {'£' + formatPrice(element.totalPrice)}
+                                </HighlightText>
+                            </div>
                         </li>
                     )
                 )}
