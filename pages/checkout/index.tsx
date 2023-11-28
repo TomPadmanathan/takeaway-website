@@ -67,14 +67,14 @@ export default function Home({ configData }: props): JSX.Element {
             <BottomNav />
             <div className="relative mx-96 my-10 flex h-[85vh] items-center justify-between">
                 <ListItemsWithPrice cart={cart} config={configData} />
-                <section className="h-[720px] w-[480px] border-2 border-black p-10">
+                <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg">
                     {user ? <CheckoutUser user={user} /> : <CheckoutGuest />}
                 </section>
             </div>
 
             <button
                 onClick={(): Promise<boolean> => router.push('/')}
-                className="absolute right-10 top-32 mr-2 h-16 rounded-sm bg-white px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                className="absolute right-10 top-32 h-16 rounded-sm bg-white px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
             >
                 Go Back
             </button>

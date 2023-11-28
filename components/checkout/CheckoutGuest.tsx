@@ -52,15 +52,36 @@ export default function CheckoutGuest(): JSX.Element {
 
     if (showGuest) {
         return (
-            <>
-                <div className="flex h-full flex-col items-center justify-center">
-                    <SecondaryButton
-                        content="Continue as guest"
-                        onClick={(): void => setShowGuest(!showGuest)}
-                        addClass="m-5"
-                    />
-                    <SecondaryButton
-                        content="Login"
+            <section className="flex h-full flex-col items-center justify-center">
+                <button
+                    onClick={(): void => setShowGuest(!showGuest)}
+                    className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                >
+                    Contine as Guest
+                </button>
+                <p className="my-5 text-grey">Or</p>
+                <button
+                    onClick={(): Promise<boolean> =>
+                        router.push({
+                            pathname: '/auth/login',
+                            query: {
+                                url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
+                            },
+                        })
+                    }
+                    className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                >
+                    Login
+                </button>
+            </section>
+        );
+    } else {
+        return (
+            <section className="relative h-full">
+                <div className="flex flex-col items-center">
+                    <h2 className="text-xl text-grey">Guest Checkout</h2>
+                    <p className="my-5 text-grey">Or</p>
+                    <button
                         onClick={(): Promise<boolean> =>
                             router.push({
                                 pathname: '/auth/login',
@@ -69,29 +90,10 @@ export default function CheckoutGuest(): JSX.Element {
                                 },
                             })
                         }
-                        addClass="m-5"
-                    />
-                </div>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <div className="flex flex-col items-center">
-                    <h2>Guest Checkout</h2>
-                    <span>or</span>
-                    <SecondaryButton
-                        content="Login"
-                        onClick={(): Promise<boolean> =>
-                            router.push({
-                                pathname: 'auth/login',
-                                query: {
-                                    url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
-                                },
-                            })
-                        }
-                        addClass="mx-5 mb-5 mt-2 px-20"
-                    />
+                        className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                    >
+                        Login
+                    </button>
                 </div>
                 <form
                     onSubmit={(event: React.FormEvent): void => {
@@ -255,15 +257,16 @@ export default function CheckoutGuest(): JSX.Element {
                             }}
                         />
                     </div>
-                    <div className="mt-5 flex items-center justify-center">
-                        <SecondaryButton
+                    <div className="absolute bottom-0 flex w-full justify-center">
+                        <button
                             type="submit"
-                            content="Place my Order"
-                            addClass="justify-center"
-                        />
+                            className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                        >
+                            Place my order
+                        </button>
                     </div>
                 </form>
-            </>
+            </section>
         );
     }
 }
