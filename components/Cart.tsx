@@ -1,5 +1,5 @@
 // React/Next
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 // Context
@@ -17,7 +17,7 @@ import HighlightText from '@/components/HighlightText';
 
 // Types/Interfaces
 import { config } from '@/interfaces/config';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, RefObject } from 'react';
 
 // Assets
 import { HiX } from 'react-icons/hi';
@@ -29,6 +29,22 @@ import {
     setCart,
     cartItem,
 } from '@/interfaces/cart';
+
+function useOutsideClick(ref: RefObject<HTMLDivElement>, callback: () => void) {
+    useEffect(() => {
+        function handleClickOutside(event: any) {
+            if (ref.current && !ref.current.contains(event.target)) {
+                callback();
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [ref, callback]);
+}
 
 interface props {
     cartOpen: [
@@ -45,6 +61,12 @@ export default function Cart(props: props): JSX.Element {
 
     const router: NextRouter = useRouter();
     const prices = new CalculateCheckoutPrices(cart, props.configData);
+    const [showOverlay, setShowOverlay] = useState<boolean>(false);
+
+    useEffect((): void => {
+        if (cartOpen) setTimeout((): void => setShowOverlay(true), 500);
+        else setShowOverlay(false);
+    }, [cartOpen]);
 
     function deleteItemCart(index: number, cart: cart, setCart: setCart): void {
         const updatedCart = cart.filter(
@@ -56,8 +78,14 @@ export default function Cart(props: props): JSX.Element {
 
     return (
         <>
+            {cartOpen && showOverlay && (
+                <div
+                    className={`absolute inset-0 bg-black opacity-20 transition-opacity duration-150`}
+                    onClick={() => setCartOpen(false)}
+                ></div>
+            )}
             <section
-                className={`fixed bottom-0 right-0 top-0 w-[480px] overflow-auto bg-white p-5 shadow-xl transition-all duration-500 2xs:w-full 2xs:p-3 3xs:p-2 ${
+                className={`z-4 fixed bottom-0 right-0 top-0 w-[480px] overflow-auto bg-white p-5 shadow-xl transition-all duration-500 2xs:w-full 2xs:p-3 3xs:p-2 ${
                     cartOpen ? 'translate-x-0' : ' translate-x-[500px]'
                 }`}
             >

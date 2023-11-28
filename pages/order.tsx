@@ -205,18 +205,18 @@ function ProductTab(props: productTabProps): JSX.Element {
     );
 }
 
-interface AddCartModel {
+interface AddCartModelProps {
     open: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
     product: product;
 }
 
-function AddCartModel(props: AddCartModel): JSX.Element {
+function AddCartModel(props: AddCartModelProps): JSX.Element {
     const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<string[]>([]);
     const [quantity, setQuantity] = useState<number>(1);
 
-    useEffect((): void => {
+    useEffect(() => {
         if (!props.product.options) return;
         const initialSelectedOption = props.product.options.map(
             (subArray: string[]) => subArray[0]
@@ -227,7 +227,7 @@ function AddCartModel(props: AddCartModel): JSX.Element {
     function handleAddItemCart(): void {
         const newItem: products = [];
 
-        for (let index = quantity; index != 0; index--) {
+        for (let index = quantity; index !== 0; index--) {
             newItem.push({
                 ...props.product,
                 options: selectedOption,
@@ -244,102 +244,120 @@ function AddCartModel(props: AddCartModel): JSX.Element {
             );
             setSelectedOption(resetSelectedOption);
         }
-        if (quantity != 1) setQuantity(1);
+        if (quantity !== 1) setQuantity(1);
     }
 
     return (
         <>
             <div
-                className={`fixed inset-0 items-center justify-center ${
-                    open ? 'flex' : 'hidden'
+                className={`fixed inset-0 ${
+                    open ? 'flex items-center justify-center' : 'hidden'
                 }`}
             >
-                <div className="relative mx-5 flex h-[380px] w-[40rem] items-center justify-center bg-white text-grey shadow-lg sm:h-[450px]">
-                    <button
-                        onClick={(): void => setOpen(false)}
-                        className="absolute right-2 top-2"
-                    >
-                        <HiX />
-                    </button>
-                    <div className="flex flex-col items-center">
-                        <h2 className="mb-20 text-2xl">
-                            {capitaliseFirstCharWords(props.product.product)}
-                        </h2>
+                <div
+                    className="absolute inset-0 bg-black opacity-20"
+                    onClick={() => setOpen(false)}
+                ></div>
+                <div className="relative mx-5 flex items-center justify-center">
+                    <div className="absolute right-2 top-2">
+                        <HiX onClick={() => setOpen(false)} />
+                    </div>
 
-                        <div className="mx-2 mb-20 flex place-items-center items-center sm:grid">
-                            <div
-                                className={`${
-                                    props.product.options ? 'mx-2 sm:mb-2' : ''
-                                }`}
-                            >
-                                <button
-                                    onClick={(): void => {
-                                        quantity > 1
-                                            ? setQuantity(quantity - 1)
-                                            : null;
-                                    }}
+                    <div className="relative mx-5 flex h-[380px] w-[40rem] items-center justify-center bg-white text-grey shadow-lg sm:h-[450px]">
+                        <button
+                            onClick={(): void => setOpen(false)}
+                            className="absolute right-2 top-2"
+                        >
+                            <HiX />
+                        </button>
+                        <div className="flex flex-col items-center">
+                            <h2 className="mb-20 text-2xl">
+                                {capitaliseFirstCharWords(
+                                    props.product.product
+                                )}
+                            </h2>
+
+                            <div className="mx-2 mb-20 flex place-items-center items-center sm:grid">
+                                <div
+                                    className={`${
+                                        props.product.options
+                                            ? 'mx-2 sm:mb-2'
+                                            : ''
+                                    }`}
                                 >
-                                    -
-                                </button>
-                                <span className="mx-4">{quantity}</span>
-                                <button
-                                    onClick={(): void =>
-                                        setQuantity(quantity + 1)
-                                    }
-                                >
-                                    +
-                                </button>
+                                    <button
+                                        onClick={(): void => {
+                                            quantity > 1
+                                                ? setQuantity(quantity - 1)
+                                                : null;
+                                        }}
+                                    >
+                                        -
+                                    </button>
+                                    <span className="mx-4">{quantity}</span>
+                                    <button
+                                        onClick={(): void =>
+                                            setQuantity(quantity + 1)
+                                        }
+                                    >
+                                        +
+                                    </button>
+                                </div>
+
+                                {props.product.options &&
+                                    props.product.options.map(
+                                        (subArray: any, index: number) => (
+                                            <div className="mx-2 bg-lightergrey pr-3 sm:mb-2">
+                                                <select
+                                                    key={subArray}
+                                                    onChange={(
+                                                        event: ChangeEvent<HTMLSelectElement>
+                                                    ) => {
+                                                        const updatedOptions =
+                                                            selectedOption
+                                                                ? [
+                                                                      ...selectedOption,
+                                                                  ]
+                                                                : [];
+                                                        updatedOptions[index] =
+                                                            event.target.value;
+                                                        setSelectedOption(
+                                                            updatedOptions
+                                                        );
+                                                    }}
+                                                    value={
+                                                        selectedOption
+                                                            ? selectedOption[
+                                                                  index
+                                                              ]
+                                                            : ''
+                                                    }
+                                                    className="bg-lightergrey py-2 pl-3"
+                                                >
+                                                    {subArray.map(
+                                                        (element: string) => (
+                                                            <option
+                                                                key={element}
+                                                            >
+                                                                {capitaliseFirstChar(
+                                                                    element
+                                                                )}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                            </div>
+                                        )
+                                    )}
                             </div>
 
-                            {props.product.options &&
-                                props.product.options.map(
-                                    (subArray: any, index: number) => (
-                                        <div className="mx-2 bg-lightergrey pr-3 sm:mb-2">
-                                            <select
-                                                key={subArray}
-                                                onChange={(
-                                                    event: ChangeEvent<HTMLSelectElement>
-                                                ) => {
-                                                    const updatedOptions =
-                                                        selectedOption
-                                                            ? [
-                                                                  ...selectedOption,
-                                                              ]
-                                                            : [];
-                                                    updatedOptions[index] =
-                                                        event.target.value;
-                                                    setSelectedOption(
-                                                        updatedOptions
-                                                    );
-                                                }}
-                                                value={
-                                                    selectedOption
-                                                        ? selectedOption[index]
-                                                        : ''
-                                                }
-                                                className="bg-lightergrey py-2 pl-3"
-                                            >
-                                                {subArray.map(
-                                                    (element: string) => (
-                                                        <option key={element}>
-                                                            {capitaliseFirstChar(
-                                                                element
-                                                            )}
-                                                        </option>
-                                                    )
-                                                )}
-                                            </select>
-                                        </div>
-                                    )
-                                )}
+                            <button
+                                onClick={(): void => handleAddItemCart()}
+                                className="h-10 w-32 rounded-sm bg-lightergrey transition-all hover:bg-lightgrey hover:text-white"
+                            >
+                                Add to cart
+                            </button>
                         </div>
-
-                        <button
-                            onClick={(): void => handleAddItemCart()}
-                            className="h-10 w-32 rounded-sm bg-lightergrey transition-all hover:bg-lightgrey hover:text-white"
-                        >
-                            Add to cart
-                        </button>
                     </div>
                 </div>
             </div>
