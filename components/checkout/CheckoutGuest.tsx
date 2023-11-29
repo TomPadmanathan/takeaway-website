@@ -144,7 +144,7 @@ export default function CheckoutGuest(): JSX.Element {
                                 placeholder="Phone Number"
                                 className={inputfield}
                                 id="phone-number"
-                                required={true}
+                                required
                                 inputMode="numeric"
                                 onKeyPress={(event: any): void => {
                                     if (!/[0-9]/.test(event.key))
@@ -181,7 +181,7 @@ export default function CheckoutGuest(): JSX.Element {
                                     copy.forename = event.target.value;
                                     setCheckoutUserInfomation(copy);
                                 }}
-                                required={true}
+                                required
                             />
                             <div className="h-14 w-2 bg-white" />
                             <input
@@ -199,7 +199,7 @@ export default function CheckoutGuest(): JSX.Element {
                                     copy.surname = event.target.value;
                                     setCheckoutUserInfomation(copy);
                                 }}
-                                required={true}
+                                required
                             />
                         </div>
 
@@ -208,7 +208,7 @@ export default function CheckoutGuest(): JSX.Element {
                             <input
                                 placeholder="Address line 1"
                                 className="h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none"
-                                required={true}
+                                required
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
                                 ): void => {
@@ -245,6 +245,7 @@ export default function CheckoutGuest(): JSX.Element {
                                         event.target.value.toUpperCase();
                                     setCheckoutUserInfomation(copy);
                                 }}
+                                required
                             />
                         </div>
                         <div className={inputContainer}>
@@ -260,6 +261,7 @@ export default function CheckoutGuest(): JSX.Element {
                                     copy.cityTown = event.target.value;
                                     setCheckoutUserInfomation(copy);
                                 }}
+                                required
                             />
                         </div>
                         <div className="flex h-full justify-between">
