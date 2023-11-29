@@ -64,12 +64,12 @@ export default function Cart(props: props): JSX.Element {
         <>
             {cartOpen && showOverlay && (
                 <div
-                    className={`absolute inset-0 bg-black opacity-20 transition-opacity duration-150`}
+                    className={`absolute inset-0 z-10 bg-black opacity-20 transition-opacity duration-150 `}
                     onClick={() => setCartOpen(false)}
                 ></div>
             )}
             <section
-                className={`z-4 fixed bottom-0 right-0 top-0 w-[480px] overflow-auto bg-white p-5 shadow-xl transition-all duration-500 2xs:w-full 2xs:p-3 3xs:p-2 ${
+                className={`fixed bottom-0 right-0 top-0 z-10 w-[480px] overflow-auto bg-white p-5 shadow-xl transition-all duration-500 2xs:w-full 2xs:p-3 3xs:p-2 ${
                     cartOpen ? 'translate-x-0' : ' translate-x-[500px]'
                 }`}
             >
