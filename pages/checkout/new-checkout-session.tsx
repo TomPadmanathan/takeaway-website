@@ -14,6 +14,8 @@ import fetchWithToken from '@/utils/JWT/fetchWithToken';
 
 // Components
 import CheckoutForm from '@/components/CheckoutForm';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
 
 let stripePromise: Promise<Stripe | null>;
 
@@ -60,14 +62,18 @@ export default function App(): JSX.Element {
     };
 
     return (
-        <div className="flex h-screen items-center justify-center">
-            <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
-                {clientSecret && (
-                    <Elements options={options} stripe={stripePromise}>
-                        <CheckoutForm />
-                    </Elements>
-                )}
-            </section>
-        </div>
+        <>
+            <BottomNav />
+            <div className="flex h-[85vh] items-center justify-center">
+                <section className="my-5 h-[720px] w-[480px] rounded bg-white p-5 shadow-lg xs:h-full xs:w-full xs:shadow-none">
+                    {clientSecret && (
+                        <Elements options={options} stripe={stripePromise}>
+                            <CheckoutForm />
+                        </Elements>
+                    )}
+                </section>
+            </div>
+            <Footer />
+        </>
     );
 }
