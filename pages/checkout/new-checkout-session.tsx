@@ -62,9 +62,9 @@ export default function App(): JSX.Element {
     };
 
     return (
-        <>
+        <div className="xs:bg-white">
             <BottomNav />
-            <div className="flex h-[85vh] items-center justify-center">
+            <div className="my-5 flex h-[85vh] items-center justify-center">
                 <section className="my-5 h-[720px] w-[480px] rounded bg-white p-5 shadow-lg xs:h-full xs:w-full xs:shadow-none">
                     {clientSecret && (
                         <Elements options={options} stripe={stripePromise}>
@@ -74,6 +74,6 @@ export default function App(): JSX.Element {
                 </section>
             </div>
             <Footer />
-        </>
+        </div>
     );
 }
