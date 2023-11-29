@@ -336,7 +336,7 @@ export default function CheckoutGuest(): JSX.Element {
                                 type="submit"
                                 className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
                             >
-                                Place my order
+                                Go to Payment
                             </button>
                         </div>
                     </form>

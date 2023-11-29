@@ -29,7 +29,7 @@ export default function ListItemsWithPrice(props: props): JSX.Element {
 
     return (
         <section className="relative h-[720px] w-[480px] rounded bg-white p-5 shadow-lg">
-            <h2 className="py-4 text-center text-3xl text-grey2">Your Order</h2>
+            <h2 className="py-4 text-center text-2xl text-grey2">Your Order</h2>
             <ul className="py-5">
                 {modifiedCart.map(
                     (element: modifiedCartItem, index: number) => (
