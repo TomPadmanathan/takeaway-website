@@ -24,7 +24,8 @@ export default async function handler(
         console.error('Method not allowed');
         return;
     }
-    const authorizationHeader = request.headers.authorization;
+    const authorizationHeader: string | undefined =
+        request.headers.authorization;
     if (!authorizationHeader) {
         response
             .status(400)
@@ -36,35 +37,6 @@ export default async function handler(
     const decodedToken: JwtPayload | null | string = Jwt.decode(token);
     if (!decodedToken || typeof decodedToken != 'object') return;
     const requestUserId: string = decodedToken.userId;
-    const userId = request.body.userId.userId;
-
-    if (requestUserId != userId) {
-        try {
-            await sequelize.sync();
-            const requestingUser: User | null = await User.findOne({
-                where: {
-                    userId: requestUserId,
-                },
-                attributes: {
-                    include: ['userType'],
-                },
-            });
-
-            if (!requestingUser) {
-                console.error('Requesting user not found');
-                response.status(404);
-                return;
-            }
-            if (requestingUser.userType != 'admin') {
-                response
-                    .status(400)
-                    .json({ error: 'User has invalid permissions' });
-                return;
-            }
-        } catch (error) {
-            console.error('Sequlize error:', error);
-        }
-    }
 
     const newInfo = request.body.newInfo;
 
@@ -83,14 +55,14 @@ export default async function handler(
             },
             {
                 where: {
-                    userId: userId,
+                    userId: requestUserId,
                 },
             }
         );
         if (user.length > 0) {
             const updatedUser = await User.findOne({
                 where: {
-                    userId: userId,
+                    userId: requestUserId,
                 },
                 attributes: {
                     exclude: ['password'],

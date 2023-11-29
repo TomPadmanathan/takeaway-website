@@ -12,20 +12,11 @@ export default function Footer(): JSX.Element {
     const router: NextRouter = useRouter();
 
     const [token, setToken] = useState<string | null>();
-    const [userId, setUserId] = useState<string>();
 
     useEffect((): void => {
         const token = localStorage.getItem('token');
         if (!token) return;
         setToken(token);
-        interface decodedToken {
-            userId: string;
-            iat: number;
-            exp: number;
-        }
-        const decodedToken: any = jwt.decode(token);
-        const userId: string = decodedToken.userId;
-        setUserId(userId);
     }, [token]);
 
     const footerItems: string[][][] = [
@@ -40,8 +31,8 @@ export default function Footer(): JSX.Element {
             ['catering', '/#catering'],
         ],
         [
-            ['my account', `/users/${userId}`],
-            ['my orders', `/users/${userId}/orders/`],
+            ['my account', '/account/'],
+            ['my orders', '/account/orders/'],
         ],
     ];
 

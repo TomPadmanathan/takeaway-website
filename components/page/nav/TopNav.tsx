@@ -13,20 +13,11 @@ export default function TopNav(): JSX.Element {
     const router: NextRouter = useRouter();
 
     const [token, setToken] = useState<string | null>();
-    const [userId, setUserId] = useState<string>();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token: string | null = localStorage.getItem('token');
         if (!token) return;
         setToken(token);
-        interface decodedToken {
-            userId: string;
-            iat: number;
-            exp: number;
-        }
-        const decodedToken: any = jwt.decode(token);
-        const userId = decodedToken.userId;
-        setUserId(userId);
     }, [token]);
 
     return (
@@ -52,7 +43,7 @@ export default function TopNav(): JSX.Element {
                     <button
                         className="m-0 h-10 w-60 rounded border-[3px] border-blue px-10 font-bold text-pink m:px-5"
                         onClick={(): Promise<boolean> =>
-                            router.push('/users/' + userId)
+                            router.push('/account/')
                         }
                     >
                         Go to Account
@@ -61,7 +52,7 @@ export default function TopNav(): JSX.Element {
                     <button
                         className="m-0 h-10 w-60 rounded border-[3px] border-blue px-10 font-bold text-pink m:px-5"
                         onClick={(): Promise<boolean> =>
-                            router.push('/auth/login')
+                            router.push('/auth/login/')
                         }
                     >
                         Login or Register

@@ -16,7 +16,7 @@ import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
 import PrimaryInput from '@/components/PrimaryInput';
 import SecondaryButton from '@/components/SecondaryButton';
 
-export default function UserId(): JSX.Element {
+export default function Account(): JSX.Element {
     const [user, setUser] = useState<User | null>();
     const [token, setToken] = useState<string>('');
     const router: NextRouter = useRouter();
@@ -45,10 +45,8 @@ export default function UserId(): JSX.Element {
     // get user with token
     useEffect((): void => {
         async function fetchData(): Promise<void> {
-            if (!router.isReady) return;
             const response: Response = await fetchWithToken(
-                process.env.NEXT_PUBLIC_URL +
-                    `/api/getUserFromId?userId=${router.query.userId}`,
+                process.env.NEXT_PUBLIC_URL + `/api/getUserFromToken`,
                 {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
@@ -62,7 +60,7 @@ export default function UserId(): JSX.Element {
             setUser(responseJson.user);
         }
         fetchData();
-    }, [router.isReady, router.query.userId]);
+    }, []);
 
     useEffect((): void => {
         setYourInfo(user);
@@ -82,7 +80,6 @@ export default function UserId(): JSX.Element {
                 body: JSON.stringify({
                     currentPassword: password.currentPassword,
                     newPassword: password.newPassword,
-                    userId: router.query,
                 }),
             }
         );
