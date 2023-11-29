@@ -273,7 +273,8 @@ export default function CheckoutGuest(): JSX.Element {
                                 </label>
                                 <textarea
                                     className={
-                                        inputfield + ' resize-none rounded-sm'
+                                        inputfield +
+                                        ' resize-none rounded-sm p-2'
                                     }
                                     onChange={(
                                         event: ChangeEvent<HTMLTextAreaElement>

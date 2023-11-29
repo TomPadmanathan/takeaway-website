@@ -41,7 +41,7 @@ module.exports = {
             sm: { max: '670px' },
             xs: { max: '540px' },
             '2xs': { max: '480px' },
-            '3xs': { max: '370px' },
+            '3xs': { max: '380px' },
         },
     },
     plugins: [],

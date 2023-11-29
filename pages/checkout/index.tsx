@@ -63,22 +63,16 @@ export default function Home({ configData }: props): JSX.Element {
     }, []);
 
     return (
-        <>
+        <div className="xs:bg-white">
             <BottomNav />
-            <div className="relative mx-96 my-10 flex h-[85vh] items-center justify-between">
+            <center className="relative my-10 flex items-center justify-around m:block">
                 <ListItemsWithPrice cart={cart} config={configData} />
-                <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg">
+                <div className="hidden h-5 bg-lightergrey xs:block" />
+                <section className="my-5 h-[720px] w-[480px] rounded bg-white p-5 shadow-lg xs:w-full xs:shadow-none">
                     {user ? <CheckoutUser user={user} /> : <CheckoutGuest />}
                 </section>
-            </div>
-
-            <button
-                onClick={(): Promise<boolean> => router.push('/')}
-                className="absolute right-10 top-32 h-16 rounded-sm bg-white px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
-            >
-                Go Back
-            </button>
+            </center>
             <Footer />
-        </>
+        </div>
     );
 }

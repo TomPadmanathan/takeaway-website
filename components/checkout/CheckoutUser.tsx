@@ -1,6 +1,7 @@
 // React/Next
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { IconContext } from 'react-icons';
 
 // Components
 import HighlightText from '@/components/HighlightText';
@@ -46,12 +47,17 @@ export default function CheckoutUser({ user }: props): JSX.Element {
     });
 
     const inputContainer: string =
-        'my-4 flex items-center rounded-sm bg-lightergrey';
+        'my-4 3xs:my-2 flex items-center rounded-sm bg-lightergrey';
     const inputfield: string =
         'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
 
     return (
-        <>
+        <IconContext.Provider
+            value={{
+                color: tailwindColors.grey,
+                size: '22px',
+            }}
+        >
             <section className="relative h-full">
                 <div className="flex flex-col items-center">
                     <h2 className="py-4 text-2xl text-grey2">
@@ -222,6 +228,6 @@ export default function CheckoutUser({ user }: props): JSX.Element {
                     </div>
                 </form>
             </section>
-        </>
+        </IconContext.Provider>
     );
 }
