@@ -1,9 +1,9 @@
 // React/Next
 import { NextRouter } from 'next/router';
 import { useState } from 'react';
+import { IconContext } from 'react-icons';
 
 // Components
-import SecondaryButton from '@/components/SecondaryButton';
 import PrimaryInput from '@/components/PrimaryInput';
 
 // Utils
@@ -14,6 +14,17 @@ import { useRouter } from 'next/router';
 import { checkoutInfoGuest } from '@/interfaces/checkoutInfo';
 import { ParsedUrlQueryInput } from 'querystring';
 import { ChangeEvent } from 'react';
+
+// Assets
+import tailwindConfig from '@/tailwind.config';
+import {
+    HiMail,
+    HiPhone,
+    HiUser,
+    HiTruck,
+    HiHome,
+    HiLocationMarker,
+} from 'react-icons/hi';
 
 function checkoutUserInfomationToQueryParams(
     checkoutInfo: checkoutInfoGuest
@@ -35,6 +46,8 @@ function checkoutUserInfomationToQueryParams(
 
 export default function CheckoutGuest(): JSX.Element {
     const router: NextRouter = useRouter();
+    const tailwindColors: any = tailwindConfig?.theme?.colors;
+
     const [checkoutUserInfomation, setCheckoutUserInfomation] =
         useState<checkoutInfoGuest>({
             includeCutlery: false,
@@ -49,6 +62,11 @@ export default function CheckoutGuest(): JSX.Element {
             surname: '',
         });
     const [showGuest, setShowGuest] = useState<boolean>(true);
+
+    const inputContainer: string =
+        'my-4 flex items-center rounded-sm bg-lightergrey';
+    const inputfield: string =
+        'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
 
     if (showGuest) {
         return (
@@ -77,42 +95,55 @@ export default function CheckoutGuest(): JSX.Element {
         );
     } else {
         return (
-            <section className="relative h-full">
-                <div className="flex flex-col items-center">
-                    <h2 className="text-xl text-grey">Guest Checkout</h2>
-                    <p className="my-5 text-grey">Or</p>
-                    <button
-                        onClick={(): Promise<boolean> =>
+            <IconContext.Provider
+                value={{
+                    color: tailwindColors.grey,
+                    size: '22px',
+                }}
+            >
+                <section className="relative h-full">
+                    <div className="flex flex-col items-center">
+                        <h2 className="py-4 text-3xl text-grey2">
+                            Guest Checkout
+                        </h2>
+                    </div>
+                    <form
+                        onSubmit={(event: React.FormEvent): void => {
+                            event.preventDefault();
                             router.push({
-                                pathname: '/auth/login',
-                                query: {
-                                    url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
-                                },
-                            })
-                        }
-                        className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                                pathname: '/checkout/new-checkout-session',
+                                query: checkoutUserInfomationToQueryParams(
+                                    checkoutUserInfomation
+                                ),
+                            });
+                        }}
                     >
-                        Login
-                    </button>
-                </div>
-                <form
-                    onSubmit={(event: React.FormEvent): void => {
-                        event.preventDefault();
-                        router.push({
-                            pathname: '/checkout/new-checkout-session',
-                            query: checkoutUserInfomationToQueryParams(
-                                checkoutUserInfomation
-                            ),
-                        });
-                    }}
-                >
-                    <label htmlFor="phoneNumber">Your Info</label>
-                    <div className="mb-10">
-                        <div className="mb-2 flex justify-between">
-                            <PrimaryInput
+                        <div className={inputContainer}>
+                            <HiMail className="ml-4" />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className={inputfield}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...checkoutUserInfomation,
+                                    };
+                                    copy.email = event.target.value;
+                                    setCheckoutUserInfomation(copy);
+                                }}
+                                required
+                            />
+                        </div>
+
+                        <div className={inputContainer}>
+                            <HiPhone className="ml-4" />
+                            <input
                                 type="number"
                                 placeholder="Phone Number"
-                                id="phoneNumber"
+                                className={inputfield}
+                                id="phone-number"
                                 required={true}
                                 inputMode="numeric"
                                 onKeyPress={(event: any): void => {
@@ -130,143 +161,185 @@ export default function CheckoutGuest(): JSX.Element {
                                     );
                                     setCheckoutUserInfomation(copy);
                                 }}
-                                addClass={removeArrowsFromInput}
                             />
-                            <PrimaryInput
-                                type="email"
-                                placeholder="Email"
-                                id="email"
-                                autoComplete={false}
+                        </div>
+
+                        <div className={inputContainer}>
+                            <HiUser className="ml-4" />
+                            <input
+                                className={
+                                    'h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none'
+                                }
+                                type="text"
+                                placeholder="Forename"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
                                 ): void => {
                                     const copy = {
                                         ...checkoutUserInfomation,
                                     };
-                                    copy.email = event.target.value;
-                                    setCheckoutUserInfomation(copy);
-                                }}
-                                required={true}
-                            />
-                        </div>
-                        <div className="mb-2 flex justify-between">
-                            <PrimaryInput
-                                type="text"
-                                id="forename"
-                                placeholder="Forename"
-                                onChange={(
-                                    event: ChangeEvent<HTMLInputElement>
-                                ): void => {
-                                    const copy = { ...checkoutUserInfomation };
                                     copy.forename = event.target.value;
                                     setCheckoutUserInfomation(copy);
                                 }}
                                 required={true}
                             />
-                            <PrimaryInput
+                            <div className="h-14 w-2 bg-white" />
+                            <input
+                                className={
+                                    'ml-2 h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none'
+                                }
                                 type="text"
                                 placeholder="Surname"
-                                id="surname"
                                 onChange={(
                                     event: ChangeEvent<HTMLInputElement>
                                 ): void => {
-                                    const copy = { ...checkoutUserInfomation };
+                                    const copy = {
+                                        ...checkoutUserInfomation,
+                                    };
                                     copy.surname = event.target.value;
                                     setCheckoutUserInfomation(copy);
                                 }}
                                 required={true}
                             />
                         </div>
-                    </div>
-                    <label htmlFor="addressLine1">Address</label>
-                    <div className="mb-2 flex justify-between">
-                        <PrimaryInput
-                            placeholder="Address line 1"
-                            id="addressLine1"
-                            required={true}
-                            onChange={(
-                                event: ChangeEvent<HTMLInputElement>
-                            ): void => {
-                                const copy = { ...checkoutUserInfomation };
-                                copy.addressLine1 = event.target.value;
-                                setCheckoutUserInfomation(copy);
-                            }}
-                        />
-                        <PrimaryInput
-                            placeholder="Address line 2 (optional)"
-                            id="addressLine2"
-                            onChange={(
-                                event: ChangeEvent<HTMLInputElement>
-                            ): void => {
-                                const copy = { ...checkoutUserInfomation };
-                                copy.addressLine2 = event.target.value;
-                                setCheckoutUserInfomation(copy);
-                            }}
-                        />
-                    </div>
-                    <div className="mb-10 flex justify-between">
-                        <PrimaryInput
-                            placeholder="City/Town"
-                            id="cityTown"
-                            onChange={(
-                                event: ChangeEvent<HTMLInputElement>
-                            ): void => {
-                                const copy = { ...checkoutUserInfomation };
-                                copy.cityTown = event.target.value;
-                                setCheckoutUserInfomation(copy);
-                            }}
-                        />
-                        <PrimaryInput
-                            placeholder="Postcode"
-                            id="postcode"
-                            value={checkoutUserInfomation.postcode}
-                            onChange={(
-                                event: ChangeEvent<HTMLInputElement>
-                            ): void => {
-                                const copy = { ...checkoutUserInfomation };
-                                copy.postcode =
-                                    event.target.value.toUpperCase();
-                                setCheckoutUserInfomation(copy);
-                            }}
-                        />
-                    </div>
-                    <label htmlFor="orderNote">Order Info</label>
-                    <div className="flex justify-between">
-                        <textarea
-                            placeholder="Leave us a note (optional)"
-                            className="block h-10 resize-none border border-black"
-                            onChange={(
-                                event: ChangeEvent<HTMLTextAreaElement>
-                            ): void => {
-                                const copy = { ...checkoutUserInfomation };
-                                copy.orderNote = event.target.value;
-                                setCheckoutUserInfomation(copy);
-                            }}
-                            id="orderNote"
-                        />
-                        <label htmlFor="includeCutlery">Include Cutlery</label>
-                        <PrimaryInput
-                            type="checkbox"
-                            id="includeCutlery"
-                            onChange={(
-                                event: ChangeEvent<HTMLInputElement>
-                            ): void => {
-                                const copy = { ...checkoutUserInfomation };
-                                copy.includeCutlery = event.target.checked;
-                                setCheckoutUserInfomation(copy);
-                            }}
-                        />
-                    </div>
-                    <div className="absolute bottom-0 flex w-full justify-center">
-                        <button
-                            type="submit"
-                            className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
-                        >
-                            Place my order
-                        </button>
-                    </div>
-                </form>
-            </section>
+
+                        <div className={inputContainer}>
+                            <HiHome className="ml-4" />
+                            <input
+                                placeholder="Address line 1"
+                                className="h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none"
+                                required={true}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = { ...checkoutUserInfomation };
+                                    copy.addressLine1 = event.target.value;
+                                    setCheckoutUserInfomation(copy);
+                                }}
+                            />
+                            <div className="h-14 w-2 bg-white" />
+                            <input
+                                className="ml-2 mr-0 h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none"
+                                placeholder="Address line 2"
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = { ...checkoutUserInfomation };
+                                    copy.addressLine2 = event.target.value;
+                                    setCheckoutUserInfomation(copy);
+                                }}
+                            />
+                        </div>
+                        <div className={inputContainer}>
+                            <HiTruck className="ml-4" />
+
+                            <input
+                                className={inputfield}
+                                placeholder="Postcode"
+                                value={checkoutUserInfomation.postcode}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = { ...checkoutUserInfomation };
+                                    copy.postcode =
+                                        event.target.value.toUpperCase();
+                                    setCheckoutUserInfomation(copy);
+                                }}
+                            />
+                        </div>
+                        <div className={inputContainer}>
+                            <HiLocationMarker className="ml-4" />
+
+                            <input
+                                className={inputfield}
+                                placeholder="City/Town"
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = { ...checkoutUserInfomation };
+                                    copy.cityTown = event.target.value;
+                                    setCheckoutUserInfomation(copy);
+                                }}
+                            />
+                        </div>
+                        <div className="flex h-full justify-between">
+                            <center className="w-52">
+                                <label htmlFor="orderNote">
+                                    <p className="text-grey2">
+                                        Leave us a note
+                                    </p>
+                                </label>
+                                <textarea
+                                    className={
+                                        inputfield + ' resize-none rounded-sm'
+                                    }
+                                    onChange={(
+                                        event: ChangeEvent<HTMLTextAreaElement>
+                                    ): void => {
+                                        const copy = {
+                                            ...checkoutUserInfomation,
+                                        };
+                                        copy.orderNote = event.target.value;
+                                        setCheckoutUserInfomation(copy);
+                                    }}
+                                    id="orderNote"
+                                />
+                            </center>
+                            <div className="flex w-52 justify-center">
+                                <center>
+                                    <label htmlFor="includeCutlery">
+                                        <p className="text-grey2">
+                                            Include Cutlery
+                                        </p>
+                                    </label>
+                                    <div className="w-[70px] rounded bg-lightergrey">
+                                        <input
+                                            type="checkbox"
+                                            id="switch"
+                                            checked={
+                                                checkoutUserInfomation.includeCutlery
+                                            }
+                                            onChange={(
+                                                event: ChangeEvent<HTMLInputElement>
+                                            ): void => {
+                                                const copy = {
+                                                    ...checkoutUserInfomation,
+                                                };
+                                                copy.includeCutlery =
+                                                    event.target.checked;
+                                                setCheckoutUserInfomation(copy);
+                                            }}
+                                            className="hidden"
+                                        />
+                                        <label
+                                            htmlFor="switch"
+                                            className={`toggle-label relative block h-8 cursor-pointer rounded transition-all ${
+                                                checkoutUserInfomation.includeCutlery &&
+                                                'bg-pink'
+                                            } `}
+                                        >
+                                            <span
+                                                className={`absolute left-1 top-1 h-6 w-6 rounded bg-grey transition-all ${
+                                                    checkoutUserInfomation.includeCutlery &&
+                                                    ' left-[42px] bg-white'
+                                                }`}
+                                            ></span>
+                                        </label>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                        <div className="absolute bottom-0 flex w-full justify-center">
+                            <button
+                                type="submit"
+                                className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                            >
+                                Place my order
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </IconContext.Provider>
         );
     }
 }
