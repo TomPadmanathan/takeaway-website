@@ -21,7 +21,6 @@ export default async function handler(
     response.status(200);
     if (request.method !== 'POST') {
         response.status(405).json({ error: 'Method not allowed' });
-        console.error('Method not allowed');
         return;
     }
     const authorizationHeader: string | undefined =
@@ -30,7 +29,6 @@ export default async function handler(
         response
             .status(400)
             .json({ error: 'No token provided in the request' });
-        console.error('No token provided in the request.');
         return;
     }
     const token: string = authorizationHeader.replace('Bearer ', '');
@@ -72,15 +70,12 @@ export default async function handler(
                 user: updatedUser,
             });
         } else {
-            console.error(
-                'Updated user not found or no infomation has been changed'
-            );
             response.status(404).json({
                 error: 'Updated user not found or no infomation has been changed',
             });
             return;
         }
     } catch (error) {
-        console.error('Sequlize error:', error);
+        response.status(500).json({ error: 'Internal Server Error' });
     }
 }
