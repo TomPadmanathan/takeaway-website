@@ -56,13 +56,15 @@ password: `mypass`
 
 -   **Sequelize**: To query the MySQL database efficiently and to prevent sequrity risks.
 
-## Upcoming Changes
+## Knowen Bugs/Upcomming Changes
 
-I am committed to continuously improving this project. Here are some changes and features I plan to implement in the near future:
+I am committed to continuously improving this project. Here are some bug fixes and changes I plan to implement in the near future:
 
--   **Responsive Layout:** Making the website even more accessible and user-friendly on various devices by enhancing its responsiveness.
+-   **Cart Storage:** Change how the cart is stored to be linked to user accounts and to store multiple items using a quantity property. This will fix an issue when deleting items from your cart.
 
--   **UI Revamp:** Revamping the user interface to provide a fresh and modern look.
+-   **Delete Account:** Update the delete account backend to delete the users other table data. Currently if the user has any other data in these tables then it will throw an error.
+
+-   **Products Storage:** Store the products in the database and be able to update them to be inactive in the admin UI.
 
 ## Installation
 
