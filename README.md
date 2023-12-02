@@ -66,6 +66,8 @@ I am committed to continuously improving this project. Here are some bug fixes a
 
 -   **Products Storage:** Store the products in the database and be able to update them to be inactive in the admin UI.
 
+-   **Stripe Payment Elements:** Migrate from using stripe payment elements to creating site UI to improve site consistancy.
+
 ## Installation
 
 1. Clone this repository to your local machine.
