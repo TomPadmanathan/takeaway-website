@@ -68,7 +68,7 @@ function OrderTab({ order }: props): JSX.Element {
 
     return (
         <>
-            <ul className="my-5 flex items-center justify-between rounded bg-lightergrey px-10 py-5 shadow-sm">
+            <ul className="my-5 flex items-center justify-between rounded bg-lightergrey px-10 py-5 shadow-sm sm:justify-center sm:text-center">
                 <div>
                     <li>
                         <h2 className="text-2xl text-grey2">
@@ -128,8 +128,18 @@ function OrderTab({ order }: props): JSX.Element {
                             </HighlightText>
                         </li>
                     )}
+                    <li className="hidden sm:block">
+                        <button
+                            className={button + 'mt-4'}
+                            onClick={(): Promise<boolean> =>
+                                router.push('/orders/' + order.orderId)
+                            }
+                        >
+                            View Order
+                        </button>
+                    </li>
                 </div>
-                <li>
+                <li className="sm:hidden">
                     <button
                         className={button}
                         onClick={(): Promise<boolean> =>

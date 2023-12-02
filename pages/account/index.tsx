@@ -29,14 +29,19 @@ import {
     HiTrash,
 } from 'react-icons/hi';
 
+type page =
+    | 'password'
+    | 'address'
+    | 'accountDetails'
+    | 'orders'
+    | 'deleteAccount';
+
 export default function Account(): JSX.Element {
     const [user, setUser] = useState<User | null>();
     const [token, setToken] = useState<string>('');
     const router: NextRouter = useRouter();
 
-    const [page, setPage] = useState<
-        'password' | 'address' | 'accountDetails' | 'orders' | 'deleteAccount'
-    >('accountDetails');
+    const [page, setPage] = useState<page>('accountDetails');
 
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
@@ -70,12 +75,51 @@ export default function Account(): JSX.Element {
         fetchData();
     }, []);
 
+    return (
+        <>
+            <BottomNav />
+            {token && (
+                <div className="flex h-[85vh] items-center justify-around text-grey l:block l:h-auto l:bg-white">
+                    <AccountNav page={[page, setPage]} />
+                    <section className="h-[70vh] w-2/3 overflow-y-auto rounded bg-white p-5 shadow-lg l:h-full l:w-screen 2xs:rounded-none">
+                        <>
+                            {user && (
+                                <>
+                                    {page === 'accountDetails' && (
+                                        <AccountDetails user={user} />
+                                    )}
+                                    {page === 'address' && (
+                                        <Address user={user} />
+                                    )}
+                                    {page === 'password' && <Password />}
+                                    {page === 'orders' && <Orders />}
+                                </>
+                            )}
+                            {page === 'deleteAccount' && (
+                                <DeleteAccount user={user} />
+                            )}
+                        </>
+                    </section>
+                </div>
+            )}
+            <Footer />
+        </>
+    );
+}
+interface props {
+    page: [page, React.Dispatch<React.SetStateAction<page>>];
+}
+
+function AccountNav(props: props): JSX.Element {
+    const router: NextRouter = useRouter();
+
+    const [page, setPage] = props.page;
+
     function logoutUser(): void {
         // Remove token validitaty from backend later
         localStorage.removeItem('token');
         router.push('/');
     }
-
     interface navItem {
         title: string;
         onClick: MouseEventHandler<HTMLButtonElement>;
@@ -114,57 +158,34 @@ export default function Account(): JSX.Element {
             icon: HiTrash,
         },
     ];
-
     return (
-        <>
-            <BottomNav />
-            {token && (
-                <div className="mx-24 flex h-[85vh] items-center text-grey">
-                    <nav className="w-fit rounded bg-white p-5 shadow-lg">
-                        <h2 className="py-4 text-center text-3xl text-grey2">
-                            My Account
-                        </h2>
-                        <ul>
-                            {navItems.map((item: navItem) => (
-                                <li
-                                    className="my-2 flex justify-center"
-                                    key={item.title}
-                                >
-                                    <button
-                                        className="flex h-16 w-60 items-center justify-between bg-lightergrey pl-4 transition-all hover:bg-lightgrey hover:text-white"
-                                        onClick={item.onClick}
-                                    >
-                                        <item.icon size={22} />
-                                        <p className="ml-2 w-52 text-start">
-                                            {item.title}
-                                        </p>
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                    <section className="ml-24 h-[70vh] w-screen overflow-y-auto rounded bg-white p-5 shadow-lg">
-                        <>
-                            {user && (
-                                <>
-                                    {page === 'accountDetails' && (
-                                        <AccountDetails user={user} />
-                                    )}
-                                    {page === 'address' && (
-                                        <Address user={user} />
-                                    )}
-                                    {page === 'password' && <Password />}
-                                    {page === 'orders' && <Orders />}
-                                </>
-                            )}
-                            {page === 'deleteAccount' && (
-                                <DeleteAccount user={user} />
-                            )}
-                        </>
-                    </section>
-                </div>
-            )}
-            <Footer />
-        </>
+        <nav className="rounded bg-white p-5 shadow-lg l:w-screen">
+            <div className=" mx-10 justify-between l:hidden">
+                <h2 className="py-4 text-center text-3xl text-grey2">
+                    My Account
+                </h2>
+            </div>
+
+            <ul
+                className={
+                    'l:grid l:grid-cols-3 l:place-items-center ms:grid-cols-2 xs:grid-cols-1'
+                }
+            >
+                {navItems.map((item: navItem) => (
+                    <li
+                        className="my-2 flex w-min justify-center"
+                        key={item.title}
+                    >
+                        <button
+                            className="flex h-16 w-min items-center justify-between bg-lightergrey pl-4 transition-all hover:bg-lightgrey hover:text-white"
+                            onClick={item.onClick}
+                        >
+                            <item.icon size={22} />
+                            <p className="ml-2 w-52 text-start">{item.title}</p>
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </nav>
     );
 }
