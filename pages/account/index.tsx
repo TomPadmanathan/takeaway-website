@@ -143,7 +143,7 @@ export default function Account(): JSX.Element {
                             ))}
                         </ul>
                     </nav>
-                    <section className="ml-24 h-[70vh] w-screen overflow-y-scroll  rounded bg-white p-5 shadow-lg">
+                    <section className="ml-24 h-[70vh] w-screen overflow-y-auto rounded bg-white p-5 shadow-lg">
                         <>
                             {user && (
                                 <>
