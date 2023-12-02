@@ -45,7 +45,7 @@ export default function ListItemsWithPrice(props: props): JSX.Element {
                                 <p className="text-center text-grey2">
                                     {capitaliseFirstCharWords(element.product)}
                                 </p>
-                                <ul className="ml-10 list-disc">
+                                <ul className="w-full list-inside list-disc">
                                     {element.options &&
                                     Array.isArray(element.options)
                                         ? element.options.map(
@@ -93,12 +93,18 @@ export default function ListItemsWithPrice(props: props): JSX.Element {
             </ul>
             <div className="absolute bottom-0 left-0 w-full p-5 xs:static">
                 <div className="flex items-center justify-between">
-                    <button
-                        className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
-                        onClick={(): Promise<boolean> => router.push('/order')}
-                    >
-                        Edit Order
-                    </button>
+                    {router.asPath === '/checkout' ? (
+                        <button
+                            className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                            onClick={(): Promise<boolean> =>
+                                router.push('/order')
+                            }
+                        >
+                            Edit Order
+                        </button>
+                    ) : (
+                        <div></div>
+                    )}
                     <div className="text-grey2">
                         <p className="block text-end">
                             Sub-Total:
