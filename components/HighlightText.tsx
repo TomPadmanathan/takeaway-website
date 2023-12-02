@@ -1,6 +1,6 @@
 interface children {
     children: JSX.Element | string;
-    color?: 'red' | 'pink';
+    color?: 'red' | 'pink' | 'darkgrey';
 }
 
 export default function HighlightText({
@@ -8,7 +8,15 @@ export default function HighlightText({
     color,
 }: children): JSX.Element {
     return (
-        <span className={`${color === 'red' ? 'text-red' : 'text-pink'}`}>
+        <span
+            className={`${
+                color === 'red'
+                    ? 'text-red'
+                    : color === 'darkgrey'
+                    ? 'text-grey2'
+                    : 'text-pink'
+            }`}
+        >
             {children}
         </span>
     );

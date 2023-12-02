@@ -17,6 +17,7 @@ import Password from '@/components/account/password';
 import Address from '@/components/account/address';
 import DeleteAccount from '@/components/account/deleteAccount';
 import AccountDetails from '@/components/account/accountDetails';
+import Orders from '@/components/account/orders';
 
 // Assets
 import {
@@ -142,7 +143,7 @@ export default function Account(): JSX.Element {
                             ))}
                         </ul>
                     </nav>
-                    <section className="ml-24 h-[70vh] w-screen rounded bg-white p-5 shadow-lg">
+                    <section className="ml-24 h-[70vh] w-screen overflow-y-scroll  rounded bg-white p-5 shadow-lg">
                         <>
                             {user && (
                                 <>
@@ -153,7 +154,7 @@ export default function Account(): JSX.Element {
                                         <Address user={user} />
                                     )}
                                     {page === 'password' && <Password />}
-                                    {page === 'orders' && <h1>Orders</h1>}
+                                    {page === 'orders' && <Orders />}
                                 </>
                             )}
                             {page === 'deleteAccount' && (
