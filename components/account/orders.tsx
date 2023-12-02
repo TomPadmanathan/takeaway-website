@@ -1,14 +1,18 @@
+// React/Next
 import { useEffect, useState } from 'react';
+
+// Types/Interfaces
 import Order from '@/database/models/Order';
+import { useRouter, NextRouter } from 'next/router';
+
+// Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
 import formatPrice from '@/utils/formatPrice';
-import { modifiedCart } from '@/interfaces/cart';
-import formatCart from '@/utils/formatCart';
 import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
-import HighlightText from '../HighlightText';
-import { useRouter } from 'next/router';
-import { NextRouter } from 'next/router';
+
+// Components
+import HighlightText from '@/components/HighlightText';
 
 const button: string =
     'h-16 rounded-sm px-3 bg-white text-grey transition-all hover:bg-lightgrey hover:text-white';
@@ -40,7 +44,7 @@ export default function Orders(): JSX.Element {
         <>
             <h1 className="py-5 text-3xl text-grey2">Orders</h1>
             {!orders.length ? (
-                <p>you have not made any orders</p>
+                <p>you have not made any orders.</p>
             ) : (
                 <ul>
                     {orders.map((order: Order) => (
