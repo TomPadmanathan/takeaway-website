@@ -96,7 +96,6 @@ export default function Password(): JSX.Element {
                             copy.currentPassword = event.target.value;
                             setPassword(copy);
                         }}
-                        value={password.currentPassword}
                         required
                     />
 
@@ -135,7 +134,6 @@ export default function Password(): JSX.Element {
                             copy.newPassword = event.target.value;
                             setPassword(copy);
                         }}
-                        value={password.newPassword}
                         required
                     />
 
@@ -174,7 +172,6 @@ export default function Password(): JSX.Element {
                             copy.comfirmNewPassword = event.target.value;
                             setPassword(copy);
                         }}
-                        value={password.comfirmNewPassword}
                         required
                     />
 

@@ -51,6 +51,7 @@ export default class Catering extends Model<Catering> {
         foreignKey: 'userId',
         targetKey: 'userId',
         as: 'user',
+        onDelete: 'CASCADE',
     })
     user!: User;
 

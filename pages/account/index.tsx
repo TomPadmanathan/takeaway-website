@@ -15,6 +15,7 @@ import BottomNav from '@/components/page/nav/BottomNav';
 import Footer from '@/components/page/Footer';
 import Password from '@/components/account/password';
 import Address from '@/components/account/address';
+import DeleteAccount from '@/components/account/deleteAccount';
 import AccountDetails from '@/components/account/accountDetails';
 
 // Assets
@@ -116,7 +117,7 @@ export default function Account(): JSX.Element {
     return (
         <>
             <BottomNav />
-            {token && user && (
+            {token && (
                 <div className="mx-24 flex h-[85vh] items-center text-grey">
                     <nav className="w-fit rounded bg-white p-5 shadow-lg">
                         <h2 className="py-4 text-center text-3xl text-grey2">
@@ -143,13 +144,21 @@ export default function Account(): JSX.Element {
                     </nav>
                     <section className="ml-24 h-[70vh] w-screen rounded bg-white p-5 shadow-lg">
                         <>
-                            {page === 'accountDetails' && (
-                                <AccountDetails user={user} />
+                            {user && (
+                                <>
+                                    {page === 'accountDetails' && (
+                                        <AccountDetails user={user} />
+                                    )}
+                                    {page === 'address' && (
+                                        <Address user={user} />
+                                    )}
+                                    {page === 'password' && <Password />}
+                                    {page === 'orders' && <h1>Orders</h1>}
+                                </>
                             )}
-                            {page === 'address' && <Address user={user} />}
-                            {page === 'password' && <Password />}
-                            {page === 'orders' && <h1>Orders</h1>}
-                            {page === 'deleteAccount' && <h1>del accoutn</h1>}
+                            {page === 'deleteAccount' && (
+                                <DeleteAccount user={user} />
+                            )}
                         </>
                     </section>
                 </div>
