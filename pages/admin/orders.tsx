@@ -7,7 +7,7 @@ import Footer from '@/components/page/Footer';
 export default function Orders(): JSX.Element {
     return (
         <>
-            <div className="h-screen">
+            <div className="min-h-screen">
                 <BottomNav />
                 <AdminNav />
                 <OrdersTable today={false} />

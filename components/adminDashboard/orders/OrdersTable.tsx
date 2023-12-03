@@ -36,7 +36,7 @@ export default function OrdersTable({ today }: props): JSX.Element {
     return (
         <>
             <div className="flex justify-center text-center text-grey">
-                <div className="overflow-hidden rounded  shadow-lg">
+                <div className="mb-10 overflow-hidden  rounded shadow-lg">
                     <table className="border-4 border-white bg-white">
                         <thead className="border-grey">
                             <tr>

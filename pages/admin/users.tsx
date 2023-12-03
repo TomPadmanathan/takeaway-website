@@ -49,10 +49,10 @@ export default function Users(): JSX.Element {
 
     return (
         <>
-            <div className="h-screen">
+            <div className="min-h-screen">
                 <BottomNav />
                 <AdminNav />
-                <div className="flex justify-center text-center text-grey">
+                <div className="mb-10 flex justify-center text-center text-grey">
                     <div className="overflow-hidden rounded shadow-lg">
                         <table className="border-4 border-white bg-white">
                             <thead className="border-grey">
