@@ -8,8 +8,6 @@ import Order from '@/database/models/Order';
 import fetchAndSetOrders from '@/utils/admin/fetchAndSetOrders';
 import TableData from '@/components/adminDashboard/orders/TableData';
 
-const tableClasses: string = 'border-collapse border border-black p-10';
-
 interface props {
     today: boolean;
 }
@@ -37,36 +35,59 @@ export default function OrdersTable({ today }: props): JSX.Element {
 
     return (
         <>
-            <center>
-                <table>
-                    <thead>
-                        <tr>
-                            {tableHeadings.map(
-                                (element: string, index: number) => (
-                                    <td key={index} className={tableClasses}>
-                                        {element}
-                                    </td>
-                                )
-                            )}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {ordersData.map((order: Order, index: number) => (
-                            <tr key={index}>
-                                {tableHeadings.map((heading: string) => (
-                                    <TableData
-                                        order={order}
-                                        heading={heading}
-                                        orders={[ordersData, setOrdersData]}
-                                        key={heading}
-                                        today={today}
-                                    />
-                                ))}
+            <div className="flex justify-center text-center text-grey">
+                <div className="overflow-hidden rounded  shadow-lg">
+                    <table className="border-4 border-white bg-white">
+                        <thead className="border-grey">
+                            <tr>
+                                {tableHeadings.map(
+                                    (element: string, index: number) => (
+                                        <TableCell border>{element}</TableCell>
+                                    )
+                                )}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </center>
+                        </thead>
+                        <tbody>
+                            {ordersData.map((order: Order, index: number) => (
+                                <tr key={index}>
+                                    {tableHeadings.map((heading: string) => (
+                                        <TableData
+                                            order={order}
+                                            heading={heading}
+                                            orders={[ordersData, setOrdersData]}
+                                            key={heading}
+                                            today={today}
+                                        />
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </>
+    );
+}
+
+interface children {
+    children: string | JSX.Element | null;
+    border?: boolean;
+    onClick?: () => void;
+}
+function TableCell({ children, border, onClick }: children) {
+    return (
+        <td className="p-1">
+            <div
+                className={`rounded bg-lightergrey p-10 ${
+                    border && 'border-[2px] border-lightgrey text-grey2'
+                } ${
+                    onClick &&
+                    'cursor-pointer transition-all hover:bg-lightgrey hover:text-white'
+                }`}
+                onClick={onClick}
+            >
+                <p>{children}</p>
+            </div>
+        </td>
     );
 }

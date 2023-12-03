@@ -15,6 +15,7 @@ import fetchAndSetOrders from '@/utils/admin/fetchAndSetOrders';
 
 // Components
 import SecondaryButton from '@/components/SecondaryButton';
+import TableCell from '@/components/adminDashboard/TableCell';
 
 // Types/Interfaces
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -59,23 +60,24 @@ export default function TableData({
             returnData = order.user.postcode;
             break;
         case 'Order Id':
-            returnData = (
-                <button onClick={() => router.push(`/orders/${order.orderId}`)}>
+            return (
+                <TableCell
+                    onClick={() => router.push(`/orders/${order.orderId}`)}
+                >
                     {order.orderId}
-                </button>
+                </TableCell>
             );
-            break;
         case 'Change Status':
-            returnData = findCorrectBtn(order.status) ? (
-                <SecondaryButton
+            return (
+                <TableCell
                     onClick={(): void => {
                         changeOrderStatus(order.orderId, order.status);
                         fetchOrdersData();
                     }}
-                    content={findCorrectBtn(order.status)}
-                />
-            ) : null;
-            break;
+                >
+                    {findCorrectBtn(order.status)}
+                </TableCell>
+            );
         case 'Status':
             returnData = capitaliseFirstChar(order.status);
             break;
@@ -87,11 +89,4 @@ export default function TableData({
     }
     if (returnData) return <TableCell>{returnData}</TableCell>;
     return <TableCell>{null}</TableCell>;
-}
-
-interface children {
-    children: string | JSX.Element | null;
-}
-function TableCell({ children }: children) {
-    return <td className={tableClasses}>{children}</td>;
 }

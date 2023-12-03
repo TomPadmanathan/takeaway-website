@@ -2,10 +2,10 @@
 import AdminNav from '@/components/adminDashboard/AdminNav';
 import BottomNav from '@/components/page/nav/BottomNav';
 import Footer from '@/components/page/Footer';
+import TableCell from '@/components/adminDashboard/TableCell';
 
 // React/Next
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
@@ -14,9 +14,6 @@ import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 
 // Database Models
 import User from '@/database/models/User';
-
-// Types/Interfaces
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export default function Users(): JSX.Element {
     const [users, setUsers] = useState<User[]>([]);
@@ -56,7 +53,7 @@ export default function Users(): JSX.Element {
                 <BottomNav />
                 <AdminNav />
                 <div className="flex justify-center text-center text-grey">
-                    <div className="overflow-hidden rounded  shadow-lg">
+                    <div className="overflow-hidden rounded shadow-lg">
                         <table className="border-4 border-white bg-white">
                             <thead className="border-grey">
                                 <tr>
@@ -99,8 +96,6 @@ interface props {
 }
 
 function TableData({ user, heading }: props): JSX.Element | null {
-    const router: AppRouterInstance = useRouter();
-
     let returnData: string | JSX.Element | null;
 
     switch (heading) {
@@ -133,27 +128,4 @@ function TableData({ user, heading }: props): JSX.Element | null {
     }
     if (returnData) return <TableCell>{returnData}</TableCell>;
     return <TableCell>{null}</TableCell>;
-}
-
-interface children {
-    children: string | JSX.Element | null;
-    border?: boolean;
-    onClick?: () => void;
-}
-function TableCell({ children, border, onClick }: children) {
-    return (
-        <td className="p-1">
-            <div
-                className={`rounded bg-lightergrey p-10 ${
-                    border && 'border-[2px] border-lightgrey text-grey2'
-                } ${
-                    onClick &&
-                    'cursor-pointer transition-all hover:bg-lightgrey hover:text-white'
-                }`}
-                onClick={onClick}
-            >
-                <p>{children}</p>
-            </div>
-        </td>
-    );
 }
