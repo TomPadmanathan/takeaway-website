@@ -1,6 +1,3 @@
-// Components
-import SecondaryButton from '@/components/SecondaryButton';
-
 // React/Next
 import { useRouter } from 'next/router';
 
@@ -22,9 +19,8 @@ export default function AdminNav(): JSX.Element {
             <nav className="my-10 h-24 w-[64rem] justify-center rounded-sm bg-white shadow-xl">
                 <ul className="flex h-full items-center justify-around">
                     {navButtons.map((element: string[]) => (
-                        <li>
+                        <li key={element[1]}>
                             <button
-                                key={element[1]}
                                 onClick={(): Promise<boolean> =>
                                     router.push(`/admin/${element[1]}`)
                                 }
