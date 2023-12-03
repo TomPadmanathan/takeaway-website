@@ -1,9 +1,11 @@
 // Components
 import AdminNav from '@/components/adminDashboard/AdminNav';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
+import TableCell from '@/components/adminDashboard/TableCell';
 
 // React/Next
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
@@ -12,11 +14,6 @@ import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 
 // Database Models
 import User from '@/database/models/User';
-
-// Types/Interfaces
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-
-const tableClasses: string = 'border-collapse border border-black p-10';
 
 export default function Users(): JSX.Element {
     const [users, setUsers] = useState<User[]>([]);
@@ -52,35 +49,43 @@ export default function Users(): JSX.Element {
 
     return (
         <>
-            <AdminNav />
-            <center>
-                <table>
-                    <thead>
-                        <tr>
-                            {tableHeadings.map(
-                                (element: string, index: number) => (
-                                    <td key={index} className={tableClasses}>
-                                        {element}
-                                    </td>
-                                )
-                            )}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user: User, index: number) => (
-                            <tr key={index}>
-                                {tableHeadings.map((heading: string) => (
-                                    <TableData
-                                        user={user}
-                                        heading={heading}
-                                        key={heading}
-                                    />
+            <div className="min-h-screen">
+                <BottomNav />
+                <AdminNav />
+                <div className="mb-10 flex justify-center text-center text-grey">
+                    <div className="overflow-hidden rounded shadow-lg">
+                        <table className="border-4 border-white bg-white">
+                            <thead className="border-grey">
+                                <tr>
+                                    {tableHeadings.map(
+                                        (element: string, index: number) => (
+                                            <TableCell border>
+                                                {element}
+                                            </TableCell>
+                                        )
+                                    )}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map((user: User, index: number) => (
+                                    <tr key={index}>
+                                        {tableHeadings.map(
+                                            (heading: string) => (
+                                                <TableData
+                                                    user={user}
+                                                    heading={heading}
+                                                    key={heading}
+                                                />
+                                            )
+                                        )}
+                                    </tr>
                                 ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </center>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <Footer />
         </>
     );
 }
@@ -91,8 +96,6 @@ interface props {
 }
 
 function TableData({ user, heading }: props): JSX.Element | null {
-    const router: AppRouterInstance = useRouter();
-
     let returnData: string | JSX.Element | null;
 
     switch (heading) {
@@ -106,12 +109,13 @@ function TableData({ user, heading }: props): JSX.Element | null {
             returnData = user.postcode;
             break;
         case 'User Id':
-            returnData = (
-                <button onClick={() => router.push(`/users/${user.userId}`)}>
+            return (
+                <TableCell
+                    onClick={() => navigator.clipboard.writeText(user.userId)}
+                >
                     {user.userId}
-                </button>
+                </TableCell>
             );
-            break;
         case 'User Type':
             returnData = capitaliseFirstChar(user.userType);
             break;
@@ -124,11 +128,4 @@ function TableData({ user, heading }: props): JSX.Element | null {
     }
     if (returnData) return <TableCell>{returnData}</TableCell>;
     return <TableCell>{null}</TableCell>;
-}
-
-interface children {
-    children: string | JSX.Element | null;
-}
-function TableCell({ children }: children) {
-    return <td className={tableClasses}>{children}</td>;
 }

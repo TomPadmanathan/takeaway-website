@@ -32,8 +32,8 @@ export default function PrimaryInput(props: props): JSX.Element {
             id={props.id}
             className={
                 props.addClass
-                    ? 'block h-10 border border-black ' + props.addClass
-                    : 'block h-10 border border-black'
+                    ? 'h-10 border border-black ' + props.addClass
+                    : 'h-10 border border-black'
             }
             value={props.value}
             inputMode={props.inputMode}

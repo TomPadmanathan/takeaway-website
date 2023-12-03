@@ -3,17 +3,19 @@ import { useEffect, useState } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 // Utils
-import isValidURL from '@/utils/isValidURL';
+import getUrlFromQueryParams from '@/utils/getUrlFromQueryParams';
 
 // Components
-import PrimaryInput from '@/components/PrimaryInput';
-import SecondaryButton from '@/components/SecondaryButton';
+import HighlightText from '@/components/HighlightText';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
 
 // Types/Interfaces
 import { ChangeEvent } from 'react';
 
-// Packages
-import Jwt, { JwtPayload } from 'jsonwebtoken';
+// Assets
+import { HiMail, HiLockClosed, HiEye, HiEyeOff } from 'react-icons/hi';
+import tailwindConfig from '@/tailwind.config';
 
 interface Credentials {
     email: string;
@@ -21,15 +23,20 @@ interface Credentials {
 }
 
 export default function Login(): JSX.Element {
+    const tailwindColors: any = tailwindConfig?.theme?.colors;
     const router: NextRouter = useRouter();
     const [credentials, setCredentials] = useState<Credentials>({
         email: '',
         password: '',
     });
-    const [token, setToken] = useState<string | undefined>();
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
+        setLoading(true);
         loginUser(credentials);
     }
 
@@ -45,84 +52,137 @@ export default function Login(): JSX.Element {
                     }),
                 }
             );
+
             interface responseJson {
                 token?: string;
                 error?: string;
             }
             const responseJson: responseJson = await response.json();
+            setLoading(false);
             if (!response.ok) {
-                console.error(responseJson.error);
+                setError(responseJson.error as string);
                 return;
             }
+
+            // Redirect User
             if (!responseJson.token) return;
             localStorage.setItem('token', responseJson.token);
 
-            if (
-                typeof router.query.url !== 'string' ||
-                !isValidURL(router.query.url)
-            ) {
-                router.push('/');
-                return;
-            }
-            router.push(router.query.url);
+            const URL = getUrlFromQueryParams(router);
+            if (!URL) router.push('/');
+            else router.push(URL);
         } catch {
-            console.error('Error fetching JWT');
+            setError('Error fetching JWT');
         }
     }
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
-        if (token) setToken(token);
+        if (token) router.push('/');
     }, []);
 
-    if (!token)
-        return (
-            <>
-                <form onSubmit={handleSubmit}>
-                    <PrimaryInput
-                        type="email"
-                        placeholder="Email"
-                        onChange={(
-                            event: ChangeEvent<HTMLInputElement>
-                        ): void => {
-                            const copy = {
-                                ...credentials,
-                            };
-                            copy.email = event.target.value;
-                            setCredentials(copy);
-                        }}
-                        required={true}
-                    />
-                    <PrimaryInput
-                        placeholder="Password"
-                        onChange={(
-                            event: ChangeEvent<HTMLInputElement>
-                        ): void => {
-                            const copy = {
-                                ...credentials,
-                            };
-                            copy.password = event.target.value;
-                            setCredentials(copy);
-                        }}
-                        required={true}
-                    />
-                    <SecondaryButton content="login" />
+    const inputContainer: string =
+        'my-4 flex items-center rounded-sm bg-lightergrey';
+    const inputfield: string =
+        'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
+
+    return (
+        <>
+            <BottomNav />
+            <div className="mx-10 mt-[-60px] flex h-screen items-center justify-center 2xs:mx-5">
+                <form
+                    className="w-[500px] rounded-sm bg-white p-10 shadow-lg 2xs:px-2"
+                    onSubmit={handleSubmit}
+                >
+                    <h1 className="pt-2 text-center text-2xl text-grey">
+                        USER LOGIN
+                    </h1>
+                    <div className="p-3">
+                        <p className="mb-[-10px] text-center text-red">
+                            <HighlightText color="red">{error}</HighlightText>
+                        </p>
+                        <div className={inputContainer}>
+                            <HiMail
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className={inputfield}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...credentials,
+                                    };
+                                    copy.email = event.target.value;
+                                    setCredentials(copy);
+                                }}
+                                required
+                            />
+                        </div>
+                        <div className={inputContainer}>
+                            <HiLockClosed
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
+
+                            <input
+                                type={passwordVisible ? 'text' : 'password'}
+                                placeholder="Password"
+                                className={inputfield}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ): void => {
+                                    const copy = {
+                                        ...credentials,
+                                    };
+                                    copy.password = event.target.value;
+                                    setCredentials(copy);
+                                }}
+                                required
+                            />
+
+                            {passwordVisible ? (
+                                <HiEyeOff
+                                    size={22}
+                                    color={tailwindColors.grey}
+                                    className="mr-4 cursor-pointer"
+                                    onClick={() =>
+                                        setPasswordVisible(!passwordVisible)
+                                    }
+                                />
+                            ) : (
+                                <HiEye
+                                    size={22}
+                                    color={tailwindColors.grey}
+                                    className="mr-4 cursor-pointer"
+                                    onClick={() =>
+                                        setPasswordVisible(!passwordVisible)
+                                    }
+                                />
+                            )}
+                        </div>
+                        <button className="mb-2 flex h-14 w-full items-center justify-center rounded-sm border bg-grey py-1 tracking-wider text-white">
+                            {loading ? 'LOADING' : 'LOGIN'}
+                        </button>
+                        <h3
+                            className="cursor-pointer text-grey"
+                            onClick={(): void => {
+                                const URL = getUrlFromQueryParams(router);
+                                if (!URL) router.push('/auth/sign-up');
+                                else router.push('/auth/sign-up?url=' + URL);
+                            }}
+                        >
+                            Not a user?{' '}
+                            <HighlightText>Signup now</HighlightText>
+                        </h3>
+                    </div>
                 </form>
-            </>
-        );
-    else
-        return (
-            <>
-                <h1>You are already logged in.</h1>
-                <SecondaryButton
-                    content="Go to account"
-                    onClick={(): void => {
-                        const decodedToken: JwtPayload | null | string =
-                            Jwt.decode(token);
-                        if (!decodedToken || typeof decodedToken != 'object')
-                            return;
-                        router.push(`/users/${decodedToken.userId}`);
-                    }}
-                />
-            </>
-        );
+            </div>
+            <Footer />
+        </>
+    );
 }

@@ -67,7 +67,7 @@ export default class Order extends Model<Order> {
     }
 
     @BeforeValidate
-    static generateUserId(instance: Order) {
+    static generateOrderId(instance: Order) {
         if (!instance.orderId) instance.orderId = uuidv4();
     }
 }

@@ -2,17 +2,15 @@
 import { useContext, useState, useEffect } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
-// Packages
-import Jwt, { JwtPayload } from 'jsonwebtoken';
-
 // Context
 import { AppContext } from '@/context/AppContext';
 
 // Components
-import SecondaryButton from '@/components/SecondaryButton';
 import ListItemsWithPrice from '@/components/ListItemsWithPrice';
 import CheckoutGuest from '@/components/checkout/CheckoutGuest';
 import CheckoutUser from '@/components/checkout/CheckoutUser';
+import BottomNav from '@/components/page/nav/BottomNav';
+import Footer from '@/components/page/Footer';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
@@ -65,19 +63,16 @@ export default function Home({ configData }: props): JSX.Element {
     }, []);
 
     return (
-        <>
-            <div className="mx-96 my-10 flex h-screen items-center justify-between">
+        <div className="xs:bg-white">
+            <BottomNav />
+            <center className="relative my-10 flex items-center justify-around m:block">
                 <ListItemsWithPrice cart={cart} config={configData} />
-                <section className="h-[45rem] w-[30rem] border-2 border-black p-10">
+                <div className="hidden h-5 bg-lightergrey xs:block" />
+                <section className="my-5 h-[720px] w-[480px] rounded bg-white p-5 shadow-lg xs:w-full xs:shadow-none">
                     {user ? <CheckoutUser user={user} /> : <CheckoutGuest />}
                 </section>
-            </div>
-
-            <SecondaryButton
-                onClick={(): Promise<boolean> => router.push('/')}
-                content="Back"
-                addClass="absolute right-10 top-10"
-            />
-        </>
+            </center>
+            <Footer />
+        </div>
     );
 }

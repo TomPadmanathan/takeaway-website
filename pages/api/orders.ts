@@ -49,7 +49,7 @@ export default async function handler(
         });
 
         if (!user) {
-            console.error('user not found');
+            response.status(404).json({ error: 'User not found' });
             return;
         }
         if (user.userType != 'admin') {
@@ -66,14 +66,12 @@ export default async function handler(
             include: [
                 {
                     model: User,
-                    attributes: ['forename', 'surname', 'postcode'],
                 },
             ],
         });
 
         response.json({ orders: orders });
     } catch (error) {
-        response.send('Sequlize error');
-        console.error('Sequlize error:', error);
+        response.status(500).json({ error: 'Internal Server Error' });
     }
 }

@@ -1,21 +1,28 @@
 // React/Next
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { IconContext } from 'react-icons';
 
 // Components
-import SecondaryButton from '@/components/SecondaryButton';
-import PrimaryInput from '@/components/PrimaryInput';
+import HighlightText from '@/components/HighlightText';
 
-// Utils
-import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
+// Assets
+import tailwindConfig from '@/tailwind.config';
+import {
+    HiMail,
+    HiPhone,
+    HiUser,
+    HiTruck,
+    HiHome,
+    HiLocationMarker,
+} from 'react-icons/hi';
 
 // Types/Interfaces
 import { NextRouter } from 'next/router';
 import User from '@/database/models/User';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { ParsedUrlQueryInput } from 'querystring';
 import { checkoutInfoUser } from '@/interfaces/checkoutInfo';
-import { FormEvent } from 'react';
 
 interface props {
     user: User;
@@ -32,134 +39,195 @@ function checkoutUserInfomationToQueryParams(
 
 export default function CheckoutUser({ user }: props): JSX.Element {
     const router: NextRouter = useRouter();
+    const tailwindColors: any = tailwindConfig?.theme?.colors;
 
     const [checkoutInfo, setCheckoutInfo] = useState<checkoutInfoUser>({
         orderNote: '',
         includeCutlery: false,
     });
 
+    const inputContainer: string =
+        'my-4 3xs:my-2 flex items-center rounded-sm bg-lightergrey';
+    const inputfield: string =
+        'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
+
     return (
-        <>
-            <h2 className="mb-10">
-                Checkout as: {user.forename + ' ' + user.surname}
-            </h2>
-            <label htmlFor="phoneNumber">Your Info</label>
-            <div className="mb-10">
-                <div className="mb-2 flex justify-between">
-                    <PrimaryInput
+        <IconContext.Provider
+            value={{
+                color: tailwindColors.grey,
+                size: '22px',
+            }}
+        >
+            <section className="relative h-full">
+                <div className="flex flex-col items-center">
+                    <h2 className="py-4 text-2xl text-grey2">
+                        Checkout as:
+                        <HighlightText>
+                            {' ' + user.forename + ' ' + user.surname}
+                        </HighlightText>
+                    </h2>
+                </div>
+                <div className={inputContainer}>
+                    <HiMail className="ml-4" />
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        className={inputfield}
+                        value={user.email}
+                        disabled
+                    />
+                </div>
+
+                <div className={inputContainer}>
+                    <HiPhone className="ml-4" />
+                    <input
                         type="number"
                         placeholder="Phone Number"
-                        id="phoneNumber"
-                        required
+                        className={inputfield}
+                        id="phone-number"
                         inputMode="numeric"
-                        addClass={removeArrowsFromInput}
                         value={user.phoneNumber}
                         disabled
                     />
-                    <PrimaryInput
-                        value={user.email}
-                        type="email"
-                        id="emailInput"
-                        placeholder="Email"
-                        required
-                        disabled
-                    />
                 </div>
-                <div className="mb-2 flex justify-between">
-                    <PrimaryInput
-                        value={user.forename}
+
+                <div className={inputContainer}>
+                    <HiUser className="ml-4" />
+                    <input
+                        className={
+                            'h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none'
+                        }
                         type="text"
-                        id="forename"
                         placeholder="Forename"
-                        required
                         disabled
+                        value={user.forename}
                     />
-                    <PrimaryInput
-                        value={user.surname}
-                        id="surname"
+                    <div className="h-14 w-2 bg-white" />
+                    <input
+                        className={
+                            'ml-2 h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none'
+                        }
                         type="text"
                         placeholder="Surname"
-                        required
                         disabled
+                        value={user.surname}
                     />
                 </div>
-            </div>
-            <label htmlFor="addressLine1">Address</label>
-            <div className="mb-2 flex justify-between">
-                <PrimaryInput
-                    value={user.addressLine1}
-                    placeholder="Address line 1"
-                    id="addressLine1"
-                    required
-                    disabled
-                />
-                <PrimaryInput
-                    value={user.addressLine2}
-                    id="addressLine2"
-                    placeholder="Address line 2 (optional)"
-                    disabled
-                />
-            </div>
-            <div className="mb-10 flex justify-between">
-                <PrimaryInput
-                    placeholder="City/Town"
-                    value={user.cityTown}
-                    disabled
-                    id="cityTown"
-                />
-                <PrimaryInput
-                    placeholder="Postcode"
-                    value={user.postcode}
-                    id="postcode"
-                    disabled
-                />
-            </div>
-            <form
-                onSubmit={(event: FormEvent): void => {
-                    event.preventDefault();
-                    router.push({
-                        pathname: '/checkout/new-checkout-session',
-                        query: checkoutUserInfomationToQueryParams(
-                            checkoutInfo
-                        ),
-                    });
-                }}
-            >
-                <label htmlFor="orderNote">Order Info</label>
-                <div className="flex justify-between">
-                    <textarea
-                        id="orderNote"
-                        placeholder="Leave us a note (optional)"
-                        className="block h-10 resize-none border border-black"
-                        onChange={(
-                            event: ChangeEvent<HTMLTextAreaElement>
-                        ): void => {
-                            const copy = { ...checkoutInfo };
-                            copy.orderNote = event.target.value;
-                            setCheckoutInfo(copy);
-                        }}
+
+                <div className={inputContainer}>
+                    <HiHome className="ml-4" />
+                    <input
+                        placeholder="Address line 1"
+                        className="h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none"
+                        disabled
+                        value={user.addressLine1}
                     />
-                    <label htmlFor="includeCutlery">Include Cutlery</label>
-                    <PrimaryInput
-                        type="checkbox"
-                        id="includeCutlery"
-                        onChange={(
-                            event: ChangeEvent<HTMLInputElement>
-                        ): void => {
-                            const copy = { ...checkoutInfo };
-                            copy.includeCutlery = event.target.checked;
-                            setCheckoutInfo(copy);
-                        }}
+                    <div className="h-14 w-2 bg-white" />
+                    <input
+                        className="ml-2 mr-0 h-14 w-2/5 bg-lightergrey pl-2 focus:outline-none"
+                        placeholder="Address line 2"
+                        disabled
+                        value={user.addressLine2}
                     />
                 </div>
-                <div className="mt-5 flex items-center justify-center">
-                    <SecondaryButton
-                        type="submit"
-                        content="Place my Order"
-                        addClass="justify-center"
+                <div className={inputContainer}>
+                    <HiTruck className="ml-4" />
+
+                    <input
+                        className={inputfield}
+                        placeholder="Postcode"
+                        disabled
+                        value={user.postcode}
                     />
                 </div>
-            </form>
-        </>
+                <div className={inputContainer}>
+                    <HiLocationMarker className="ml-4" />
+
+                    <input
+                        className={inputfield}
+                        placeholder="City/Town"
+                        disabled
+                        value={user.cityTown}
+                    />
+                </div>
+                <form
+                    className="flex h-full justify-between"
+                    onSubmit={(event: FormEvent): void => {
+                        event.preventDefault();
+                        router.push({
+                            pathname: '/checkout/new-checkout-session',
+                            query: checkoutUserInfomationToQueryParams(
+                                checkoutInfo
+                            ),
+                        });
+                    }}
+                >
+                    <center className="w-52">
+                        <label htmlFor="orderNote">
+                            <p className="text-grey2">Leave us a note</p>
+                        </label>
+                        <textarea
+                            className={inputfield + ' resize-none rounded-sm'}
+                            onChange={(
+                                event: ChangeEvent<HTMLTextAreaElement>
+                            ): void => {
+                                const copy = {
+                                    ...checkoutInfo,
+                                };
+                                copy.orderNote = event.target.value;
+                                setCheckoutInfo(copy);
+                            }}
+                            id="orderNote"
+                        />
+                    </center>
+                    <div className="flex w-52 justify-center">
+                        <center>
+                            <label htmlFor="includeCutlery">
+                                <p className="text-grey2">Include Cutlery</p>
+                            </label>
+                            <div className="w-[70px] rounded bg-lightergrey">
+                                <input
+                                    type="checkbox"
+                                    id="switch"
+                                    checked={checkoutInfo.includeCutlery}
+                                    onChange={(
+                                        event: ChangeEvent<HTMLInputElement>
+                                    ): void => {
+                                        const copy = {
+                                            ...checkoutInfo,
+                                        };
+                                        copy.includeCutlery =
+                                            event.target.checked;
+                                        setCheckoutInfo(copy);
+                                    }}
+                                    className="hidden"
+                                />
+                                <label
+                                    htmlFor="switch"
+                                    className={`toggle-label relative block h-8 cursor-pointer rounded transition-all ${
+                                        checkoutInfo.includeCutlery && 'bg-pink'
+                                    } `}
+                                >
+                                    <span
+                                        className={`absolute left-1 top-1 h-6 w-6 rounded bg-grey transition-all ${
+                                            checkoutInfo.includeCutlery &&
+                                            ' left-[42px] bg-white'
+                                        }`}
+                                    ></span>
+                                </label>
+                            </div>
+                        </center>
+                    </div>
+                    <div className="absolute bottom-0 flex w-full justify-center">
+                        <button
+                            type="submit"
+                            className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                        >
+                            Go to Payment
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </IconContext.Provider>
     );
 }
