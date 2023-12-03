@@ -251,9 +251,13 @@ function Review({ order }: reviewProps): JSX.Element {
                                         type="radio"
                                         name="rating"
                                         value={currentRating}
-                                        onClick={(): void =>
-                                            setRating(currentRating)
-                                        }
+                                        onClick={(): void => {
+                                            if (rating === currentRating) {
+                                                setRating(null);
+                                                return;
+                                            }
+                                            setRating(currentRating);
+                                        }}
                                         className="hidden"
                                     />
                                     <HiStar
