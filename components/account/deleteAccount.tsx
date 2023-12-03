@@ -8,7 +8,6 @@ import fetchWithToken from '@/utils/JWT/fetchWithToken';
 import HighlightText from '@/components/HighlightText';
 
 // Types/Interfaces
-import User from '@/database/models/User';
 import { FormEvent, ChangeEvent } from 'react';
 import { NextRouter } from 'next/router';
 
@@ -16,17 +15,13 @@ import { NextRouter } from 'next/router';
 import { HiLockClosed, HiEye, HiEyeOff } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 
-interface props {
-    user: User | undefined | null;
-}
-
 const inputContainer: string =
     'my-4 3xs:my-2 flex items-center rounded-sm bg-lightergrey';
 const inputfield: string = 'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
 const submitButton: string =
     'h-16 w-48 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white';
 
-export default function DeleteAccount({ user }: props): JSX.Element {
+export default function DeleteAccount(): JSX.Element {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
