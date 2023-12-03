@@ -87,8 +87,11 @@ export default function OrderId(props: props): JSX.Element {
                 <>
                     <BottomNav />
                     <section className="my-10 text-center">
-                        <h2 className="text-4xl">Your order is:</h2>
-                        <h1 className="text-[80px]">
+                        <h2 className="mb-4 text-4xl xs:text-3xl 3xs:text-2xl">
+                            Your order{' '}
+                            {order.status === 'pending' ? 'is' : 'has been'}:
+                        </h2>
+                        <h1 className="text-8xl xs:text-7xl 3xs:text-6xl">
                             {order.status.toUpperCase()}
                         </h1>
                         {order.status !== 'delivered' && (
@@ -112,10 +115,10 @@ export default function OrderId(props: props): JSX.Element {
                                 : 'justify-around'
                         } 5xl:mx-60 4xl:mx-28 3xl:mx-0 3xl:justify-around 2xl:grid`}
                     >
-                        <div className="hidden 2xl:block">
+                        <div className="hidden 2xl:block 3xs:bg-lightergrey">
                             <Review order={order} />
                         </div>
-                        <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg 2xl:my-5">
+                        <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg 2xl:my-5 xs:h-auto xs:w-[430px] 2xs:w-[360px] 3xs:w-screen">
                             <ul className="text-2xl leading-10">
                                 <ListItem
                                     title="Date Time"
@@ -211,7 +214,7 @@ function Review({ order }: reviewProps): JSX.Element {
 
     return (
         <section
-            className={`h-max w-1/3 min-w-[480px] rounded bg-white p-10 shadow-lg 2xl:my-5 ${
+            className={`h-max w-[480px] rounded bg-white p-10 shadow-lg 2xl:my-5 xs:w-[430px] 2xs:w-[360px] 3xs:w-full 3xs:px-8 4xs:px-5 ${
                 order.status !== 'delivered' && 'hidden'
             }`}
         >
@@ -219,7 +222,7 @@ function Review({ order }: reviewProps): JSX.Element {
                 <h2 className=" text-xl text-grey2">
                     Hi {order.user.forename}, how was your meal?
                 </h2>
-                <form className="my-5 flex w-96 justify-center">
+                <form className="my-5 flex justify-center">
                     {new Array(5)
                         .fill(0)
                         .map((star: unknown, index: number) => {
@@ -262,12 +265,12 @@ function Review({ order }: reviewProps): JSX.Element {
                         })}
                 </form>
                 <textarea
-                    className="mb-5 h-32 w-96 resize-none rounded-sm bg-lightergrey p-2 focus:outline-none"
+                    className="mb-5 h-32 w-full resize-none rounded-sm bg-lightergrey p-2 focus:outline-none"
                     placeholder="Tell us more about your experience"
                 />
                 <button
                     type="submit"
-                    className="mr-2 h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white 3xs:h-12 3xs:px-2"
+                    className="mr-2 h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
                 >
                     Leave Review
                 </button>

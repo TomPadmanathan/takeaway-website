@@ -28,7 +28,7 @@ export default function ListItemsWithPrice(props: props): JSX.Element {
     const router: NextRouter = useRouter();
 
     return (
-        <section className="relative h-[720px] w-[480px] rounded bg-white p-5 text-center shadow-lg xs:h-full xs:w-full xs:shadow-none">
+        <section className="relative h-[720px] w-[480px] rounded bg-white p-5 text-center shadow-lg xs:h-full xs:w-[430px] xs:shadow-none 2xs:w-[360px] 3xs:w-screen ">
             <h2 className="py-4 text-center text-2xl text-grey2">Your Order</h2>
             <ul className="py-5">
                 {modifiedCart.map(

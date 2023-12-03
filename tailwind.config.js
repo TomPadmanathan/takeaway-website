@@ -45,6 +45,7 @@ module.exports = {
             xs: { max: '540px' },
             '2xs': { max: '480px' },
             '3xs': { max: '380px' },
+            '4xs': { max: '340px' },
         },
     },
     plugins: [],
