@@ -49,11 +49,6 @@ export default function OrderId(props: props): JSX.Element {
     const [products, setProducts] = useState([]);
     const router: NextRouter = useRouter();
     const [token, setToken] = useState<string | null>();
-    const [rating, setRating] = useState<number | null>(null);
-    const [starHover, setStarHover] = useState<number | null>(null);
-    const tailwindColors: any = tailwindConfig.theme?.colors;
-
-    useEffect((): void => console.log(rating), [rating]);
 
     useEffect((): void => {
         const token = localStorage.getItem('token');
@@ -110,88 +105,73 @@ export default function OrderId(props: props): JSX.Element {
                             </>
                         )}
                     </section>
-                    <div className="mx-96 mb-20 flex place-items-center justify-between 5xl:mx-60 4xl:mx-28 3xl:mx-0 3xl:justify-around 2xl:grid">
+                    <div
+                        className={`mx-96 mb-20 flex place-items-center ${
+                            order.status === 'delivered'
+                                ? 'justify-between'
+                                : 'justify-around'
+                        } 5xl:mx-60 4xl:mx-28 3xl:mx-0 3xl:justify-around 2xl:grid`}
+                    >
                         <div className="hidden 2xl:block">
                             <Review order={order} />
                         </div>
                         <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg 2xl:my-5">
                             <ul className="text-2xl leading-10">
-                                <li>
-                                    <p>
-                                        Date:{' '}
-                                        {getDateFromTimestamp(
+                                <ListItem
+                                    title="Date Time"
+                                    content={
+                                        getDateFromTimestamp(
                                             parseInt(order.timestamp)
-                                        )}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        Time:
-                                        {getTimeFromTimestamp(
+                                        ) +
+                                        ' ' +
+                                        getTimeFromTimestamp(
                                             parseInt(order.timestamp)
-                                        )}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        Email:
-                                        {order.user.email}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        Name:
-                                        {order.user.forename +
-                                            ' ' +
-                                            order.user.surname}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        Phone Number:
-                                        {order.user.phoneNumber}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        City/Town:
-                                        {order.user.cityTown}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        Address Line 1:
-                                        {order.user.addressLine1}
-                                    </p>
-                                </li>
-                                {order.user.addressLine2 ? (
-                                    <li>
-                                        <p>
-                                            Address Line 2:
-                                            {order.user.addressLine2}
-                                        </p>
-                                    </li>
-                                ) : null}
-                                <li>
-                                    <p>
-                                        Postcode:
-                                        {order.user.postcode}
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        Order Id:
-                                        {order.orderId}
-                                    </p>
-                                </li>
-                                {order.orderNote ? (
-                                    <li>
-                                        <p>
-                                            Order Note:
-                                            {order.orderNote}
-                                        </p>
-                                    </li>
-                                ) : null}
+                                        )
+                                    }
+                                />
+
+                                <ListItem
+                                    title="Name"
+                                    content={
+                                        order.user.forename +
+                                        ' ' +
+                                        order.user.surname
+                                    }
+                                />
+                                <ListItem
+                                    title="Phone Number"
+                                    content={order.user.phoneNumber}
+                                />
+                                <ListItem
+                                    title="City/Town"
+                                    content={order.user.cityTown}
+                                />
+
+                                <ListItem
+                                    title="Address Line 1"
+                                    content={order.user.addressLine1}
+                                />
+                                {order.user.addressLine2 && (
+                                    <ListItem
+                                        title="Address Line 2"
+                                        content={order.user.addressLine2}
+                                    />
+                                )}
+                                <ListItem
+                                    title="PostCode"
+                                    content={order.user.postcode}
+                                />
+                                <ListItem
+                                    title="Order Id"
+                                    content={order.orderId}
+                                />
+
+                                {order.orderNote && (
+                                    <ListItem
+                                        title="Order Note"
+                                        content={order.orderNote}
+                                    />
+                                )}
                             </ul>
                         </section>
                         <div className="h-[720px] 2xl:hidden">
@@ -246,7 +226,7 @@ function Review({ order }: reviewProps): JSX.Element {
                             const currentRating: number = index + 1;
 
                             return (
-                                <label>
+                                <label key={index}>
                                     <input
                                         type="radio"
                                         name="rating"
@@ -293,5 +273,21 @@ function Review({ order }: reviewProps): JSX.Element {
                 </button>
             </div>
         </section>
+    );
+}
+
+interface ListItemProps {
+    title: string;
+    content: string | JSX.Element;
+}
+
+function ListItem({ title, content }: ListItemProps) {
+    return (
+        <li className="my-3">
+            <p className="text-lg leading-3 text-grey2">{title}: </p>
+            <p className="my-2 w-full rounded-sm bg-lightergrey px-2 text-grey">
+                {content}
+            </p>
+        </li>
     );
 }
