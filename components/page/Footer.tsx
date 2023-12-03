@@ -23,7 +23,7 @@ export default function Footer(): JSX.Element {
         [
             ['call us', `tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`],
             ['email us', `mailto:${process.env.NEXT_PUBLIC_EMAIL}`],
-            ['leave us a review', '/review/'],
+            ['leave us a review', '/account/orders/'],
         ],
         [
             ['order now', '/order/'],
