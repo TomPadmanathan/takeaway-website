@@ -33,6 +33,8 @@ module.exports = {
             '1/1': '1 / 1',
         },
         screens: {
+            '5xl': { max: '2400px' },
+            '4xl': { max: '2000px' },
             '3xl': { max: '1700px' },
             '2xl': { max: '1535px' },
             xl: { max: '1280px' },
