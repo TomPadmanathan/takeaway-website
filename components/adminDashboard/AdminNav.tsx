@@ -24,6 +24,7 @@ export default function AdminNav(): JSX.Element {
                     {navButtons.map((element: string[]) => (
                         <li>
                             <button
+                                key={element[1]}
                                 onClick={(): Promise<boolean> =>
                                     router.push(`/admin/${element[1]}`)
                                 }

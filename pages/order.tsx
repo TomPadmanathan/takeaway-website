@@ -310,9 +310,11 @@ function AddCartModel(props: AddCartModelProps): JSX.Element {
                                 {props.product.options &&
                                     props.product.options.map(
                                         (subArray: any, index: number) => (
-                                            <div className="mx-2 bg-lightergrey pr-3 sm:mb-2">
+                                            <div
+                                                className="mx-2 bg-lightergrey pr-3 sm:mb-2"
+                                                key={subArray}
+                                            >
                                                 <select
-                                                    key={subArray}
                                                     onChange={(
                                                         event: ChangeEvent<HTMLSelectElement>
                                                     ) => {
