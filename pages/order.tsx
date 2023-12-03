@@ -14,7 +14,6 @@ import { cart } from '@/interfaces/cart';
 
 // Context
 import { AppContext } from '@/context/AppContext';
-import { IconContext } from 'react-icons';
 
 // Utils
 import formatPrice from '@/utils/formatPrice';
@@ -79,96 +78,93 @@ export default function Home({ productsData, configData }: props): JSX.Element {
         'h-14 bg-lightergrey pl-2 focus:outline-none w-80';
 
     return (
-        <IconContext.Provider
-            value={{
-                color: tailwindColors.grey,
-                size: '22px',
-            }}
-        >
-            <div className="bg-white">
-                <BottomNav />
-                <div className="mx-[25px] min-h-[900px] l:mx-10 3xs:mx-5">
-                    <div className="mb-32 mt-20 px-[140px] m:px-0 sm:mb-10">
-                        <div className="my-4 flex h-full items-center justify-between l:block">
-                            <div className={inputContainer + ' my-2'}>
-                                <HiSearch className="ml-4" />
-                                <input
-                                    placeholder="Search"
-                                    type="text"
-                                    className={inputfield}
-                                    value={search}
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ): void => setSearch(event.target.value)}
-                                ></input>
-                            </div>
-                            {search ? null : (
-                                <div className="3xl:hidden">
-                                    {productNavButtons.map((button: any) => (
-                                        <button
-                                            onClick={(): void =>
-                                                setActiveProductNav(button)
-                                            }
-                                            key={button}
-                                            className={`mx-3 h-16 rounded-sm p-3 text-grey transition-all hover:bg-lightgrey hover:text-white ${
-                                                activeProductNav == button
-                                                    ? 'bg-lightgrey text-white'
-                                                    : 'bg-lightergrey'
-                                            }`}
-                                        >
-                                            {capitaliseFirstChar(button)}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                            <div className="flex items-center justify-center l:mb-10 l:w-full">
-                                <p className="w-40">
-                                    {cart.length}{' '}
-                                    {cart.length == 1 ? 'item' : 'items'} - £
-                                    {formatPrice(checkoutPrices.subTotal)}
-                                </p>
-                            </div>
+        <div className="bg-white">
+            <BottomNav />
+            <div className="mx-[25px] min-h-[900px] l:mx-10 3xs:mx-5">
+                <div className="mb-32 mt-20 px-[140px] m:px-0 sm:mb-10">
+                    <div className="my-4 flex h-full items-center justify-between l:block">
+                        <div className={inputContainer + ' my-2'}>
+                            <HiSearch
+                                className="ml-4"
+                                size={22}
+                                color={tailwindColors.grey}
+                            />
+                            <input
+                                placeholder="Search"
+                                type="text"
+                                className={inputfield}
+                                value={search}
+                                onChange={(
+                                    event: React.ChangeEvent<HTMLInputElement>
+                                ): void => setSearch(event.target.value)}
+                            ></input>
                         </div>
-
                         {search ? null : (
-                            <div className="hidden w-full justify-center 3xl:flex">
-                                <div className="flex-col text-center">
-                                    {productNavButtons.map((button: any) => (
-                                        <button
-                                            onClick={(): void =>
-                                                setActiveProductNav(button)
-                                            }
-                                            key={button}
-                                            className={`mx-3 mb-5 h-16 rounded-sm p-3 text-grey ${
-                                                activeProductNav == button
-                                                    ? 'bg-lightgrey text-white'
-                                                    : 'bg-lightergrey'
-                                            }`}
-                                        >
-                                            {capitaliseFirstChar(button)}
-                                        </button>
-                                    ))}
-                                </div>
+                            <div className="3xl:hidden">
+                                {productNavButtons.map((button: any) => (
+                                    <button
+                                        onClick={(): void =>
+                                            setActiveProductNav(button)
+                                        }
+                                        key={button}
+                                        className={`mx-3 h-16 rounded-sm p-3 text-grey transition-all hover:bg-lightgrey hover:text-white ${
+                                            activeProductNav == button
+                                                ? 'bg-lightgrey text-white'
+                                                : 'bg-lightergrey'
+                                        }`}
+                                    >
+                                        {capitaliseFirstChar(button)}
+                                    </button>
+                                ))}
                             </div>
                         )}
-                    </div>
-
-                    <div className="flex justify-center">
-                        <div className="mb-20 grid grid-cols-5 gap-10 3xl:grid-cols-4 xl:grid-cols-3 m:grid-cols-2 sm:grid-cols-1">
-                            {filteredData.map(
-                                (element: product): JSX.Element => (
-                                    <ProductTab
-                                        product={element}
-                                        key={element.product}
-                                    />
-                                )
-                            )}
+                        <div className="flex items-center justify-center l:mb-10 l:w-full">
+                            <p className="w-40">
+                                {cart.length}{' '}
+                                {cart.length == 1 ? 'item' : 'items'} - £
+                                {formatPrice(checkoutPrices.subTotal)}
+                            </p>
                         </div>
                     </div>
+
+                    {search ? null : (
+                        <div className="hidden w-full justify-center 3xl:flex">
+                            <div className="flex-col text-center">
+                                {productNavButtons.map((button: any) => (
+                                    <button
+                                        onClick={(): void =>
+                                            setActiveProductNav(button)
+                                        }
+                                        key={button}
+                                        className={`mx-3 mb-5 h-16 rounded-sm p-3 text-grey ${
+                                            activeProductNav == button
+                                                ? 'bg-lightgrey text-white'
+                                                : 'bg-lightergrey'
+                                        }`}
+                                    >
+                                        {capitaliseFirstChar(button)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
-                <Footer />
+
+                <div className="flex justify-center">
+                    <div className="mb-20 grid grid-cols-5 gap-10 3xl:grid-cols-4 xl:grid-cols-3 m:grid-cols-2 sm:grid-cols-1">
+                        {filteredData.map(
+                            (element: product): JSX.Element => (
+                                <ProductTab
+                                    product={element}
+                                    key={element.product}
+                                />
+                            )
+                        )}
+                    </div>
+                </div>
             </div>
-        </IconContext.Provider>
+            <Footer />
+        </div>
     );
 }
 
@@ -214,6 +210,8 @@ interface AddCartModelProps {
 }
 
 function AddCartModel(props: AddCartModelProps): JSX.Element {
+    const tailwindColors: any = tailwindConfig?.theme?.colors;
+
     const { setCart } = useContext(AppContext);
     const [open, setOpen] = props.open;
     const [selectedOption, setSelectedOption] = useState<string[]>([]);
@@ -261,17 +259,13 @@ function AddCartModel(props: AddCartModelProps): JSX.Element {
                     className="absolute inset-0 bg-black opacity-20"
                     onClick={() => setOpen(false)}
                 ></div>
-                <div className="relative mx-5 flex items-center justify-center">
-                    <div className="absolute right-2 top-2">
-                        <HiX onClick={() => setOpen(false)} />
-                    </div>
-
+                <div className="mx-5 flex items-center justify-center">
                     <div className="relative mx-5 flex h-[380px] w-[40rem] items-center justify-center bg-white text-grey shadow-lg sm:h-[450px]">
                         <button
                             onClick={(): void => setOpen(false)}
                             className="absolute right-2 top-2"
                         >
-                            <HiX />
+                            <HiX size={22} color={tailwindColors.grey} />
                         </button>
                         <div className="flex flex-col items-center">
                             <h2 className="mb-20 text-2xl">

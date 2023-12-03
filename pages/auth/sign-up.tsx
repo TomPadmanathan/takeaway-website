@@ -109,12 +109,7 @@ export default function SignUp(): JSX.Element {
     const inputfield: string =
         'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
     return (
-        <IconContext.Provider
-            value={{
-                color: tailwindColors.grey,
-                size: '22px',
-            }}
-        >
+        <>
             <BottomNav />
 
             <div className="mx-10 my-10 flex min-h-full items-center justify-center 2xs:mx-5">
@@ -130,7 +125,11 @@ export default function SignUp(): JSX.Element {
                             <HighlightText color="red">{error}</HighlightText>
                         </p>
                         <div className={inputContainer}>
-                            <HiMail className="ml-4" />
+                            <HiMail
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
                             <input
                                 type="email"
                                 placeholder="Email"
@@ -148,7 +147,11 @@ export default function SignUp(): JSX.Element {
                             />
                         </div>
                         <div className={inputContainer}>
-                            <HiLockClosed className="ml-4" />
+                            <HiLockClosed
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
 
                             <input
                                 type={passwordVisible ? 'text' : 'password'}
@@ -168,6 +171,8 @@ export default function SignUp(): JSX.Element {
 
                             {passwordVisible ? (
                                 <HiEyeOff
+                                    size={22}
+                                    color={tailwindColors.grey}
                                     className="mr-4 cursor-pointer"
                                     onClick={() =>
                                         setPasswordVisible(!passwordVisible)
@@ -175,6 +180,8 @@ export default function SignUp(): JSX.Element {
                                 />
                             ) : (
                                 <HiEye
+                                    size={22}
+                                    color={tailwindColors.grey}
                                     className="mr-4 cursor-pointer"
                                     onClick={() =>
                                         setPasswordVisible(!passwordVisible)
@@ -184,7 +191,11 @@ export default function SignUp(): JSX.Element {
                         </div>
 
                         <div className={inputContainer}>
-                            <HiPhone className="ml-4" />
+                            <HiPhone
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
                             <input
                                 type="number"
                                 placeholder="Phone Number"
@@ -212,7 +223,11 @@ export default function SignUp(): JSX.Element {
 
                         <div className={inputContainer}>
                             <div>
-                                <HiUser className="ml-4" />
+                                <HiUser
+                                    size={22}
+                                    color={tailwindColors.grey}
+                                    className="ml-4"
+                                />
                             </div>
                             <input
                                 className={
@@ -251,7 +266,11 @@ export default function SignUp(): JSX.Element {
 
                         <div className={inputContainer}>
                             <div>
-                                <HiHome className="ml-4" />
+                                <HiHome
+                                    size={22}
+                                    color={tailwindColors.grey}
+                                    className="ml-4"
+                                />
                             </div>
                             <input
                                 placeholder="Address line 1"
@@ -280,7 +299,11 @@ export default function SignUp(): JSX.Element {
                         </div>
 
                         <div className={inputContainer}>
-                            <HiTruck className="ml-4" />
+                            <HiTruck
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
 
                             <input
                                 className={inputfield}
@@ -297,7 +320,11 @@ export default function SignUp(): JSX.Element {
                             />
                         </div>
                         <div className={inputContainer}>
-                            <HiLocationMarker className="ml-4" />
+                            <HiLocationMarker
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
 
                             <input
                                 className={inputfield}
@@ -331,6 +358,6 @@ export default function SignUp(): JSX.Element {
             </div>
 
             <Footer />
-        </IconContext.Provider>
+        </>
     );
 }

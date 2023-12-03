@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 // Utils
-import isValidURL from '@/utils/isValidURL';
 import getUrlFromQueryParams from '@/utils/getUrlFromQueryParams';
 
 // Components
@@ -13,9 +12,6 @@ import Footer from '@/components/page/Footer';
 
 // Types/Interfaces
 import { ChangeEvent } from 'react';
-
-// Packages
-import { IconContext } from 'react-icons';
 
 // Assets
 import { HiMail, HiLockClosed, HiEye, HiEyeOff } from 'react-icons/hi';
@@ -90,12 +86,7 @@ export default function Login(): JSX.Element {
         'h-14 w-full bg-lightergrey pl-2 focus:outline-none';
 
     return (
-        <IconContext.Provider
-            value={{
-                color: tailwindColors.grey,
-                size: '22px',
-            }}
-        >
+        <>
             <BottomNav />
             <div className="mx-10 mt-[-60px] flex h-screen items-center justify-center 2xs:mx-5">
                 <form
@@ -110,7 +101,11 @@ export default function Login(): JSX.Element {
                             <HighlightText color="red">{error}</HighlightText>
                         </p>
                         <div className={inputContainer}>
-                            <HiMail className="ml-4" />
+                            <HiMail
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
                             <input
                                 type="email"
                                 placeholder="Email"
@@ -128,7 +123,11 @@ export default function Login(): JSX.Element {
                             />
                         </div>
                         <div className={inputContainer}>
-                            <HiLockClosed className="ml-4" />
+                            <HiLockClosed
+                                size={22}
+                                color={tailwindColors.grey}
+                                className="ml-4"
+                            />
 
                             <input
                                 type={passwordVisible ? 'text' : 'password'}
@@ -148,6 +147,8 @@ export default function Login(): JSX.Element {
 
                             {passwordVisible ? (
                                 <HiEyeOff
+                                    size={22}
+                                    color={tailwindColors.grey}
                                     className="mr-4 cursor-pointer"
                                     onClick={() =>
                                         setPasswordVisible(!passwordVisible)
@@ -155,6 +156,8 @@ export default function Login(): JSX.Element {
                                 />
                             ) : (
                                 <HiEye
+                                    size={22}
+                                    color={tailwindColors.grey}
                                     className="mr-4 cursor-pointer"
                                     onClick={() =>
                                         setPasswordVisible(!passwordVisible)
@@ -180,6 +183,6 @@ export default function Login(): JSX.Element {
                 </form>
             </div>
             <Footer />
-        </IconContext.Provider>
+        </>
     );
 }
