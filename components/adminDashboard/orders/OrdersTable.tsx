@@ -42,7 +42,9 @@ export default function OrdersTable({ today }: props): JSX.Element {
                             <tr>
                                 {tableHeadings.map(
                                     (element: string, index: number) => (
-                                        <TableCell border>{element}</TableCell>
+                                        <TableCell border key={index}>
+                                            {element}
+                                        </TableCell>
                                     )
                                 )}
                             </tr>

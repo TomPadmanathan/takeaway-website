@@ -59,7 +59,7 @@ export default function Users(): JSX.Element {
                                 <tr>
                                     {tableHeadings.map(
                                         (element: string, index: number) => (
-                                            <TableCell border>
+                                            <TableCell key={index} border>
                                                 {element}
                                             </TableCell>
                                         )

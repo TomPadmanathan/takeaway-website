@@ -16,7 +16,7 @@ export default function AdminNav(): JSX.Element {
 
     return (
         <center>
-            <nav className="my-10 h-24 w-[64rem] justify-center rounded-sm bg-white shadow-xl">
+            <nav className="my-10 h-24 w-[64rem] justify-center rounded-sm bg-white shadow-md">
                 <ul className="flex h-full items-center justify-around">
                     {navButtons.map((element: string[]) => (
                         <li key={element[1]}>
