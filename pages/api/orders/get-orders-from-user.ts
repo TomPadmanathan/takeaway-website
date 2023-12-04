@@ -4,10 +4,6 @@ import Jwt, { JwtPayload } from 'jsonwebtoken';
 
 // Database Models
 import Order from '@/database/models/Order';
-import User from '@/database/models/User';
-
-// Utils
-import sendCustomerEmail from '@/utils/sendCustomerEmail';
 
 // Types/Interfaces
 import type { NextApiRequest, NextApiResponse, NextConfig } from 'next';
