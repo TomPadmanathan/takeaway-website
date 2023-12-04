@@ -28,7 +28,6 @@ import HighlightText from '@/components/HighlightText';
 
 interface props {
     productsData: products;
-    configData: config;
 }
 
 interface getServerSideProps {
@@ -41,22 +40,28 @@ export async function getServerSideProps(): Promise<getServerSideProps> {
     );
     const productsData: products = await productsRes.json();
 
-    const configRes: Response = await fetch(
-        process.env.NEXT_PUBLIC_URL + '/api/config'
-    );
-    const configData: config = await configRes.json();
     return {
         props: {
             productsData,
-            configData,
         },
     };
 }
 
-export default function Home({ productsData, configData }: props): JSX.Element {
+export default function Home({ productsData }: props): JSX.Element {
     const tailwindColors: any = tailwindConfig?.theme?.colors;
     const [search, setSearch] = useState<string>('');
     const { cart } = useContext(AppContext);
+    const configData: config = {
+        lowOrder: {
+            maxFee: +(process.env.NEXT_PUBLIC_MAX_FEE as string),
+            feeLimit: +(process.env.NEXT_PUBLIC_FEE_LIMIT as string),
+        },
+        delivery: {
+            fee: +(process.env.NEXT_PUBLIC_DELIVERY_FEE as string),
+            estimatedTimeOffset: +(process.env
+                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string),
+        },
+    };
     const checkoutPrices = new CalculateCheckoutPrices(cart, configData);
     const [activeProductNav, setActiveProductNav] =
         useState<productNavButton>('popular');
@@ -99,7 +104,7 @@ export default function Home({ productsData, configData }: props): JSX.Element {
                                 ): void => setSearch(event.target.value)}
                             ></input>
                         </div>
-                        {search ? null : (
+                        {!search && (
                             <div className="3xl:hidden">
                                 {productNavButtons.map((button: any) => (
                                     <button
@@ -127,7 +132,7 @@ export default function Home({ productsData, configData }: props): JSX.Element {
                         </div>
                     </div>
 
-                    {search ? null : (
+                    {!search && (
                         <div className="hidden w-full justify-center 3xl:flex">
                             <div className="flex-col text-center">
                                 {productNavButtons.map((button: any) => (

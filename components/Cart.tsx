@@ -35,16 +35,25 @@ interface props {
         cartOpen: boolean,
         setCartOpen: Dispatch<SetStateAction<boolean>>
     ];
-    configData: config;
 }
 
 export default function Cart(props: props): JSX.Element {
     const { cart, setCart } = useContext(AppContext);
     const [cartOpen, setCartOpen] = props.cartOpen;
     const modifiedCart: modifiedCart = formatCart(cart);
-
     const router: NextRouter = useRouter();
-    const prices = new CalculateCheckoutPrices(cart, props.configData);
+    const configData: config = {
+        lowOrder: {
+            maxFee: +(process.env.NEXT_PUBLIC_MAX_FEE as string),
+            feeLimit: +(process.env.NEXT_PUBLIC_FEE_LIMIT as string),
+        },
+        delivery: {
+            fee: +(process.env.NEXT_PUBLIC_DELIVERY_FEE as string),
+            estimatedTimeOffset: +(process.env
+                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string),
+        },
+    };
+    const prices = new CalculateCheckoutPrices(cart, configData);
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
     useEffect((): void => {

@@ -120,19 +120,7 @@ export default function BottomNav(): JSX.Element {
                 )}
             </nav>
             {/* Cart Overlay */}
-            <Cart
-                cartOpen={[cartOpen, setCartOpen]}
-                configData={{
-                    lowOrder: {
-                        maxFee: 5,
-                        feeLimit: 15,
-                    },
-                    delivery: {
-                        fee: 3,
-                        estimatedTimeOffset: 45, //mins
-                    },
-                }}
-            />
+            <Cart cartOpen={[cartOpen, setCartOpen]} />
         </>
     );
 }

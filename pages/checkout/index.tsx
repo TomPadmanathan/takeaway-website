@@ -16,30 +16,9 @@ import Footer from '@/components/page/Footer';
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
 
 // Types/Interfaces
-import { config } from '@/interfaces/config';
 import User from '@/database/models/User';
 
-interface props {
-    configData: config;
-}
-interface getServerSideProps {
-    props: props;
-}
-
-export async function getServerSideProps(): Promise<getServerSideProps> {
-    const configRes: Response = await fetch(
-        process.env.NEXT_PUBLIC_URL + '/api/config'
-    );
-    const configData: config = await configRes.json();
-    return {
-        props: {
-            configData,
-        },
-    };
-}
-
-export default function Home({ configData }: props): JSX.Element {
-    const router: NextRouter = useRouter();
+export default function Home(): JSX.Element {
     const { cart } = useContext(AppContext);
     const [user, setUser] = useState<null | User>();
 
@@ -65,13 +44,13 @@ export default function Home({ configData }: props): JSX.Element {
     return (
         <div className="xs:bg-white">
             <BottomNav />
-            <center className="relative my-10 flex items-center justify-around m:block">
-                <ListItemsWithPrice cart={cart} config={configData} />
+            <div className="relative my-10 flex items-center justify-around m:block">
+                <ListItemsWithPrice cart={cart} />
                 <div className="hidden h-5 bg-lightergrey xs:block" />
                 <section className="my-5 h-[720px] w-[480px] rounded bg-white p-5 shadow-lg xs:w-full xs:shadow-none">
                     {user ? <CheckoutUser user={user} /> : <CheckoutGuest />}
                 </section>
-            </center>
+            </div>
             <Footer />
         </div>
     );

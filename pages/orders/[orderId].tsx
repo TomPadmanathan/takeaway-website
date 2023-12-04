@@ -24,27 +24,7 @@ import { NextRouter } from 'next/router';
 import { HiStar } from 'react-icons/hi';
 import tailwindConfig from '@/tailwind.config';
 
-interface props {
-    configData: config;
-}
-
-interface getServerSideProps {
-    props: props;
-}
-
-export async function getServerSideProps(): Promise<getServerSideProps> {
-    const configRes: Response = await fetch(
-        process.env.NEXT_PUBLIC_URL + '/api/config'
-    );
-    const configData: config = await configRes.json();
-    return {
-        props: {
-            configData,
-        },
-    };
-}
-
-export default function OrderId(props: props): JSX.Element {
+export default function OrderId(): JSX.Element {
     const [order, setOrder] = useState<Order | null>();
     const [products, setProducts] = useState([]);
     const router: NextRouter = useRouter();
@@ -100,8 +80,8 @@ export default function OrderId(props: props): JSX.Element {
                                 <h2>
                                     {getTimeFromTimestamp(
                                         parseInt(order.timestamp) +
-                                            props.configData.delivery
-                                                .estimatedTimeOffset *
+                                            +(process.env
+                                                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string) *
                                                 60000
                                     )}
                                 </h2>
@@ -181,10 +161,7 @@ export default function OrderId(props: props): JSX.Element {
                             <Review order={order} />
                         </div>
                         <div className="2xl:my-5">
-                            <ListItemsWithPrice
-                                cart={products}
-                                config={props.configData}
-                            />
+                            <ListItemsWithPrice cart={products} />
                         </div>
                     </div>
                     <Footer />

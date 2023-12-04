@@ -10,8 +10,7 @@ import HighlightText from './HighlightText';
 
 // Types/Interfaces
 import { config } from '@/interfaces/config';
-import { cart, modifiedCartItem } from '@/interfaces/cart';
-import { modifiedCart } from '@/interfaces/cart';
+import { cart, modifiedCartItem, modifiedCart } from '@/interfaces/cart';
 import { NextRouter } from 'next/router';
 
 // React/Next
@@ -19,12 +18,22 @@ import { useRouter } from 'next/router';
 
 interface props {
     cart: cart;
-    config: config;
 }
 
 export default function ListItemsWithPrice(props: props): JSX.Element {
     const modifiedCart: modifiedCart = formatCart(props.cart);
-    const prices = new CalculateCheckoutPrices(props.cart, props.config);
+    const configData: config = {
+        lowOrder: {
+            maxFee: +(process.env.NEXT_PUBLIC_MAX_FEE as string),
+            feeLimit: +(process.env.NEXT_PUBLIC_FEE_LIMIT as string),
+        },
+        delivery: {
+            fee: +(process.env.NEXT_PUBLIC_DELIVERY_FEE as string),
+            estimatedTimeOffset: +(process.env
+                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string),
+        },
+    };
+    const prices = new CalculateCheckoutPrices(props.cart, configData);
     const router: NextRouter = useRouter();
 
     return (
