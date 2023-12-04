@@ -1,9 +1,10 @@
 // React/Next
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 // Types/Interfaces
 import Order from '@/database/models/Order';
-import { useRouter, NextRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 
 // Utils
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
@@ -13,6 +14,7 @@ import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 
 // Components
 import HighlightText from '@/components/HighlightText';
+import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
 
 const button: string =
     'h-16 rounded-sm px-3 bg-white text-grey transition-all hover:bg-lightgrey hover:text-white';
@@ -72,10 +74,7 @@ function OrderTab({ order }: props): JSX.Element {
                 <div>
                     <li>
                         <h2 className="text-2xl text-grey2">
-                            {order.status === 'pending' && 'Pending'}
-                            {order.status === 'accepted' && 'Accepted'}
-                            {order.status === 'dispatched' && 'Dispatched'}
-                            {order.status === 'delivered' && 'Delivered'}
+                            {capitaliseFirstChar(order.status)}
                         </h2>
                         <p className="text-grey">
                             {order.status === 'pending' &&
@@ -116,11 +115,7 @@ function OrderTab({ order }: props): JSX.Element {
                             <HighlightText>
                                 <button
                                     onClick={() =>
-                                        router.push(
-                                            '/orders/' +
-                                                order.orderId +
-                                                '/review'
-                                        )
+                                        router.push('/orders/' + order.orderId)
                                     }
                                 >
                                     Review your order
