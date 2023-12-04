@@ -8,28 +8,6 @@ import { HiStar } from 'react-icons/hi';
 import { NextRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-function Review(): JSX.Element {
-    return (
-        <div className="w-96">
-            <h2 className="pb-2 text-3xl text-pink">Miranda W.</h2>
-            <span className="flex">
-                {new Array(5).fill(0).map((element: number, index: number) => (
-                    <HiStar size={24} color="gold" key={index} />
-                ))}
-
-                <span className="pl-2 text-grey">2 months ago</span>
-            </span>
-            <h2 className="text-lg text-pink">Verified customer</h2>
-
-            <p className="text-darkgrey">
-                I recently celebrted my birthday here and it was an all round
-                great experience! the staff were amazing and treated us with
-                respect.
-            </p>
-        </div>
-    );
-}
-
 export default function Reviews(): JSX.Element {
     const [token, setToken] = useState<boolean>(false);
     const router: NextRouter = useRouter();
@@ -46,40 +24,7 @@ export default function Reviews(): JSX.Element {
                     What do our customers think about us?
                 </h2>
             </center>
-
-            {/* Link to backend review db */}
-            <section className="mb-10 flex justify-center sm:flex-col">
-                <section className="block justify-center text-center">
-                    <h2 className="mb-4 text-5xl text-grey">4.6</h2>
-                    <div className="mb-4 flex justify-center">
-                        {new Array(5)
-                            .fill(0)
-                            .map((element: number, index: number) => (
-                                <HiStar size={22} color="gold" key={index} />
-                            ))}
-                    </div>
-                    <h2 className="text-grey">20 reviews</h2>
-                </section>
-                <section className="ml-10 flex justify-center sm:ml-0 sm:mt-2">
-                    <div className="flex-col">
-                        {new Array(5)
-                            .fill(0)
-                            .map(
-                                (
-                                    element: number,
-                                    index: number,
-                                    array: number[]
-                                ) => (
-                                    <ReviewColumn
-                                        positive={index === 0 && true}
-                                        number={array.length - index}
-                                        key={index}
-                                    />
-                                )
-                            )}
-                    </div>
-                </section>
-            </section>
+            <ReviewSummary reviews={[0, 2, 2, 3, 22]} />
             <div
                 className={`mb-10 flex justify-center ${
                     !token ? 'hidden' : 'flex'
@@ -95,33 +40,185 @@ export default function Reviews(): JSX.Element {
                 </button>
             </div>
 
-            {/* Link reviews to db later */}
             <div className="flex justify-evenly m:flex-col">
                 <div className="flex w-full justify-center pb-10">
-                    <Review />
+                    <Review
+                        timestamp={1701408960677}
+                        name="Miranda W"
+                        stars={4}
+                        message="I recently celebrted my birthday here and it was an all round
+                        great experience! the staff were amazing and treated us with
+                        respect."
+                    />
                 </div>
                 <div className="flex w-full justify-center">
-                    <Review />
+                    <Review
+                        timestamp={1701408960677}
+                        name="Miranda W"
+                        stars={5}
+                        message="I recently celebrted my birthday here and it was an all round
+                        great experience! the staff were amazing and treated us with
+                        respect."
+                    />
                 </div>
             </div>
         </section>
     );
 }
 
-interface reviewColumnProps {
-    number: number;
-    positive?: boolean;
+interface reviewProps {
+    stars: 1 | 2 | 3 | 4 | 5;
+    name: string;
+    timestamp: number;
+    message: string;
 }
 
-function ReviewColumn({ number, positive }: reviewColumnProps): JSX.Element {
+function Review({ stars, name, timestamp, message }: reviewProps): JSX.Element {
+    return (
+        <div className="w-96">
+            <h2 className="pb-2 text-3xl text-pink">{name}</h2>
+            <span className="flex">
+                {new Array(stars)
+                    .fill(0)
+                    .map((element: number, index: number) => (
+                        <HiStar size={24} color="gold" key={index} />
+                    ))}
+
+                <span className="pl-2 text-grey">
+                    {getTimeSince(timestamp)}
+                </span>
+            </span>
+            <h2 className="text-lg text-pink">Verified customer</h2>
+
+            <p className="text-darkgrey">{message}</p>
+        </div>
+    );
+}
+
+interface reviewSummaryProps {
+    reviews: number[];
+}
+
+function ReviewSummary({ reviews }: reviewSummaryProps): JSX.Element {
+    function getTotalReviews(reviews: number[]): number {
+        let total = 0;
+        reviews.forEach((review: number): void => {
+            total += review;
+        });
+        return total;
+    }
+    const totalReviews: number = getTotalReviews(reviews);
+
+    function getAverageReviews(reviews: number[]): number {
+        let totalStars: number = 0;
+        let totalReviews: number = 0;
+
+        for (let i: number = 0; i < reviews.length; i++) {
+            totalStars += (i + 1) * reviews[i];
+            totalReviews += reviews[i];
+        }
+
+        const averageRating: number = totalStars / totalReviews;
+        return Math.round(averageRating * 100) / 100;
+    }
+
+    const averageRating: number = getAverageReviews(reviews);
+
+    function getRatingPercent(reviews: number[], index: number): number {
+        return (reviews[reviews.length - index - 1] / totalReviews) * 100;
+    }
+
+    return (
+        <section className="mb-10 flex justify-center sm:flex-col">
+            <section className="block justify-center text-center">
+                <h2 className="mb-4 text-5xl text-grey">{averageRating}</h2>
+                <div className="mb-4 flex justify-center">
+                    {new Array(Math.round(averageRating))
+                        .fill(0)
+                        .map((element: number, index: number) => (
+                            <HiStar size={22} color="gold" key={index} />
+                        ))}
+                </div>
+                <h2 className="text-grey">{totalReviews} reviews</h2>
+            </section>
+            <section className="ml-10 flex justify-center sm:ml-0 sm:mt-2">
+                <div className="flex-col">
+                    {new Array(5)
+                        .fill(0)
+                        .map(
+                            (
+                                element: number,
+                                index: number,
+                                array: number[]
+                            ) => (
+                                <ReviewColumn
+                                    ratingPercent={getRatingPercent(
+                                        reviews,
+                                        index
+                                    )}
+                                    number={array.length - index}
+                                    key={index}
+                                />
+                            )
+                        )}
+                </div>
+            </section>
+        </section>
+    );
+}
+
+interface reviewColumnProps {
+    number: number;
+    ratingPercent: number;
+}
+
+function ReviewColumn({
+    number,
+    ratingPercent,
+}: reviewColumnProps): JSX.Element {
     return (
         <div className="flex items-center">
             <h3 className="text-grey">{number}</h3>
-            <div
-                className={`ml-2 h-2.5 w-96 rounded-xl ${
-                    positive ? 'bg-yellow' : 'bg-lightgrey'
-                } 2xs:w-80 3xs:w-64`}
-            ></div>
+            <div className="ml-2 h-2.5 w-96 overflow-hidden rounded-xl bg-lightgrey 2xs:w-80 3xs:w-64">
+                <div
+                    style={{ width: ratingPercent + '%' }}
+                    className={`h-full rounded-xl bg-yellow`}
+                />
+            </div>
         </div>
     );
+}
+function getTimeSince(timestamp: number) {
+    const now: number = new Date().getTime();
+    const difference: number = now - timestamp;
+
+    const seconds: number = Math.floor(difference / 1000);
+    let timeAgo: string;
+
+    switch (true) {
+        case seconds < 60:
+            timeAgo = 'less than a minute ago';
+            break;
+        case seconds < 3600:
+            const minutes = Math.floor(seconds / 60);
+            timeAgo = `${minutes} minute${minutes !== 1 && 's'} ago`;
+            break;
+        case seconds < 86400:
+            const hours = Math.floor(seconds / 3600);
+            timeAgo = `${hours} hour${hours !== 1 && 's'} ago`;
+            break;
+        case seconds < 2592000:
+            const days = Math.floor(seconds / 86400);
+            timeAgo = `${days} day${days !== 1 && 's'} ago`;
+            break;
+        case seconds < 31536000:
+            const months = Math.floor(seconds / 2592000);
+            timeAgo = `${months} month${months !== 1 && 's'} ago`;
+            break;
+        default:
+            const years = Math.floor(seconds / 31536000);
+            timeAgo = `${years} year${years !== 1 && 's'} ago`;
+            break;
+    }
+    return timeAgo;
 }
