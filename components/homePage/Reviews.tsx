@@ -14,7 +14,7 @@ function Review(): JSX.Element {
             <h2 className="pb-2 text-3xl text-pink">Miranda W.</h2>
             <span className="flex">
                 {new Array(5).fill(0).map((element: number, index: number) => (
-                    <HiStar size={24} color="gold" />
+                    <HiStar size={24} color="gold" key={index} />
                 ))}
 
                 <span className="pl-2 text-grey">2 months ago</span>
@@ -55,7 +55,7 @@ export default function Reviews(): JSX.Element {
                         {new Array(5)
                             .fill(0)
                             .map((element: number, index: number) => (
-                                <HiStar size={22} color="gold" />
+                                <HiStar size={22} color="gold" key={index} />
                             ))}
                     </div>
                     <h2 className="text-grey">20 reviews</h2>
@@ -73,6 +73,7 @@ export default function Reviews(): JSX.Element {
                                     <ReviewColumn
                                         positive={index === 0 && true}
                                         number={array.length - index}
+                                        key={index}
                                     />
                                 )
                             )}

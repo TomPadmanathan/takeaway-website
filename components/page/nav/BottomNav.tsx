@@ -32,12 +32,11 @@ export default function BottomNav(): JSX.Element {
                         <ul className="flex h-full items-center justify-between">
                             {navButtons.map(
                                 (navButton: string[], index: number) => (
-                                    <li className="">
+                                    <li key={navButton[0]}>
                                         <button
                                             onClick={(): Promise<boolean> =>
                                                 router.push(navButton[1])
                                             }
-                                            key={navButton[0]}
                                             className={`${navItemButton} ${
                                                 index ===
                                                     navButtons.length - 1 &&
