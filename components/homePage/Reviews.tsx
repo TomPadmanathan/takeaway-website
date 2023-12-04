@@ -21,7 +21,7 @@ function Review(): JSX.Element {
             </span>
             <h2 className="text-lg text-pink">Verified customer</h2>
 
-            <p>
+            <p className="text-darkgrey">
                 I recently celebrted my birthday here and it was an all round
                 great experience! the staff were amazing and treated us with
                 respect.
@@ -42,7 +42,7 @@ export default function Reviews(): JSX.Element {
     return (
         <section className="bg-white p-10 pb-20">
             <center>
-                <h2 className="mb-10 text-xl">
+                <h2 className="mb-10 text-xl text-darkgrey">
                     What do our customers think about us?
                 </h2>
             </center>

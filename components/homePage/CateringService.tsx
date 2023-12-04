@@ -30,7 +30,7 @@ export default function CateringService(): JSX.Element {
                 <h2 className="pb-2 text-6xl text-white sm:text-5xl">
                     Our Catering Service?
                 </h2>
-                <p className="w-[580px] text-xl sm:w-fit sm:text-lg">
+                <p className="w-[580px] text-xl text-darkgrey sm:w-fit sm:text-lg">
                     We have provided catering for over
                     <HighlightText> 20 years</HighlightText> and have catered
                     for over
@@ -129,7 +129,7 @@ function CateringServiceForm(): JSX.Element {
                     onSubmit={(event: FormEvent<HTMLFormElement>) =>
                         handleFormSubmit(event)
                     }
-                    className="flex justify-center"
+                    className="flex justify-center text-darkgrey"
                 >
                     {formState === 0 ? (
                         <h2 className="pt-20 text-xl">
