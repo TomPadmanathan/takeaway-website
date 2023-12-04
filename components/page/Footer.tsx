@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { NextRouter, useRouter } from 'next/router';
-// Packages
-import jwt from 'jsonwebtoken';
 
 // Assets
 import Logo from '@/assets/img/logo.png';
@@ -27,7 +25,6 @@ export default function Footer(): JSX.Element {
         ],
         [
             ['order now', '/order/'],
-            ['menu', '/menu/'],
             ['catering', '/#catering'],
         ],
         [

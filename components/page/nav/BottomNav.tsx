@@ -12,8 +12,8 @@ export default function BottomNav(): JSX.Element {
 
     const navButtons: string[][] = [
         ['Home', '/'],
-        ['Menu', '/menu'],
-        ['Reviews', '/reviews'],
+        ['Order', '/order'],
+        ['Account', '/account'],
         ['Catering', '/#catering'],
         ['Cart'],
     ];
@@ -22,38 +22,43 @@ export default function BottomNav(): JSX.Element {
     const genericHamburgerLine: string =
         'h-1 w-6 my-1 rounded-full bg-black ' + transition;
 
+    const navItemButton: string =
+        'mx-2 h-12 rounded-sm bg-lightergrey  px-12 text-grey transition-all hover:bg-lightgrey hover:text-white';
+
     return (
         <>
             <nav className="z-1 bg-white shadow-md">
                 <div className="flex h-20 items-center justify-around sm:justify-between">
-                    <div className="flex w-full justify-around sm:hidden">
-                        <ul className="flex w-80 justify-between">
+                    <div className="flex h-full w-full items-center justify-around sm:hidden">
+                        <ul className="flex h-full items-center justify-between">
                             {navButtons.map(
                                 (navButton: string[], index: number) => (
-                                    <li
-                                        onClick={(): Promise<boolean> =>
-                                            router.push(navButton[1])
-                                        }
-                                        key={navButton[0]}
-                                        className={`cursor-pointer ${
-                                            index === navButtons.length - 1
-                                                ? 'hidden'
-                                                : null
-                                        }`}
-                                    >
-                                        {navButton[0]}
+                                    <li className="">
+                                        <button
+                                            onClick={(): Promise<boolean> =>
+                                                router.push(navButton[1])
+                                            }
+                                            key={navButton[0]}
+                                            className={`${navItemButton} ${
+                                                index ===
+                                                    navButtons.length - 1 &&
+                                                'hidden'
+                                            }`}
+                                        >
+                                            {navButton[0]}
+                                        </button>
                                     </li>
                                 )
                             )}
                         </ul>
-                        <div>
-                            <button
-                                onClick={(): void => setCartOpen(!cartOpen)}
-                            >
-                                {navButtons[navButtons.length - 1][0]}
-                            </button>
-                        </div>
+                        <button
+                            className={navItemButton}
+                            onClick={(): void => setCartOpen(!cartOpen)}
+                        >
+                            {navButtons[navButtons.length - 1][0]}
+                        </button>
                     </div>
+
                     <div className="mr-10 hidden w-full sm:flex sm:justify-end">
                         <button
                             className="group flex h-12 w-12 flex-col items-center justify-center rounded"
