@@ -63,7 +63,7 @@ export default function AccountLayout({ component }: props): JSX.Element {
             setUser(responseJson.user);
         }
         fetchData();
-    }, []);
+    }, [router]);
 
     return (
         <>

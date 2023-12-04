@@ -78,7 +78,7 @@ export default function Login(): JSX.Element {
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
         if (token) router.push('/');
-    }, []);
+    }, [router]);
 
     const inputContainer: string =
         'my-4 flex items-center rounded-sm bg-lightergrey';

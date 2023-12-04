@@ -3,12 +3,6 @@ import { NextRouter } from 'next/router';
 import { useState } from 'react';
 import { IconContext } from 'react-icons';
 
-// Components
-import PrimaryInput from '@/components/PrimaryInput';
-
-// Utils
-import removeArrowsFromInput from '@/utils/removeArrowsFromInput';
-
 // Types/Interfaces
 import { useRouter } from 'next/router';
 import { checkoutInfoGuest } from '@/interfaces/checkoutInfo';

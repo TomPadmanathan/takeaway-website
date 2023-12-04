@@ -15,7 +15,7 @@ import { ChangeEvent } from 'react';
 
 // Assets
 import tailwindConfig from '@/tailwind.config';
-import { IconContext } from 'react-icons';
+
 import {
     HiMail,
     HiLockClosed,
@@ -69,7 +69,7 @@ export default function SignUp(): JSX.Element {
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
         if (token) router.push('/');
-    }, []);
+    }, [router]);
 
     async function signUpUser(credentials: Credentials): Promise<void> {
         try {

@@ -6,6 +6,6 @@ export default function Account(): JSX.Element {
     const router: NextRouter = useRouter();
     useEffect(() => {
         router.push('/account/account-details');
-    }, []);
+    }, [router]);
     return <></>;
 }

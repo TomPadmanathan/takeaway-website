@@ -96,6 +96,7 @@ export default function BottomNav(): JSX.Element {
                                             navButtons.length - 1 !== index &&
                                             'mb-2'
                                         }`}
+                                        key={index}
                                     >
                                         <button
                                             onClick={(): void => {

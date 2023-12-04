@@ -60,7 +60,7 @@ export default function OrderId(): JSX.Element {
             setProducts(result);
         }
         if (router.isReady) fetchOrder();
-    }, [router.isReady]);
+    }, [router.isReady, router.query.orderId]);
     if (!error && order)
         return (
             <>
