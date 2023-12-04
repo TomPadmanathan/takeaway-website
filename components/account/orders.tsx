@@ -12,6 +12,9 @@ import formatPrice from '@/utils/formatPrice';
 import getTimeFromTimestamp from '@/utils/getTimeFromTimestamp';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 
+// Database Models
+import Review from '@/database/models/Review';
+
 // Components
 import HighlightText from '@/components/HighlightText';
 import capitaliseFirstChar from '@/utils/capitaliseFirstChar';
@@ -67,6 +70,27 @@ interface props {
 function OrderTab({ order }: props): JSX.Element {
     const cart = JSON.parse(order.products);
     const router: NextRouter = useRouter();
+    const [review, setReview] = useState<Review | null>(null);
+
+    async function fetchReview(): Promise<void> {
+        const response: Response = await fetchWithToken(
+            '/api/reviews/get-review-from-order?orderId=' + order.orderId,
+            {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'GET',
+            }
+        );
+        const responseJson = await response.json();
+        if (!response.ok) {
+            console.error(responseJson.error);
+            return;
+        }
+        setReview(responseJson.review);
+    }
+
+    useEffect((): void => {
+        fetchReview();
+    }, []);
 
     return (
         <>
@@ -110,7 +134,7 @@ function OrderTab({ order }: props): JSX.Element {
                             </HighlightText>
                         </p>
                     </li>
-                    {order.status === 'delivered' && (
+                    {order.status === 'delivered' && !review && (
                         <li className="pt-2">
                             <HighlightText>
                                 <button

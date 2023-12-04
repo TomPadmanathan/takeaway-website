@@ -1,9 +1,10 @@
 // React/Next
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 
 // Database Models
 import Order from '@/database/models/Order';
+import Review from '@/database/models/Review';
 
 // Utils
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
@@ -22,6 +23,7 @@ import { NextRouter } from 'next/router';
 // Assets
 import { HiStar } from 'react-icons/hi';
 import tailwindConfig from '@/tailwind.config';
+import HighlightText from '@/components/HighlightText';
 
 export default function OrderId(): JSX.Element {
     const [order, setOrder] = useState<Order | null>();
@@ -95,7 +97,7 @@ export default function OrderId(): JSX.Element {
                     } 5xl:mx-60 4xl:mx-28 3xl:mx-0 3xl:justify-around 2xl:grid`}
                 >
                     <div className="hidden 2xl:block 3xs:bg-lightergrey">
-                        <Review order={order} />
+                        <ReviewComponent order={order} />
                     </div>
                     <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg 2xl:my-5 xs:h-auto xs:w-[430px] 2xs:w-[360px] 3xs:w-screen">
                         <ul className="text-2xl leading-10">
@@ -157,7 +159,7 @@ export default function OrderId(): JSX.Element {
                         </ul>
                     </section>
                     <div className="h-[720px] 2xl:hidden">
-                        <Review order={order} />
+                        <ReviewComponent order={order} />
                     </div>
                     <div className="2xl:my-5">
                         <ListItemsWithPrice cart={products} />
@@ -172,74 +174,159 @@ interface reviewProps {
     order: Order;
 }
 
-function Review({ order }: reviewProps): JSX.Element {
+function ReviewComponent({ order }: reviewProps): JSX.Element {
     const [rating, setRating] = useState<number | null>(null);
+    const [ratingMessage, setRatingMessage] = useState<string>('');
     const [starHover, setStarHover] = useState<number | null>(null);
     const tailwindColors: any = tailwindConfig.theme?.colors;
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [review, setReview] = useState<Review | null>(null);
+
+    async function fetchReview(): Promise<void> {
+        const response: Response = await fetchWithToken(
+            '/api/reviews/get-review-from-order?orderId=' + order.orderId,
+            {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'GET',
+            }
+        );
+        const responseJson = await response.json();
+        if (!response.ok) {
+            console.error(responseJson.error);
+            return;
+        }
+        setReview(responseJson.review);
+    }
+
+    async function handleSubmit(event: FormEvent): Promise<void> {
+        event.preventDefault();
+
+        setLoading(true);
+        setError('');
+        setRating(null);
+        setRatingMessage('');
+
+        const response: Response = await fetchWithToken(
+            '/api/reviews/create-new-review',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    orderId: order.orderId,
+                    rating,
+                    ratingMessage,
+                }),
+            }
+        );
+        const responseJson = await response.json();
+        if (!response.ok) {
+            setLoading(false);
+            setError(responseJson.error);
+            return;
+        }
+        setLoading(false);
+        fetchReview();
+    }
+
+    useEffect((): void => {
+        fetchReview();
+    }, []);
 
     return (
         <section
             className={`h-max w-[480px] rounded bg-white p-10 shadow-lg 2xl:my-5 xs:w-[430px] 2xs:w-[360px] 3xs:w-full 3xs:px-8 4xs:px-5 ${
-                order.status !== 'delivered' && 'hidden'
+                review && review?.status !== 'pending' && 'hidden'
             }`}
         >
-            <div className="grid place-items-center">
-                <h2 className=" text-xl text-grey2">
-                    Hi {order.user.forename}, how was your meal?
-                </h2>
-                <form className="my-5 flex justify-center">
-                    {new Array(5)
-                        .fill(0)
-                        .map((star: unknown, index: number) => {
-                            const currentRating: number = index + 1;
-
-                            return (
-                                <label key={index}>
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value={currentRating}
-                                        onClick={(): void => {
-                                            if (rating === currentRating) {
-                                                setRating(null);
-                                                return;
-                                            }
-                                            setRating(currentRating);
-                                        }}
-                                        className="hidden"
-                                    />
-                                    <HiStar
-                                        color={
-                                            currentRating <=
-                                            ((starHover as number) ||
-                                                (rating as number))
-                                                ? tailwindColors.yellow
-                                                : tailwindColors.lightergrey
-                                        }
-                                        className="cursor-pointer"
-                                        size={32}
-                                        onMouseEnter={(): void =>
-                                            setStarHover(currentRating)
-                                        }
-                                        onMouseLeave={(): void =>
-                                            setStarHover(null)
-                                        }
-                                    />
-                                </label>
-                            );
-                        })}
-                </form>
-                <textarea
-                    className="mb-5 h-32 w-full resize-none rounded-sm bg-lightergrey p-2 focus:outline-none"
-                    placeholder="Tell us more about your experience"
-                />
-                <button
-                    type="submit"
-                    className="mr-2 h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+            {!review && (
+                <form
+                    onSubmit={handleSubmit}
+                    className="grid place-items-center"
                 >
-                    Leave Review
-                </button>
-            </div>
+                    <h2 className=" mb-3 text-xl text-grey2">
+                        Hi {order.user.forename}, how was your meal?
+                    </h2>
+                    {error && (
+                        <p>
+                            <HighlightText color="red">{error}</HighlightText>
+                        </p>
+                    )}
+                    <div className="mb-5 mt-2 flex justify-center">
+                        {new Array(5)
+                            .fill(0)
+                            .map((star: unknown, index: number) => {
+                                const currentRating: number = index + 1;
+
+                                return (
+                                    <label key={index}>
+                                        <input
+                                            type="radio"
+                                            name="rating"
+                                            value={currentRating}
+                                            onClick={(): void => {
+                                                if (rating === currentRating) {
+                                                    setRating(null);
+                                                    return;
+                                                }
+                                                setRating(currentRating);
+                                            }}
+                                            className="hidden"
+                                            required
+                                        />
+                                        <HiStar
+                                            color={
+                                                currentRating <=
+                                                ((starHover as number) ||
+                                                    (rating as number))
+                                                    ? tailwindColors.yellow
+                                                    : tailwindColors.lightergrey
+                                            }
+                                            className="cursor-pointer"
+                                            size={32}
+                                            onMouseEnter={(): void =>
+                                                setStarHover(currentRating)
+                                            }
+                                            onMouseLeave={(): void =>
+                                                setStarHover(null)
+                                            }
+                                        />
+                                    </label>
+                                );
+                            })}
+                    </div>
+                    <textarea
+                        className="mb-5 h-32 w-full resize-none rounded-sm bg-lightergrey p-2 focus:outline-none"
+                        placeholder="Tell us more about your experience"
+                        value={ratingMessage}
+                        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                            setRatingMessage(event.target.value)
+                        }
+                        required
+                    />
+                    <button
+                        type="submit"
+                        className="mr-2 h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                    >
+                        {loading ? 'Loading' : 'Leave Review'}
+                    </button>
+                </form>
+            )}
+
+            {review?.status === 'pending' && (
+                <div className={`text-center text-grey2`}>
+                    <h2 className="mb-2 text-2xl text-pink">
+                        Thank you for your review
+                    </h2>
+                    <p>
+                        Your review is currently pending and will be approved
+                        shortly. We take all feedback onboard and use it to
+                        improve our service.
+                    </p>
+                </div>
+            )}
         </section>
     );
 }

@@ -10,12 +10,12 @@ export default function AdminNav(): JSX.Element {
     const navButtons: string[][] = [
         ['All Orders', 'orders'],
         ['Todays Orders', 'todays-orders'],
-        ['Products', 'products'],
+        ['Reviews', 'reviews'],
         ['Users', 'users'],
     ];
 
     return (
-        <center>
+        <div className="flex justify-center">
             <nav className="my-10 h-24 w-[64rem] justify-center rounded-sm bg-white shadow-md">
                 <ul className="flex h-full items-center justify-around">
                     {navButtons.map((element: string[]) => (
@@ -32,6 +32,6 @@ export default function AdminNav(): JSX.Element {
                     ))}
                 </ul>
             </nav>
-        </center>
+        </div>
     );
 }

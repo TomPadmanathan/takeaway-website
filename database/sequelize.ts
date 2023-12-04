@@ -6,6 +6,7 @@ import mysql2 from 'mysql2';
 import Order from '@/database/models/Order';
 import User from '@/database/models/User';
 import Catering from '@/database/models/Catering';
+import Review from '@/database/models/Review';
 
 const sequelize: Sequelize = new Sequelize({
     database: process.env.dbName,
@@ -14,7 +15,7 @@ const sequelize: Sequelize = new Sequelize({
     host: process.env.dbHost,
     dialect: 'mysql',
     dialectModule: mysql2,
-    models: [Order, User, Catering],
+    models: [Order, User, Catering, Review],
     logging: false,
 });
 

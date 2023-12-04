@@ -80,7 +80,11 @@ export default function Reviews(): JSX.Element {
                     </div>
                 </section>
             </section>
-            <div className={`mb-10 flex justify-center ${!token && 'hidden'}`}>
+            <div
+                className={`mb-10 flex justify-center ${
+                    !token ? 'hidden' : 'flex'
+                }`}
+            >
                 <button
                     className="h-16 w-48 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
                     onClick={(): Promise<boolean> =>
