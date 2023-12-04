@@ -17,7 +17,7 @@ import HighlightText from '@/components/HighlightText';
 
 // Types/Interfaces
 import { config } from '@/interfaces/config';
-import { Dispatch, SetStateAction, RefObject } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 // Assets
 import { HiX } from 'react-icons/hi';
@@ -88,7 +88,7 @@ export default function Cart(props: props): JSX.Element {
                             (element: modifiedCartItem, index: number) => (
                                 <li
                                     key={index}
-                                    className="mb-2 flex items-center justify-between overflow-hidden rounded bg-lightergrey p-5"
+                                    className="mb-2 flex items-center justify-between overflow-hidden rounded bg-lightergrey p-5 text-center"
                                 >
                                     <button
                                         onClick={(): void =>
@@ -109,54 +109,49 @@ export default function Cart(props: props): JSX.Element {
                                                 element.product
                                             )}
                                         </p>
-                                        <ul className="ml-10 list-disc">
+                                        <ul>
                                             {element.options &&
-                                            Array.isArray(element.options)
-                                                ? element.options.map(
-                                                      (
-                                                          option: string[],
-                                                          index: number
-                                                      ) => {
-                                                          if (
-                                                              Array.isArray(
-                                                                  option
-                                                              )
-                                                          ) {
-                                                              return (
-                                                                  <li
-                                                                      key={
-                                                                          index
-                                                                      }
-                                                                  >
-                                                                      {option
-                                                                          .map(
-                                                                              item =>
-                                                                                  capitaliseFirstChar(
-                                                                                      item
-                                                                                  )
-                                                                          )
-                                                                          .join(
-                                                                              ', '
-                                                                          )}
-                                                                  </li>
-                                                              );
-                                                          } else {
-                                                              return (
-                                                                  <li
-                                                                      key={
-                                                                          index
-                                                                      }
-                                                                      className="text-grey"
-                                                                  >
-                                                                      {capitaliseFirstChar(
-                                                                          option
-                                                                      )}{' '}
-                                                                  </li>
-                                                              );
-                                                          }
-                                                      }
-                                                  )
-                                                : null}
+                                                Array.isArray(
+                                                    element.options
+                                                ) &&
+                                                element.options.map(
+                                                    (
+                                                        option: string[],
+                                                        index: number
+                                                    ) => {
+                                                        if (
+                                                            Array.isArray(
+                                                                option
+                                                            )
+                                                        ) {
+                                                            return (
+                                                                <li key={index}>
+                                                                    {option
+                                                                        .map(
+                                                                            item =>
+                                                                                capitaliseFirstChar(
+                                                                                    item
+                                                                                )
+                                                                        )
+                                                                        .join(
+                                                                            ', '
+                                                                        )}
+                                                                </li>
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <li
+                                                                    key={index}
+                                                                    className="list-inside list-disc text-grey"
+                                                                >
+                                                                    {capitaliseFirstChar(
+                                                                        option
+                                                                    )}{' '}
+                                                                </li>
+                                                            );
+                                                        }
+                                                    }
+                                                )}
                                         </ul>
                                     </div>
                                     <div className="w-16 text-center">
@@ -174,9 +169,7 @@ export default function Cart(props: props): JSX.Element {
                             <button
                                 className="h-16 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
                                 onClick={(): void => {
-                                    prices.subTotal
-                                        ? router.push('/checkout')
-                                        : null;
+                                    prices.subTotal && router.push('/checkout');
                                 }}
                             >
                                 CheckOut
