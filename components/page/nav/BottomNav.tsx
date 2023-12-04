@@ -18,18 +18,17 @@ export default function BottomNav(): JSX.Element {
         ['Cart'],
     ];
 
-    const transition: string = 'transition ease transform duration-200';
-    const genericHamburgerLine: string =
-        'h-1 w-6 my-1 rounded-full bg-black ' + transition;
+    const hamburgerLine: string =
+        'h-1 w-6 my-1 rounded-full bg-grey2 transition-all';
 
     const navItemButton: string =
-        'mx-2 h-12 rounded-sm bg-lightergrey  px-12 text-grey transition-all hover:bg-lightgrey hover:text-white';
+        'mx-2 h-12 rounded-sm bg-lightergrey px-12 text-grey transition-all hover:bg-lightgrey hover:text-white';
 
     return (
         <>
             <nav className="z-1 bg-white shadow-md">
-                <div className="flex h-20 items-center justify-around sm:justify-between">
-                    <div className="flex h-full w-full items-center justify-around sm:hidden">
+                <div className="flex h-20 items-center justify-around ms:justify-between">
+                    <div className="flex h-full w-full items-center justify-around ms:hidden">
                         <ul className="flex h-full items-center justify-between">
                             {navButtons.map(
                                 (navButton: string[], index: number) => (
@@ -59,27 +58,27 @@ export default function BottomNav(): JSX.Element {
                         </button>
                     </div>
 
-                    <div className="mr-10 hidden w-full sm:flex sm:justify-end">
+                    <div className="mr-10 hidden w-full ms:flex ms:justify-end">
                         <button
                             className="group flex h-12 w-12 flex-col items-center justify-center rounded"
                             onClick={() => setMenuOpen(!menuOpen)}
                         >
                             <div
-                                className={`${genericHamburgerLine} ${
+                                className={`${hamburgerLine} ${
                                     menuOpen
                                         ? 'translate-y-3 rotate-45 opacity-50 group-hover:opacity-100'
                                         : 'opacity-50 group-hover:opacity-100'
                                 }`}
                             />
                             <div
-                                className={`${genericHamburgerLine} ${
+                                className={`${hamburgerLine} ${
                                     menuOpen
                                         ? 'opacity-0'
                                         : 'opacity-50 group-hover:opacity-100'
                                 }`}
                             />
                             <div
-                                className={`${genericHamburgerLine} ${
+                                className={`${hamburgerLine} ${
                                     menuOpen
                                         ? '-translate-y-3 -rotate-45 opacity-50 group-hover:opacity-100'
                                         : 'opacity-50 group-hover:opacity-100'
@@ -89,20 +88,30 @@ export default function BottomNav(): JSX.Element {
                     </div>
                 </div>
                 {menuOpen && (
-                    <div className="hidden sm:block">
-                        <ul className="flex flex-col items-center">
+                    <div className="hidden pb-2 ms:block">
+                        <ul className="text-center">
                             {navButtons.map(
                                 (navButton: string[], index: number) => (
                                     <li
-                                        onClick={(): void => {
-                                            if (navButtons.length - 1 === index)
-                                                setCartOpen(!cartOpen);
-                                            else router.push(navButton[1]);
-                                        }}
-                                        key={navButton[0]}
-                                        className={`mb-2 cursor-pointer opacity-50 transition hover:text-black hover:opacity-100 ${transition}`}
+                                        className={`mx-2 ${
+                                            navButtons.length - 1 !== index &&
+                                            'mb-2'
+                                        }`}
                                     >
-                                        {navButton[0]}
+                                        <button
+                                            onClick={(): void => {
+                                                if (
+                                                    navButtons.length - 1 ===
+                                                    index
+                                                )
+                                                    setCartOpen(!cartOpen);
+                                                else router.push(navButton[1]);
+                                            }}
+                                            key={navButton[0]}
+                                            className="w-full rounded bg-lightergrey py-2 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                                        >
+                                            {navButton[0]}
+                                        </button>
                                     </li>
                                 )
                             )}
