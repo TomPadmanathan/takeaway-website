@@ -1,16 +1,41 @@
 // React/Next
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 // Assets
 import { HiStar } from 'react-icons/hi';
 
 // Types/Interfaces
 import { NextRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+
+// Database Models
+import Review from '@/database/models/Review';
 
 export default function Reviews(): JSX.Element {
     const [token, setToken] = useState<boolean>(false);
     const router: NextRouter = useRouter();
+    const [reviews, setReviews] = useState<Review[] | null>(null);
+    const [ratings, setRatings] = useState<number[]>(new Array(5).fill(0));
+
+    useEffect((): void => {
+        async function fetchReviews(): Promise<void> {
+            const response: Response = await fetch(
+                '/api/reviews/get-homepage-review-data',
+                {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+            const responseJson = await response.json();
+            if (!response.ok) {
+                console.error(responseJson.error);
+                return;
+            }
+            setRatings(responseJson.reviewRatings);
+            setReviews(responseJson.reviews);
+        }
+        fetchReviews();
+    }, []);
 
     useEffect((): void => {
         const token: string | null = localStorage.getItem('token');
@@ -24,7 +49,7 @@ export default function Reviews(): JSX.Element {
                     What do our customers think about us?
                 </h2>
             </center>
-            <ReviewSummary reviews={[0, 2, 2, 3, 22]} />
+            <ReviewSummary reviewRatings={ratings} />
             <div
                 className={`mb-10 flex justify-center ${
                     !token ? 'hidden' : 'flex'
@@ -41,26 +66,22 @@ export default function Reviews(): JSX.Element {
             </div>
 
             <div className="flex justify-evenly m:flex-col">
-                <div className="flex w-full justify-center pb-10">
-                    <Review
-                        timestamp={1701408960677}
-                        name="Miranda W"
-                        stars={4}
-                        message="I recently celebrted my birthday here and it was an all round
+                {reviews?.map((review: Review, index: number) => (
+                    <div
+                        className={`flex w-full justify-center ${
+                            !index && 'pb-10'
+                        }`}
+                    >
+                        <ReviewComponent
+                            timestamp={1701408960677}
+                            name="Miranda W"
+                            stars={4}
+                            message="I recently celebrted my birthday here and it was an all round
                         great experience! the staff were amazing and treated us with
                         respect."
-                    />
-                </div>
-                <div className="flex w-full justify-center">
-                    <Review
-                        timestamp={1701408960677}
-                        name="Miranda W"
-                        stars={5}
-                        message="I recently celebrted my birthday here and it was an all round
-                        great experience! the staff were amazing and treated us with
-                        respect."
-                    />
-                </div>
+                        />
+                    </div>
+                ))}
             </div>
         </section>
     );
@@ -73,7 +94,12 @@ interface reviewProps {
     message: string;
 }
 
-function Review({ stars, name, timestamp, message }: reviewProps): JSX.Element {
+function ReviewComponent({
+    stars,
+    name,
+    timestamp,
+    message,
+}: reviewProps): JSX.Element {
     return (
         <div className="w-96">
             <h2 className="pb-2 text-3xl text-pink">{name}</h2>
@@ -96,10 +122,10 @@ function Review({ stars, name, timestamp, message }: reviewProps): JSX.Element {
 }
 
 interface reviewSummaryProps {
-    reviews: number[];
+    reviewRatings: number[];
 }
 
-function ReviewSummary({ reviews }: reviewSummaryProps): JSX.Element {
+function ReviewSummary({ reviewRatings }: reviewSummaryProps): JSX.Element {
     function getTotalReviews(reviews: number[]): number {
         let total = 0;
         reviews.forEach((review: number): void => {
@@ -107,7 +133,7 @@ function ReviewSummary({ reviews }: reviewSummaryProps): JSX.Element {
         });
         return total;
     }
-    const totalReviews: number = getTotalReviews(reviews);
+    const totalReviews: number = getTotalReviews(reviewRatings);
 
     function getAverageReviews(reviews: number[]): number {
         let totalStars: number = 0;
@@ -119,10 +145,11 @@ function ReviewSummary({ reviews }: reviewSummaryProps): JSX.Element {
         }
 
         const averageRating: number = totalStars / totalReviews;
+        if (!averageRating) return 0;
         return Math.round(averageRating * 100) / 100;
     }
 
-    const averageRating: number = getAverageReviews(reviews);
+    const averageRating: number = getAverageReviews(reviewRatings);
 
     function getRatingPercent(reviews: number[], index: number): number {
         return (reviews[reviews.length - index - 1] / totalReviews) * 100;
@@ -153,7 +180,7 @@ function ReviewSummary({ reviews }: reviewSummaryProps): JSX.Element {
                             ) => (
                                 <ReviewColumn
                                     ratingPercent={getRatingPercent(
-                                        reviews,
+                                        reviewRatings,
                                         index
                                     )}
                                     number={array.length - index}
