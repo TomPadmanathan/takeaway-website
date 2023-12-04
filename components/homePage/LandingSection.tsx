@@ -12,6 +12,9 @@ import { NextRouter } from 'next/router';
 // Packages
 import jwt from 'jsonwebtoken';
 
+const buttonStyles: string =
+    'h-16 w-48 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white mx-2 sm:my-2 2xs:w-40 ';
+
 export default function LandingSection(): JSX.Element {
     const router: NextRouter = useRouter();
 
@@ -34,16 +37,16 @@ export default function LandingSection(): JSX.Element {
 
     return (
         <section className="bg-image px-64 pb-0 2xl:px-52 xl:px-40 l:px-32 m:px-16 sm:px-0">
-            <center>
+            <div className="grid place-items-center text-center">
                 <Image
                     src={Logo}
                     className="w-72 py-16 invert filter"
                     alt={'site-icon'}
                 />
 
-                <div className="hidden sm:block">
+                <div className="hidden w-full justify-around sm:flex 2xs:block">
                     <button
-                        className="mx-5 h-10 w-52 rounded border-[3px] border-blue bg-white px-10 font-bold text-pink sm:mb-5 sm:px-5"
+                        className={buttonStyles}
                         onClick={(): Promise<boolean> => router.push('/order')}
                     >
                         Order Now
@@ -51,7 +54,7 @@ export default function LandingSection(): JSX.Element {
 
                     {token ? (
                         <button
-                            className="mx-5 h-10 w-60 rounded border-[3px] border-blue bg-white px-10 font-bold text-pink m:px-5"
+                            className={buttonStyles}
                             onClick={(): Promise<boolean> =>
                                 router.push('/users/' + userId)
                             }
@@ -60,7 +63,7 @@ export default function LandingSection(): JSX.Element {
                         </button>
                     ) : (
                         <button
-                            className="mx-5 h-10 w-60 rounded border-[3px] border-blue bg-white px-10 font-bold text-pink m:px-5"
+                            className={buttonStyles}
                             onClick={(): Promise<boolean> =>
                                 router.push('/auth/login')
                             }
@@ -70,23 +73,24 @@ export default function LandingSection(): JSX.Element {
                     )}
                 </div>
 
-                <section className="mt-10 rounded-xl rounded-b-none border-4 border-b-0 border-blue bg-pink px-20 l:px-10 sm:rounded-none sm:border-x-0 xs:px-6 2xs:px-4 ">
+                <section className="mt-10 rounded-xl rounded-b-none border-4 border-b-0 border-white bg-gradient-to-r from-lightpink to-pink px-20 l:px-10 sm:rounded-none sm:border-x-0 xs:px-6 2xs:px-4 ">
                     <h2 className="pb-4 pt-6 text-3xl text-white">
                         Welcome to Takeawaysite
                     </h2>
-                    <p className="pb-10 text-lg leading-10 m:leading-8">
-                        Irure qui incididunt dolore proident Lorem duis
-                        exercitation dolore sit elit amet. Cupidatat eu amet ut
-                        velit elit nostrud proident sit quis irure excepteur
-                        sit. Lorem nostrud non amet proident Lorem qui esse
-                        amet. Excepteur laborum dolore velit eu enim. Quis ad do
-                        adipisicing ex qui. Fugiat voluptate nisi non commodo et
-                        cupidatat dolore amet laboris officia reprehenderit
-                        fugiat. Elit pariatur eu velit reprehenderit est dolor
-                        reprehenderit sit.
+                    <p className="pb-10 text-lg leading-10 text-lightgrey m:leading-8">
+                        Welcome to {process.env.NEXT_PUBLIC_SITE_NAME}, your
+                        gateway to the vibrant flavors of South East and East
+                        Asia! Immerse yourself in a culinary journey featuring
+                        authentic dishes from China, Japan and beyond. Explore
+                        our carefully curated menu and order online for a
+                        seamless dining experience. From sushi to Thai curries,
+                        savor the essence of Asian cuisine from the comfort of
+                        your home. Join us at{' '}
+                        {process.env.NEXT_PUBLIC_SITE_NAME}, where every bite is
+                        a taste of tradition and innovation. Bon appétit!
                     </p>
                 </section>
-            </center>
+            </div>
         </section>
     );
 }

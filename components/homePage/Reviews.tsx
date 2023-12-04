@@ -1,23 +1,22 @@
 // React/Next
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 // Assets
-import Star from '@/assets/img/star.png';
+import { HiStar } from 'react-icons/hi';
 
 // Types/Interfaces
 import { NextRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 function Review(): JSX.Element {
     return (
         <div className="w-96">
             <h2 className="pb-2 text-3xl text-pink">Miranda W.</h2>
             <span className="flex">
-                <Image src={Star} className="w-6" alt={'star'} />
-                <Image src={Star} className="w-6" alt={'star'} />
-                <Image src={Star} className="w-6" alt={'star'} />
-                <Image src={Star} className="w-6" alt={'star'} />
-                <Image src={Star} className="w-6" alt={'star'} />
+                {new Array(5).fill(0).map((element: number, index: number) => (
+                    <HiStar size={24} color="gold" />
+                ))}
+
                 <span className="pl-2 text-grey">2 months ago</span>
             </span>
             <h2 className="text-lg text-pink">Verified customer</h2>
@@ -32,9 +31,16 @@ function Review(): JSX.Element {
 }
 
 export default function Reviews(): JSX.Element {
+    const [token, setToken] = useState<boolean>(false);
     const router: NextRouter = useRouter();
+
+    useEffect((): void => {
+        const token: string | null = localStorage.getItem('token');
+        if (token) setToken(true);
+        else setToken(false);
+    }, [token]);
     return (
-        <section className="m-10 mb-20">
+        <section className="bg-white p-10 pb-20">
             <center>
                 <h2 className="mb-10 text-xl">
                     What do our customers think about us?
@@ -46,32 +52,43 @@ export default function Reviews(): JSX.Element {
                 <section className="block justify-center text-center">
                     <h2 className="mb-4 text-5xl text-grey">4.6</h2>
                     <div className="mb-4 flex justify-center">
-                        <Image src={Star} className="w-4" alt={'star'} />
-                        <Image src={Star} className="w-4" alt={'star'} />
-                        <Image src={Star} className="w-4" alt={'star'} />
-                        <Image src={Star} className="w-4" alt={'star'} />
-                        <Image src={Star} className="w-4" alt={'star'} />
+                        {new Array(5)
+                            .fill(0)
+                            .map((element: number, index: number) => (
+                                <HiStar size={22} color="gold" />
+                            ))}
                     </div>
                     <h2 className="text-grey">20 reviews</h2>
                 </section>
                 <section className="ml-10 flex justify-center sm:ml-0 sm:mt-2">
                     <div className="flex-col">
-                        <ReviewColumn number={5} positive />
-                        <ReviewColumn number={4} />
-                        <ReviewColumn number={3} />
-                        <ReviewColumn number={2} />
-                        <ReviewColumn number={1} />
+                        {new Array(5)
+                            .fill(0)
+                            .map(
+                                (
+                                    element: number,
+                                    index: number,
+                                    array: number[]
+                                ) => (
+                                    <ReviewColumn
+                                        positive={index === 0 && true}
+                                        number={array.length - index}
+                                    />
+                                )
+                            )}
                     </div>
                 </section>
             </section>
-            <center className="mb-10">
+            <div className={`mb-10 flex justify-center ${!token && 'hidden'}`}>
                 <button
-                    className="m-0 h-10 rounded border-[3px] border-grey px-10 font-bold text-pink"
-                    onClick={(): Promise<boolean> => router.push('/reviews')}
+                    className="h-16 w-48 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white"
+                    onClick={(): Promise<boolean> =>
+                        router.push('/account/orders')
+                    }
                 >
-                    See more reviews
+                    Leave us a review
                 </button>
-            </center>
+            </div>
 
             {/* Link reviews to db later */}
             <div className="flex justify-evenly m:flex-col">

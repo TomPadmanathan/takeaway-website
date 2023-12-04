@@ -17,6 +17,9 @@ import Spinner from '@/assets/gif/spinner.gif';
 import fetchWithToken from '@/utils/JWT/fetchWithToken';
 import getDateFromTimestamp from '@/utils/getDateFromTimestamp';
 
+const buttonStyles: string =
+    'h-16 w-48 rounded-sm bg-lightergrey px-3 text-grey transition-all hover:bg-lightgrey hover:text-white';
+
 export default function CateringService(): JSX.Element {
     return (
         <section
@@ -418,7 +421,7 @@ function CateringServiceForm(): JSX.Element {
 
                                     <p>
                                         Your catering request has been submitted
-                                        successfully. A member from out team
+                                        successfully. A member from our team
                                         will be in contact shortly.
                                     </p>
                                 </center>
@@ -472,11 +475,11 @@ function CateringServiceForm(): JSX.Element {
                     ) : null}
                 </form>
             ) : (
-                <div className="flex h-full items-center justify-center">
+                <div className="flex h-full items-center justify-center text-center">
                     <div>
-                        <h2>Please login to continue</h2>
+                        <h2 className="mb-2">Please login to continue</h2>
                         <button
-                            className="mt-2 h-14 w-full rounded-lg border-[3px] border-white bg-blue px-10 text-lg font-bold text-white"
+                            className={buttonStyles}
                             onClick={(): Promise<boolean> =>
                                 router.push({
                                     pathname: '/auth/login',
