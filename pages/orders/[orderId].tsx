@@ -17,7 +17,6 @@ import BottomNav from '@/components/page/nav/BottomNav';
 import Footer from '@/components/page/Footer';
 
 // Types/Interfaces
-import { config } from '@/interfaces/config';
 import { NextRouter } from 'next/router';
 
 // Assets
@@ -29,6 +28,7 @@ export default function OrderId(): JSX.Element {
     const [products, setProducts] = useState([]);
     const router: NextRouter = useRouter();
     const [token, setToken] = useState<string | null>();
+    const [error, setError] = useState<string>();
 
     useEffect((): void => {
         const token = localStorage.getItem('token');
@@ -49,7 +49,7 @@ export default function OrderId(): JSX.Element {
             );
             const responseJson = await response.json();
             if (!response.ok) {
-                console.error(responseJson.error);
+                setError(responseJson.error);
                 return;
             }
             setOrder(responseJson.order);
@@ -59,126 +59,114 @@ export default function OrderId(): JSX.Element {
             );
             setProducts(result);
         }
-        fetchOrder();
-    }, []);
-    if (token)
-        if (order)
-            return (
-                <>
-                    <BottomNav />
-                    <section className="my-10 text-center">
-                        <h2 className="mb-4 text-4xl xs:text-3xl 3xs:text-2xl">
-                            Your order{' '}
-                            {order.status === 'pending' ? 'is' : 'has been'}:
-                        </h2>
-                        <h1 className="text-8xl xs:text-7xl 3xs:text-6xl">
-                            {order.status.toUpperCase()}
-                        </h1>
-                        {order.status !== 'delivered' && (
-                            <>
-                                <h2>Estimated Delivery Time:</h2>
-                                <h2>
-                                    {getTimeFromTimestamp(
-                                        parseInt(order.timestamp) +
-                                            +(process.env
-                                                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string) *
-                                                60000
-                                    )}
-                                </h2>
-                            </>
-                        )}
-                    </section>
-                    <div
-                        className={`mx-96 mb-20 flex place-items-center ${
-                            order.status === 'delivered'
-                                ? 'justify-between'
-                                : 'justify-around'
-                        } 5xl:mx-60 4xl:mx-28 3xl:mx-0 3xl:justify-around 2xl:grid`}
-                    >
-                        <div className="hidden 2xl:block 3xs:bg-lightergrey">
-                            <Review order={order} />
-                        </div>
-                        <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg 2xl:my-5 xs:h-auto xs:w-[430px] 2xs:w-[360px] 3xs:w-screen">
-                            <ul className="text-2xl leading-10">
-                                <ListItem
-                                    title="Date Time"
-                                    content={
-                                        getDateFromTimestamp(
-                                            parseInt(order.timestamp)
-                                        ) +
-                                        ' ' +
-                                        getTimeFromTimestamp(
-                                            parseInt(order.timestamp)
-                                        )
-                                    }
-                                />
-
-                                <ListItem
-                                    title="Name"
-                                    content={
-                                        order.user.forename +
-                                        ' ' +
-                                        order.user.surname
-                                    }
-                                />
-                                <ListItem
-                                    title="Phone Number"
-                                    content={order.user.phoneNumber}
-                                />
-                                <ListItem
-                                    title="City/Town"
-                                    content={order.user.cityTown}
-                                />
-
-                                <ListItem
-                                    title="Address Line 1"
-                                    content={order.user.addressLine1}
-                                />
-                                {order.user.addressLine2 && (
-                                    <ListItem
-                                        title="Address Line 2"
-                                        content={order.user.addressLine2}
-                                    />
-                                )}
-                                <ListItem
-                                    title="PostCode"
-                                    content={order.user.postcode}
-                                />
-                                <ListItem
-                                    title="Order Id"
-                                    content={order.orderId}
-                                />
-
-                                {order.orderNote && (
-                                    <ListItem
-                                        title="Order Note"
-                                        content={order.orderNote}
-                                    />
-                                )}
-                            </ul>
-                        </section>
-                        <div className="h-[720px] 2xl:hidden">
-                            <Review order={order} />
-                        </div>
-                        <div className="2xl:my-5">
-                            <ListItemsWithPrice cart={products} />
-                        </div>
-                    </div>
-                    <Footer />
-                </>
-            );
-        else
-            return (
-                <>
-                    <h1>Order not found or you have invalid permissions</h1>
-                </>
-            );
-    else
+        if (router.isReady) fetchOrder();
+    }, [router.isReady]);
+    if (!error && order)
         return (
             <>
-                <h1>You are not logged in</h1>
+                <BottomNav />
+                <section className="my-10 text-center">
+                    <h2 className="mb-4 text-4xl xs:text-3xl 3xs:text-2xl">
+                        Your order{' '}
+                        {order.status === 'pending' ? 'is' : 'has been'}:
+                    </h2>
+                    <h1 className="text-8xl xs:text-7xl 3xs:text-6xl">
+                        {order.status.toUpperCase()}
+                    </h1>
+                    {order.status !== 'delivered' && (
+                        <>
+                            <h2>Estimated Delivery Time:</h2>
+                            <h2>
+                                {getTimeFromTimestamp(
+                                    parseInt(order.timestamp) +
+                                        +(process.env
+                                            .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string) *
+                                            60000
+                                )}
+                            </h2>
+                        </>
+                    )}
+                </section>
+                <div
+                    className={`mx-96 mb-20 flex place-items-center ${
+                        order.status === 'delivered'
+                            ? 'justify-between'
+                            : 'justify-around'
+                    } 5xl:mx-60 4xl:mx-28 3xl:mx-0 3xl:justify-around 2xl:grid`}
+                >
+                    <div className="hidden 2xl:block 3xs:bg-lightergrey">
+                        <Review order={order} />
+                    </div>
+                    <section className="h-[720px] w-[480px] rounded bg-white p-5 shadow-lg 2xl:my-5 xs:h-auto xs:w-[430px] 2xs:w-[360px] 3xs:w-screen">
+                        <ul className="text-2xl leading-10">
+                            <ListItem
+                                title="Date Time"
+                                content={
+                                    getDateFromTimestamp(
+                                        parseInt(order.timestamp)
+                                    ) +
+                                    ' ' +
+                                    getTimeFromTimestamp(
+                                        parseInt(order.timestamp)
+                                    )
+                                }
+                            />
+
+                            <ListItem
+                                title="Name"
+                                content={
+                                    order.user.forename +
+                                    ' ' +
+                                    order.user.surname
+                                }
+                            />
+                            <ListItem
+                                title="Phone Number"
+                                content={order.user.phoneNumber}
+                            />
+                            <ListItem
+                                title="City/Town"
+                                content={order.user.cityTown}
+                            />
+
+                            <ListItem
+                                title="Address Line 1"
+                                content={order.user.addressLine1}
+                            />
+                            {order.user.addressLine2 && (
+                                <ListItem
+                                    title="Address Line 2"
+                                    content={order.user.addressLine2}
+                                />
+                            )}
+                            <ListItem
+                                title="PostCode"
+                                content={order.user.postcode}
+                            />
+                            <ListItem
+                                title="Order Id"
+                                content={order.orderId}
+                            />
+
+                            {order.orderNote && (
+                                <ListItem
+                                    title="Order Note"
+                                    content={order.orderNote}
+                                />
+                            )}
+                        </ul>
+                    </section>
+                    <div className="h-[720px] 2xl:hidden">
+                        <Review order={order} />
+                    </div>
+                    <div className="2xl:my-5">
+                        <ListItemsWithPrice cart={products} />
+                    </div>
+                </div>
+                <Footer />
             </>
         );
+    else return <>{error && <p>error</p>}</>;
 }
 interface reviewProps {
     order: Order;

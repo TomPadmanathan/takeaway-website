@@ -65,7 +65,7 @@ export default async function handler(
                 if (!requestUser) {
                     response
                         .status(404)
-                        .json({ error: 'requesting user not found' });
+                        .json({ error: 'Requesting user not found' });
                     return;
                 }
                 if (requestUser.userType != 'admin') {
