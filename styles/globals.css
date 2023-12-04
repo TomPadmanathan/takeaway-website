@@ -10,6 +10,7 @@
         color: #000;
         background-color: #fff;
         overflow-x: none tailwind;
+        background-color: #f0eff4;
     }
     .bg-image {
         background-image: url('../assets/img/foodBackground.jpg');
