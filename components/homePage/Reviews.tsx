@@ -33,7 +33,6 @@ export default function Reviews(): JSX.Element {
             }
             setRatings(responseJson.reviewRatings);
             setReviews(responseJson.reviews);
-            console.log(responseJson);
         }
         fetchReviews();
     }, []);
