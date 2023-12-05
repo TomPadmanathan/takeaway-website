@@ -33,6 +33,7 @@ export default function Reviews(): JSX.Element {
             }
             setRatings(responseJson.reviewRatings);
             setReviews(responseJson.reviews);
+            console.log(responseJson);
         }
         fetchReviews();
     }, []);
@@ -71,14 +72,17 @@ export default function Reviews(): JSX.Element {
                         className={`flex w-full justify-center ${
                             !index && 'pb-10'
                         }`}
+                        key={index}
                     >
                         <ReviewComponent
-                            timestamp={1701408960677}
-                            name="Miranda W"
-                            stars={4}
-                            message="I recently celebrted my birthday here and it was an all round
-                        great experience! the staff were amazing and treated us with
-                        respect."
+                            timestamp={+review.timestamp}
+                            name={
+                                review.order.user.forename +
+                                ' ' +
+                                review.order.user.surname
+                            }
+                            stars={review.rating}
+                            message={review.message}
                         />
                     </div>
                 ))}
@@ -228,23 +232,23 @@ function getTimeSince(timestamp: number) {
             break;
         case seconds < 3600:
             const minutes = Math.floor(seconds / 60);
-            timeAgo = `${minutes} minute${minutes !== 1 && 's'} ago`;
+            timeAgo = `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
             break;
         case seconds < 86400:
             const hours = Math.floor(seconds / 3600);
-            timeAgo = `${hours} hour${hours !== 1 && 's'} ago`;
+            timeAgo = `${hours} hour${hours !== 1 ? 's' : ''} ago`;
             break;
         case seconds < 2592000:
             const days = Math.floor(seconds / 86400);
-            timeAgo = `${days} day${days !== 1 && 's'} ago`;
+            timeAgo = `${days} day${days !== 1 ? 's' : ''} ago`;
             break;
         case seconds < 31536000:
             const months = Math.floor(seconds / 2592000);
-            timeAgo = `${months} month${months !== 1 && 's'} ago`;
+            timeAgo = `${months} month${months !== 1 ? 's' : ''} ago`;
             break;
         default:
             const years = Math.floor(seconds / 31536000);
-            timeAgo = `${years} year${years !== 1 && 's'} ago`;
+            timeAgo = `${years} year${years !== 1 ? 's' : ''} ago`;
             break;
     }
     return timeAgo;

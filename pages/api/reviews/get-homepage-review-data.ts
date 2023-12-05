@@ -17,11 +17,12 @@ export default async function handler(
     response.status(200);
     if (request.method !== 'GET') {
         response.status(405).json({ error: 'Method not allowed' });
-        console.error('Method not allowed');
         return;
     }
 
     try {
+        await sequelize.sync();
+
         const reviews: Review[] = await Review.findAll({
             include: [
                 {
@@ -37,9 +38,41 @@ export default async function handler(
             ],
         });
 
-        response.json({ reviewRatings: [1, 2, 3, 4, 5], reviews: [{}, {}] });
+        response.json({
+            reviewRatings: [1, 2, 3, 4, 5],
+            reviews: getTopTwoReviews(bubbleSort(reviews)),
+        });
     } catch (error: unknown) {
         response.status(500).json({ error: 'Sequlize error' });
-        console.error('Sequlize error:', error);
     }
+}
+
+function bubbleSort(reviews: Review[]): Review[] {
+    for (let i = 0; i < reviews.length; i++) {
+        for (let j = 0; j < reviews.length - i - 1; j++) {
+            if (reviews[j + 1].rating < +reviews[j].rating) {
+                [reviews[j + 1], reviews[j]] = [reviews[j], reviews[j + 1]];
+            }
+        }
+    }
+    return reviews;
+}
+
+function getTopTwoReviews(reviews: Review[]): Review[] {
+    let topReviews = [];
+
+    // Sort reviews by rating in descending then by timestamp in decending
+    reviews.sort((reviewA: Review, reviewB: Review): number => {
+        if (reviewB.rating !== reviewA.rating) {
+            return reviewB.rating - reviewA.rating; // Sort rating descending order
+        }
+        return +reviewB.timestamp - +reviewA.timestamp; // Sort timestamp decending order
+    });
+
+    // find top resutls
+    for (let i = 0; i < Math.min(2, reviews.length); i++) {
+        topReviews.push(reviews[i]);
+    }
+
+    return topReviews;
 }
