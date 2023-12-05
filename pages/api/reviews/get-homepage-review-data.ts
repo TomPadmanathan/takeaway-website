@@ -37,9 +37,13 @@ export default async function handler(
                 },
             ],
         });
+        let reviewRatings: number[] = [0, 0, 0, 0, 0];
+        reviews.forEach((review: Review): void => {
+            reviewRatings[review.rating - 1]++;
+        });
 
         response.json({
-            reviewRatings: [1, 2, 3, 4, 5],
+            reviewRatings: reviewRatings,
             reviews: getTopTwoReviews(bubbleSort(reviews)),
         });
     } catch (error: unknown) {
