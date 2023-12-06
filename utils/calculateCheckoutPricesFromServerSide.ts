@@ -1,6 +1,5 @@
 // Types/Interfaces
 import { product, products } from '@/interfaces/products';
-import { config } from '@/interfaces/config';
 
 export default async function calculateCheckoutPricesFromServerSide(
     idOfElementsInCart: number[]
@@ -18,19 +17,15 @@ export default async function calculateCheckoutPricesFromServerSide(
         });
     });
 
-    const configRes: Response = await fetch(
-        process.env.NEXT_PUBLIC_URL + '/api/config'
-    );
-    const configData: config = await configRes.json();
-
     const lowOrderFee: number =
-        subTotal < configData.lowOrder.feeLimit
-            ? configData.lowOrder.feeLimit - subTotal >
-              configData.lowOrder.maxFee
-                ? configData.lowOrder.maxFee
-                : configData.lowOrder.feeLimit - subTotal
+        subTotal < +(process.env.NEXT_PUBLIC_FEE_LIMIT as string)
+            ? +(process.env.NEXT_PUBLIC_FEE_LIMIT as string) - subTotal >
+              +(process.env.NEXT_PUBLIC_MAX_FEE as string)
+                ? +(process.env.NEXT_PUBLIC_MAX_FEE as string)
+                : +(process.env.NEXT_PUBLIC_FEE_LIMIT as string) - subTotal
             : 0;
-    const deliveryFee: number = configData.delivery.fee;
+    const deliveryFee: number = +(process.env
+        .NEXT_PUBLIC_DELIVERY_FEE as string);
     const total: number = subTotal + lowOrderFee + deliveryFee;
 
     return total;

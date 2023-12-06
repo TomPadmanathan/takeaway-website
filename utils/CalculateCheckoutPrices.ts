@@ -1,13 +1,12 @@
 // Types/Interfaces
 import { cart, cartItem } from '@/interfaces/cart';
-import { config } from '@/interfaces/config';
 
 export default class CalculateCheckoutPrices {
     subTotal: number;
     lowOrderFee: number;
     deliveryFee: number;
     total: number;
-    constructor(cart: cart, siteConfig: config) {
+    constructor(cart: cart) {
         this.subTotal = cart.reduce(
             (accumulator: number, cartItem: cartItem): number =>
                 accumulator + cartItem.price,
@@ -15,13 +14,15 @@ export default class CalculateCheckoutPrices {
         );
 
         this.lowOrderFee =
-            this.subTotal < siteConfig.lowOrder.feeLimit
-                ? siteConfig.lowOrder.feeLimit - this.subTotal >
-                  siteConfig.lowOrder.maxFee
-                    ? siteConfig.lowOrder.maxFee
-                    : siteConfig.lowOrder.feeLimit - this.subTotal
+            this.subTotal < +(process.env.NEXT_PUBLIC_FEE_LIMIT as string)
+                ? +(process.env.NEXT_PUBLIC_FEE_LIMIT as string) -
+                      this.subTotal >
+                  +(process.env.NEXT_PUBLIC_MAX_FEE as string)
+                    ? +(process.env.NEXT_PUBLIC_MAX_FEE as string)
+                    : +(process.env.NEXT_PUBLIC_FEE_LIMIT as string) -
+                      this.subTotal
                 : 0;
-        this.deliveryFee = siteConfig.delivery.fee;
+        this.deliveryFee = +(process.env.NEXT_PUBLIC_DELIVERY_FEE as string);
         this.total = this.subTotal + this.lowOrderFee + this.deliveryFee;
     }
 }
