@@ -1,9 +1,15 @@
 // Utils
-import fetchWithToken from '../JWT/fetchWithToken';
+import fetchWithToken from '@/utils/JWT/fetchWithToken';
+import fetchAndSetOrders from '@/utils/admin/fetchAndSetOrders';
+
+// Database Models
+import Order from '@/database/models/Order';
 
 export default async function changeOrderStatus(
     orderId: string,
-    currentStatus: string
+    currentStatus: string,
+    setOrdersData: React.Dispatch<React.SetStateAction<Order[]>>,
+    today: boolean
 ): Promise<void> {
     const status: string[] = ['pending', 'accepted', 'dispatched', 'delivered'];
 
@@ -28,4 +34,5 @@ export default async function changeOrderStatus(
         console.error(responseJson.error);
         return;
     }
+    fetchAndSetOrders(setOrdersData, today);
 }

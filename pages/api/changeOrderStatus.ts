@@ -52,7 +52,7 @@ export default async function handler(
         });
 
         if (!user) {
-            console.error('user not found');
+            response.status(403).json({ error: 'User not found' });
             return;
         }
         if (user.userType != 'admin') {
@@ -60,7 +60,7 @@ export default async function handler(
             return;
         }
     } catch (error: unknown) {
-        console.error('Sequlize error:', error);
+        response.status(500).json({ error: 'Internal Server Error' });
     }
 
     try {
@@ -80,7 +80,8 @@ export default async function handler(
                 response.status(500).send('Email sending error: ' + emailError);
             }
         );
+        response.json({});
     } catch (error: unknown) {
-        console.error('Sequlize error:', error);
+        response.status(500).json({ error: 'Internal Server Error' });
     }
 }
