@@ -1,5 +1,4 @@
 // Packages
-import Jwt, { JwtPayload } from 'jsonwebtoken';
 import sequelize from '@/database/sequelize';
 
 // Types/Interfaces
@@ -44,7 +43,13 @@ export default async function handler(
 
         response.json({
             reviewRatings: reviewRatings,
-            reviews: getTopTwoReviews(bubbleSort(reviews)),
+            reviews: getTopTwoReviews(
+                bubbleSort(
+                    reviews.filter((review: Review, index: number) => {
+                        return review.status === 'accepted';
+                    })
+                )
+            ),
         });
     } catch (error: unknown) {
         response.status(500).json({ error: 'Sequlize error' });

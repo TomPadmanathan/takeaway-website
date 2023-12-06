@@ -84,6 +84,7 @@ export default function Users(): JSX.Element {
                                                         review={review}
                                                         heading={heading}
                                                         key={heading}
+                                                        setReviews={setReviews}
                                                     />
                                                 )
                                             )}
@@ -103,9 +104,10 @@ export default function Users(): JSX.Element {
 interface props {
     review: Review;
     heading: string;
+    setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
 }
 
-function TableData({ review, heading }: props): JSX.Element | null {
+function TableData({ review, heading, setReviews }: props): JSX.Element | null {
     const router: NextRouter = useRouter();
     let returnData: string | JSX.Element | null = null;
 
@@ -143,7 +145,11 @@ function TableData({ review, heading }: props): JSX.Element | null {
             break;
         case 'Change Status':
             return (
-                <TableCell onClick={() => console.log('change status')}>
+                <TableCell
+                    onClick={() =>
+                        changeReviewStatus(review.reviewId, setReviews)
+                    }
+                >
                     {review.status === 'pending' ? 'Accept' : ''}
                 </TableCell>
             );
@@ -157,4 +163,50 @@ function TableData({ review, heading }: props): JSX.Element | null {
 
     if (returnData) return <TableCell>{returnData}</TableCell>;
     return <TableCell>{null}</TableCell>;
+}
+
+async function changeReviewStatus(
+    reviewId: string,
+    setReviews: React.Dispatch<React.SetStateAction<Review[]>>
+) {
+    const response: Response = await fetchWithToken(
+        '/api/reviews/update-review-status',
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                reviewId: reviewId,
+                status: 'accepted',
+            }),
+        }
+    );
+    const responseJson = await response.json();
+    if (!response.ok) {
+        console.error(responseJson.error);
+        return;
+    }
+    fetchAndSetReviews(setReviews);
+}
+
+async function fetchAndSetReviews(
+    setReviews: React.Dispatch<React.SetStateAction<Review[]>>
+): Promise<void> {
+    const response: Response = await fetchWithToken(
+        '/api/reviews/get-all-reviews',
+        {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        }
+    );
+    const responseJson = await response.json();
+    if (!response.ok) {
+        console.error(responseJson.error);
+        return;
+    }
+    if (!responseJson.reviews) {
+        console.error('Reviews not defined');
+        return;
+    }
+
+    setReviews(responseJson.reviews);
 }
