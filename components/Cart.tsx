@@ -16,7 +16,6 @@ import CalculateCheckoutPrices from '@/utils/CalculateCheckoutPrices';
 import HighlightText from '@/components/HighlightText';
 
 // Types/Interfaces
-import { config } from '@/interfaces/config';
 import { Dispatch, SetStateAction } from 'react';
 
 // Assets
@@ -42,18 +41,7 @@ export default function Cart(props: props): JSX.Element {
     const [cartOpen, setCartOpen] = props.cartOpen;
     const modifiedCart: modifiedCart = formatCart(cart);
     const router: NextRouter = useRouter();
-    const configData: config = {
-        lowOrder: {
-            maxFee: +(process.env.NEXT_PUBLIC_MAX_FEE as string),
-            feeLimit: +(process.env.NEXT_PUBLIC_FEE_LIMIT as string),
-        },
-        delivery: {
-            fee: +(process.env.NEXT_PUBLIC_DELIVERY_FEE as string),
-            estimatedTimeOffset: +(process.env
-                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string),
-        },
-    };
-    const prices = new CalculateCheckoutPrices(cart, configData);
+    const prices = new CalculateCheckoutPrices(cart);
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
     useEffect((): void => {

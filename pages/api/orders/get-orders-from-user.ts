@@ -47,7 +47,6 @@ export default async function handler(
             },
         });
         response.json({ orders });
-        console.log(orders);
     } catch {
         response.status(500).json({ error: 'Internal Server Error' });
     }

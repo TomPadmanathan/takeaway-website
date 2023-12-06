@@ -9,7 +9,6 @@ import Footer from '@/components/page/Footer';
 // Types/Interfaces
 import { products, product } from '@/interfaces/products';
 import { productNavButton } from '@/interfaces/productNav';
-import { config } from '@/interfaces/config';
 import { cart } from '@/interfaces/cart';
 
 // Context
@@ -51,17 +50,6 @@ export default function Home({ productsData }: props): JSX.Element {
     const tailwindColors: any = tailwindConfig?.theme?.colors;
     const [search, setSearch] = useState<string>('');
     const { cart } = useContext(AppContext);
-    const configData: config = {
-        lowOrder: {
-            maxFee: +(process.env.NEXT_PUBLIC_MAX_FEE as string),
-            feeLimit: +(process.env.NEXT_PUBLIC_FEE_LIMIT as string),
-        },
-        delivery: {
-            fee: +(process.env.NEXT_PUBLIC_DELIVERY_FEE as string),
-            estimatedTimeOffset: +(process.env
-                .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string),
-        },
-    };
     const checkoutPrices = new CalculateCheckoutPrices(cart);
     const [activeProductNav, setActiveProductNav] =
         useState<productNavButton>('popular');

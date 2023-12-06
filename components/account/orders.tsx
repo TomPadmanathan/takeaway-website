@@ -90,7 +90,7 @@ function OrderTab({ order }: props): JSX.Element {
 
     useEffect((): void => {
         fetchReview();
-    }, []);
+    });
 
     return (
         <>

@@ -233,7 +233,7 @@ function ReviewComponent({ order }: reviewProps): JSX.Element {
 
     useEffect((): void => {
         fetchReview();
-    }, []);
+    });
 
     return (
         <section
