@@ -24,21 +24,21 @@ export default function handler(
     const products: products = [
         {
             product: 'chow mein',
-            price: 100.25,
+            price: 10.5,
             image: ChowMein,
             category: ['popular', 'chinese'],
             id: 1,
         },
         {
             product: 'dim sum',
-            price: 100.25,
+            price: 12,
             image: DimSum,
             category: ['chinese'],
             id: 1,
         },
         {
             product: 'sweet and sour chicken',
-            price: 10.5,
+            price: 8.5,
             image: SweetSourChicken,
             category: ['popular', 'chinese'],
             options: [['rice', 'noodles']],
@@ -46,7 +46,7 @@ export default function handler(
         },
         {
             product: 'sweet and chili chicken',
-            price: 10.5,
+            price: 8.5,
             image: SweetChilliChicken,
             category: ['popular', 'chinese'],
             options: [['rice', 'noodles']],
@@ -61,28 +61,28 @@ export default function handler(
         },
         {
             product: 'nasi goreng',
-            price: 6,
+            price: 6.5,
             image: NasiGoreng,
             category: ['indonesian'],
             id: 5,
         },
         {
             product: 'mi goreng',
-            price: 6,
+            price: 6.5,
             image: MiGoreng,
             category: ['indonesian'],
             id: 6,
         },
         {
             product: 'pad thai',
-            price: 6,
+            price: 8.5,
             image: PadThai,
             category: ['popular', 'thai'],
             id: 7,
         },
         {
             product: 'chicken katsu curry',
-            price: 6,
+            price: 8,
             image: ChickenKatsuCurry,
             category: ['popular', 'japanese'],
             options: [
@@ -100,7 +100,7 @@ export default function handler(
         },
         {
             product: 'yakisoba',
-            price: 2,
+            price: 8.5,
             image: Yakisoba,
             category: ['japanese'],
             options: [['vegetable', 'chicken', 'pork', 'prawn', 'beef']],
@@ -108,7 +108,7 @@ export default function handler(
         },
         {
             product: 'yakiudon',
-            price: 2,
+            price: 8.5,
             image: Yakiudon,
             category: ['japanese'],
             options: [['vegetable', 'chicken', 'pork', 'prawn', 'beef']],
