@@ -62,7 +62,7 @@ export default function Home({ productsData }: props): JSX.Element {
                 .NEXT_PUBLIC_ESTIMATED_TIME_OFFSET as string),
         },
     };
-    const checkoutPrices = new CalculateCheckoutPrices(cart, configData);
+    const checkoutPrices = new CalculateCheckoutPrices(cart);
     const [activeProductNav, setActiveProductNav] =
         useState<productNavButton>('popular');
 
@@ -185,7 +185,7 @@ function ProductTab(props: productTabProps): JSX.Element {
             <div className="w-72 overflow-hidden rounded bg-lightergrey pb-2 text-center text-grey">
                 <Image
                     src={props.product.image}
-                    className="aspect-[4/3] w-72 border border-black"
+                    className="aspect-[4/3] w-72"
                     alt={props.product.product + ' image'}
                 />
                 <h2 className="text-xl text-grey2">
