@@ -131,8 +131,8 @@ interface reviewSummaryProps {
 function ReviewSummary({ reviewRatings }: reviewSummaryProps): JSX.Element {
     function getTotalReviews(reviews: number[]): number {
         let total = 0;
-        reviews.forEach((review: number): void => {
-            total += review;
+        reviews.forEach((rating: number): void => {
+            total += rating;
         });
         return total;
     }

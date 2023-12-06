@@ -38,6 +38,7 @@ export default async function handler(
         });
         let reviewRatings: number[] = [0, 0, 0, 0, 0];
         reviews.forEach((review: Review): void => {
+            if (review.status !== 'accepted') return;
             reviewRatings[review.rating - 1]++;
         });
 
