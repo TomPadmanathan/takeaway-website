@@ -81,7 +81,7 @@ export default function LandingSection(): JSX.Element {
                     )}
                 </div>
 
-                <section className=" z-10 mt-10 rounded-xl rounded-b-none border-4 border-b-0 border-white bg-gradient-to-r from-lightpink to-pink px-20 l:px-10 sm:rounded-none sm:border-x-0 xs:px-6 2xs:px-4 ">
+                <section className=" z-10  mt-10 rounded-xl rounded-b-none border-4 border-b-0 border-white bg-gradient-to-r from-lightpink to-pink px-20 l:px-10 sm:rounded-none sm:border-x-0 xs:px-6 2xs:px-4 ">
                     <h2 className="pb-4 pt-6 text-3xl text-white">
                         Welcome to Takeawaysite
                     </h2>
