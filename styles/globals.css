@@ -12,12 +12,6 @@
         overflow-x: none tailwind;
         background-color: #f0eff4;
     }
-    .bg-image {
-        background-image: url('../assets/img/foodBackground.jpg');
-        background-size: cover;
-        image-rendering: optimizeQuality;
-    }
-
     /* Remove Arrows from input type number */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {

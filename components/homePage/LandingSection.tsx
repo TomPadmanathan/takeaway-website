@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 
 // Assets
 import Logo from '@/assets/img/logo.png';
+import FoodBackground from '@/assets/img/FoodBackground.png';
 
 // Types/Interfaces
 import { NextRouter } from 'next/router';
@@ -36,7 +37,14 @@ export default function LandingSection(): JSX.Element {
     }, [token]);
 
     return (
-        <section className="bg-image px-64 pb-0 2xl:px-52 xl:px-40 l:px-32 m:px-16 sm:px-0">
+        <section
+            style={{
+                backgroundImage: `url('${FoodBackground.src}')`,
+            }}
+            className="relative bg-cover bg-center px-64 pb-0 2xl:px-52 xl:px-40 l:px-32 m:px-16 sm:px-0"
+        >
+            {/* Darken bg */}
+            <div className="absolute inset-0 bg-black bg-opacity-50" />
             <div className="grid place-items-center text-center">
                 <Image
                     src={Logo}
@@ -73,7 +81,7 @@ export default function LandingSection(): JSX.Element {
                     )}
                 </div>
 
-                <section className="mt-10 rounded-xl rounded-b-none border-4 border-b-0 border-white bg-gradient-to-r from-lightpink to-pink px-20 l:px-10 sm:rounded-none sm:border-x-0 xs:px-6 2xs:px-4 ">
+                <section className=" z-10 mt-10 rounded-xl rounded-b-none border-4 border-b-0 border-white bg-gradient-to-r from-lightpink to-pink px-20 l:px-10 sm:rounded-none sm:border-x-0 xs:px-6 2xs:px-4 ">
                     <h2 className="pb-4 pt-6 text-3xl text-white">
                         Welcome to Takeawaysite
                     </h2>
