@@ -1,34 +1,8 @@
-# Takeaway Website (Work in Progress)
+# Takeaway Website
 
-This repository contains a work-in-progress takeaway website built using TypeScript, Next.js, MySQL Tailwind CSS. This web application is designed to provide users with a simple way to place orders from a restuant.
+This repository contains a takeaway website built using TypeScript, Next.js, Sequelize, MySQL, Tailwind CSS. This web application is designed to provide users with a simple way to place orders from a restuant.
 
-## View a Live Build
-
-You can explore the current version of this project by visiting the following link, which is hosted on Vercel:
-
-> Please note:
->
-> -   The production database is currently being hosted locally to expect a delay for all database actions.
-> -   This project is work in progress so expect some features to be incomplete.
-> -   Please do not enter any persanal data as this project is open to anyone to view.
-
-[Takeaway Website on Vercel](https://takeaway-website.vercel.app/)
-
-Feel free to browse the site and experience the features we've implemented so far.
-
-This project has been launched in Stripe test mode meaning that the website will not be taking payment upon checkout at this time. To test this please visit the stripe documentation
-
-[Stripe Test Mode Documentation](https://stripe.com/docs/test-mode/)
-
-[Stripe Test Payment Methods](https://stripe.com/docs/testing#cards/)
-
-After creating an order you will be redirected to a customer order page where you can see your order details and status. You will also recieve an email after an order has been places aswell as emails upon order status change.
-
-To visit the admin dashboard login with these credentials and go to the link below:
-email: `padmanathantom@gmail.com`
-password: `mypass`
-
-[Takeaway Website Admin Page](https://takeaway-website.vercel.app/admin/orders)
+There is current no live build of this project
 
 ## Features
 
@@ -58,7 +32,7 @@ password: `mypass`
 
 ## Knowen Bugs/Upcomming Changes
 
-I am committed to continuously improving this project. Here are some bug fixes and changes I plan to implement in the near future:
+I am committed to continuously improving this project. Here are some bug fixes and changes I plan to implement in the future:
 
 -   **Cart Storage:** Change how the cart is stored to be linked to user accounts and to store multiple items using a quantity property. This will fix an issue when deleting items from your cart.
 
@@ -96,13 +70,19 @@ cp .env.example .env
 
 Then enter your environment variables.
 
-5. Start the development server.
+5. Create a build.
 
 ```bash
-npm run dev
+npm run build
 ```
 
-6. Open your browser and access the website at [localhost:3000](http://localhost:3000)
+6. Start the server.
+
+```bash
+npm start
+```
+
+7. Open your browser and access the website at [localhost:3000](http://localhost:3000)
 
 ## Contribution Guidelines
 
